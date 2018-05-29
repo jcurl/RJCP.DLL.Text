@@ -756,5 +756,18 @@
                 digits++;
             }
         }
+
+        [Test]
+        public void SPrintF_InvalidSpecifier()
+        {
+            Assert.That(StringUtilities.SPrintF("handlerTransmitThread: 0x%02 , 0x%02", 0, 2176), Is.EqualTo("handlerTransmitThread: 0x%02 , 0x%02"));
+            Assert.That(StringUtilities.SPrintF("handlerTransmitThread: 0x%02 , 0x%0", 0, 2176), Is.EqualTo("handlerTransmitThread: 0x%02 , 0x%0"));
+            Assert.That(StringUtilities.SPrintF("handlerTransmitThread: 0x%02 , 0x%", 0, 2176), Is.EqualTo("handlerTransmitThread: 0x%02 , 0x%"));
+            Assert.That(StringUtilities.SPrintF("handlerTransmitThread: 0x%02 , 0x", 0, 2176), Is.EqualTo("handlerTransmitThread: 0x%02 , 0x"));
+            Assert.That(StringUtilities.SPrintF("handlerTransmitThread: 0x%0 , 0x%02", 0, 2176), Is.EqualTo("handlerTransmitThread: 0x%0 , 0x%02"));
+            Assert.That(StringUtilities.SPrintF("handlerTransmitThread: 0x% , 0x%02", 0, 2176), Is.EqualTo("handlerTransmitThread: 0x% , 0x%02"));
+            Assert.That(StringUtilities.SPrintF("handlerTransmitThread: 0x , 0x%02", 0, 2176), Is.EqualTo("handlerTransmitThread: 0x , 0x%02"));
+            Assert.That(StringUtilities.SPrintF("handlerTransmitThread: 0x%02, 0x%02", 0, 2176), Is.EqualTo("handlerTransmitThread: 0x%02, 0x%02"));
+        }
     }
 }

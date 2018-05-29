@@ -18,6 +18,8 @@ namespace RJCP.Text
         /// <returns>A formatted string</returns>
         /// <param name="format">The formatting string as per the C style <c>printf</c> function family.</param>
         /// <param name="values">The list of objects as given in the format string.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="format"/> may not be <see langword="null"/>.</exception>
+        /// <exception cref="FormatException">There was a fatal error parsing the string and/or the parameters.</exception>
         /// <remarks>
         /// <para>This method takes a <paramref name="format"/> specifier and converts it to a string based on the
         /// values provided. See http://www.cplusplus.com/reference/cstdio/printf or http://en.cppreference.com/w/cpp/io/c/fprintf.
@@ -146,21 +148,21 @@ namespace RJCP.Text
         /// <list type="bullet">
         /// <item>Integer %d: SPrintF = ~39ms. System.String.Format = ~17ms.</item>
         /// <item>Integer %u: SPrintF = ~29ms. System.String.Format = ~17ms.</item>
-        /// <item>IEEE-754 %f: 123456.789. SPrintF (double/float) = ~42ms/45ms. System.String.Format = ~31ms/33msms.</item>
-        /// <item>IEEE-754 %e: 123456.789. SPrintF (double/float) = ~41ms/47ms. System.String.Format = ~33ms/35msms.</item>
-        /// <item>IEEE-754 %g: 123456.789. SPrintF (double/float) = ~45ms/48ms. System.String.Format = ~32ms/33msms.</item>
+        /// <item>IEEE-754 %f: 123456.789. SPrintF (double/float) = ~42ms/45ms. System.String.Format = ~31ms/33ms.</item>
+        /// <item>IEEE-754 %e: 123456.789. SPrintF (double/float) = ~41ms/47ms. System.String.Format = ~33ms/35ms.</item>
+        /// <item>IEEE-754 %g: 123456.789. SPrintF (double/float) = ~45ms/48ms. System.String.Format = ~32ms/33ms.</item>
         /// </list>
         /// </remarks>
         public static string SPrintF(string format, params object[] values)
         {
-            if (format == null) throw new ArgumentNullException("format");
+            if (format == null) throw new ArgumentNullException(nameof(format));
 
             StringBuilder sb = new StringBuilder();
 
-            int charPos;
+            int charPos = 0;
             int nextCharPos = 0;
             int currentArg = 0;
-            while (true) {
+            while (charPos < format.Length) {
                 charPos = nextCharPos;
                 nextCharPos = PrintFGetNextSpecialChar(format, charPos);
                 if (nextCharPos == -1) {
@@ -170,15 +172,20 @@ namespace RJCP.Text
                 }
                 if (nextCharPos > charPos) {
                     sb.Append(format.Substring(charPos, nextCharPos - charPos));
+                    charPos = nextCharPos;
                 }
 
                 FormatSpecifier formatSpecifier = ParseFormatSpecifier(format, ref nextCharPos);
-                if (formatSpecifier != null) {
-                    // Read the input parameters and convert it.
-                    ConvertFormatSpecifier(sb, formatSpecifier, ref currentArg, values);
+                if (formatSpecifier == null) {
+                    // The format specifier is invalid, so copy it verbatim.
+                    sb.Append(format.Substring(charPos, nextCharPos - charPos));
                     continue;
                 }
+
+                // Read the input parameters and convert it.
+                ConvertFormatSpecifier(sb, formatSpecifier, ref currentArg, values);
             }
+            return sb.ToString();
         }
 
         #region SPrintF implementation
@@ -260,6 +267,7 @@ namespace RJCP.Text
                 ParseFormatSpecifierLength(format, ref newPosition, formatSpecifier);
                 ParseFormatSpecifierSpecifier(format, ref newPosition, formatSpecifier);
             } catch (FormatException) {
+                position = newPosition;
                 return null;
             }
 
@@ -334,7 +342,10 @@ namespace RJCP.Text
             }
 
             // We expect this to be not the end of the format string.
-            if (parsing) throw new FormatException("Incomplete format specifier");
+            if (parsing) {
+                position = endPosition;
+                throw new FormatException("Incomplete format specifier");
+            }
 
             if (endPosition == position) return -1;
             try {
@@ -378,9 +389,9 @@ namespace RJCP.Text
         {
             if (position >= format.Length) throw new FormatException("Incomplete format specifier");
             char c = format[position];
-            position++;
 
             if (!FormatSpecifiers.Contains(c.ToString())) throw new FormatException("Invalid specifier");
+            position++;
             formatSpecifier.Specifier = c;
         }
         #endregion
