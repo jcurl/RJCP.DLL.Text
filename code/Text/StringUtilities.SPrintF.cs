@@ -401,7 +401,10 @@ namespace RJCP.Text
         {
             if (formatSpecifier.WidthAsArg) {
                 if (currentArg >= values.Length) throw new FormatException("Insufficient number of arguments in list");
-                if (!(values[currentArg] is int)) throw new FormatException("Argument " + currentArg + " must be an integer type when specifying the width");
+                if (!(values[currentArg] is int)) {
+                    string message = string.Format("Argument {0} must be an integer type when specifying the width", currentArg);
+                    throw new FormatException(message);
+                }
                 formatSpecifier.Width = (int)values[currentArg];
                 if (formatSpecifier.Width < 0) {
                     formatSpecifier.Width = -formatSpecifier.Width;
@@ -411,7 +414,10 @@ namespace RJCP.Text
             }
             if (formatSpecifier.PrecisionAsArg) {
                 if (currentArg >= values.Length) throw new FormatException("Insufficient number of arguments in list");
-                if (!(values[currentArg] is int)) throw new FormatException("Argument " + currentArg + " must be an integer type when specifying the precision");
+                if (!(values[currentArg] is int)) {
+                    string message = string.Format("Argument {0} must be an integer type when specifying the precision", currentArg);
+                    throw new FormatException(message);
+                }
                 formatSpecifier.Precision = (int)values[currentArg];
                 if (formatSpecifier.Precision < 0) {
                     formatSpecifier.Precision = -1;
@@ -494,23 +500,30 @@ namespace RJCP.Text
                     }
                     return;
                 }
-                str.Append((char)c);
+                unchecked {
+                    // If the 'int' input doesn't fit within a char, then coerce it and chop of extra bits as done in C.
+                    str.Append((char)c);
+                }
             } catch (InvalidCastException e) {
-                throw new FormatException("Couldn't convert argument " + (currentArg + 1) + " type " + values[currentArg].GetType() + " to a char", e);
+                string message = string.Format("Couldn't convert argument {0} type {1} to a char",
+                    currentArg + 1, values[currentArg].GetType());
+                throw new FormatException(message, e);
             }
         }
         private static int GetChar(object value)
         {
-            if (value is char) return (char)value;
-            if (value is sbyte) return unchecked((byte)((sbyte)value));
-            if (value is byte) return (byte)value;
-            if (value is short) return (short)value;
-            if (value is ushort) return unchecked((short)((ushort)value));
-            if (value is int) return unchecked((short)((int)value));
-            if (value is uint) return unchecked((short)((uint)value));
-            if (value is long) return unchecked((short)((long)value));
-            if (value is ulong) return unchecked((short)((ulong)value));
-            throw new FormatException("Parameter doesn't map to an integer");
+            unchecked {
+                if (value is char) return (char)value;
+                if (value is sbyte) return (byte)((sbyte)value);
+                if (value is byte) return (byte)value;
+                if (value is short) return (short)value;
+                if (value is ushort) return (short)((ushort)value);
+                if (value is int) return (short)((int)value);
+                if (value is uint) return (short)((uint)value);
+                if (value is long) return (short)((long)value);
+                if (value is ulong) return (short)((ulong)value);
+                throw new FormatException("Parameter doesn't map to an integer");
+            }
         }
         #endregion
 
@@ -538,7 +551,8 @@ namespace RJCP.Text
                 }
                 str.Append(s);
             } catch (InvalidCastException e) {
-                throw new FormatException("Couldn't convert argument " + currentArg + " to a string", e);
+                string message = string.Format("Couldn't convert argument {0} to a string", currentArg);
+                throw new FormatException(message, e);
             }
         }
         #endregion
@@ -565,7 +579,6 @@ namespace RJCP.Text
                     // 64-bit signed
                     value = GetLong(values[currentArg]);
                 } else {
-                    // TODO: Raise an exception or not?
                     int p = unchecked((int)(GetLong(values[currentArg]) & 0xFFFFFFFF));
                     value = p;
                 }
@@ -579,17 +592,19 @@ namespace RJCP.Text
 
         private static long GetLong(object value)
         {
-            if (value is int) return (int)value;
-            if (value is long) return (long)value;
-            if (value is bool) return (bool)value ? -1 : 0;
-            if (value is short) return (short)value;
-            if (value is char) return (char)value;
-            if (value is sbyte) return (sbyte)value;
-            if (value is byte) return (byte)value;
-            if (value is uint) return (uint)value;
-            if (value is ulong) return unchecked((long)((ulong)value));
-            if (value is ushort) return (ushort)value;
-            throw new FormatException("Parameter doesn't map to an integer");
+            unchecked {
+                if (value is int) return (int)value;
+                if (value is long) return (long)value;
+                if (value is bool) return (bool)value ? -1 : 0;
+                if (value is short) return (short)value;
+                if (value is char) return (char)value;
+                if (value is sbyte) return (sbyte)value;
+                if (value is byte) return (byte)value;
+                if (value is uint) return (uint)value;
+                if (value is ulong) return (long)((ulong)value);
+                if (value is ushort) return (ushort)value;
+                throw new FormatException("Parameter doesn't map to an integer");
+            }
         }
 
         private static long[] LongPowerOfTenNegative = new long[] {
@@ -805,30 +820,32 @@ namespace RJCP.Text
                     // 64-bit signed
                     value = GetULong(values[currentArg]);
                 } else {
-                    // TODO: Raise an exception or not?
                     uint p = unchecked((uint)(GetULong(values[currentArg]) & 0xFFFFFFFF));
                     value = p;
                 }
                 currentArg++;
                 UlongToString(str, formatSpecifier, value);
             } catch (InvalidCastException e) {
-                throw new FormatException("Couldn't convert argument " + currentArg + " to an integer", e);
+                string message = string.Format("Couldn't convert argument {0} to an integer", currentArg);
+                throw new FormatException(message, e);
             }
         }
 
         private static ulong GetULong(object value)
         {
-            if (value is int) return (ulong)((int)value);
-            if (value is long) return unchecked((ulong)((long)value));
-            if (value is bool) return (bool)value ? unchecked((ulong)-1) : 0;
-            if (value is short) return (ulong)((short)value);
-            if (value is char) return (char)value;
-            if (value is sbyte) return (ulong)((sbyte)value);
-            if (value is byte) return (byte)value;
-            if (value is uint) return (uint)value;
-            if (value is ulong) return (ulong)value;
-            if (value is ushort) return (ushort)value;
-            throw new FormatException("Parameter doesn't map to an unsigned integer");
+            unchecked {
+                if (value is int) return (ulong)((int)value);
+                if (value is long) return (ulong)((long)value);
+                if (value is bool) return (bool)value ? (ulong)-1 : 0;
+                if (value is short) return (ulong)((short)value);
+                if (value is char) return (char)value;
+                if (value is sbyte) return (ulong)((sbyte)value);
+                if (value is byte) return (byte)value;
+                if (value is uint) return (uint)value;
+                if (value is ulong) return (ulong)value;
+                if (value is ushort) return (ushort)value;
+                throw new FormatException("Parameter doesn't map to an unsigned integer");
+            }
         }
 
         private static char[] BaseDigitsLower = new[] {
@@ -1170,7 +1187,7 @@ namespace RJCP.Text
                 }
 
                 int e = (int)(bits >> DoubleBitsExponentShift);
-                long m = bits & DoubleBitsMantissaMask;
+                long m = bits & DoubleBitsMantissaMask;  // m is the lower 52 bits
                 if (e == DoubleBitsExponentMask) {    // If (e == 0x7FF)
                     _NaN = m != 0;                    //  m != 0 => NaN
                     _infinity = m == 0;               //  m == 0 => Inf (see also sign)
@@ -1200,39 +1217,40 @@ namespace RJCP.Text
                 // * expAdjust: Exponent (base 10)
 
                 // multiply the mantissa by 10 ^ N
-                ulong lo = (uint)m;
-                ulong hi = (ulong)m >> 32;
-                ulong lo2 = Formatter_MantissaBitsTable[e];
-                ulong hi2 = lo2 >> 32;
-                lo2 = (uint)lo2;
-                ulong mm = hi * lo2 + lo * hi2 + ((lo * lo2) >> 32);
-                long res = (long)(hi * hi2 + (mm >> 32));
-                while (res < SeventeenDigitsThreshold) {
-                    mm = (mm & UInt32.MaxValue) * 10;
-                    res = res * 10 + (long)(mm >> 32);
-                    expAdjust--;
-                }
-                if ((mm & 0x80000000) != 0)
-                    res++;
+                unchecked {
+                    ulong lo = (uint)m;              // m can be 52-bits, keep the lower 32 bits, as hi contains the rest.
+                    ulong hi = (ulong)m >> 32;
+                    ulong lo2 = Formatter_MantissaBitsTable[e];
+                    ulong hi2 = lo2 >> 32;
+                    lo2 = (uint)lo2;
+                    ulong mm = hi * lo2 + lo * hi2 + ((lo * lo2) >> 32);
+                    long res = (long)(hi * hi2 + (mm >> 32));
+                    while (res < SeventeenDigitsThreshold) {
+                        mm = (mm & UInt32.MaxValue) * 10;
+                        res = res * 10 + (long)(mm >> 32);
+                        expAdjust--;
+                    }
+                    if ((mm & 0x80000000) != 0) res++;
 
-                int order = DoubleDefPrecision + 2;
-                _decPointPos = Formatter_TensExponentTable[e] + expAdjust + order;
+                    int order = DoubleDefPrecision + 2;
+                    _decPointPos = Formatter_TensExponentTable[e] + expAdjust + order;
 
-                // Rescale 'res' to the initial precision (15-17 for doubles).
-                int initialPrecision = InitialFloatingPrecision();
-                if (order > initialPrecision) {
-                    long val = GetTenPowerOf(order - initialPrecision);
-                    res = (res + (val >> 1)) / val;
-                    order = initialPrecision;
-                }
-                if (res >= GetTenPowerOf(order)) {
-                    order++;
-                    _decPointPos++;
-                }
+                    // Rescale 'res' to the initial precision (15-17 for doubles).
+                    int initialPrecision = InitialFloatingPrecision();
+                    if (order > initialPrecision) {
+                        long val = GetTenPowerOf(order - initialPrecision);
+                        res = (res + (val >> 1)) / val;
+                        order = initialPrecision;
+                    }
+                    if (res >= GetTenPowerOf(order)) {
+                        order++;
+                        _decPointPos++;
+                    }
 
-                InitDecHexDigits((ulong)res);
-                _offset = CountTrailingZeros();
-                _digitsLen = order - _offset;
+                    InitDecHexDigits((ulong)res);
+                    _offset = CountTrailingZeros();
+                    _digitsLen = order - _offset;
+                }
             }
             #endregion Constructors
 
@@ -1411,7 +1429,8 @@ namespace RJCP.Text
                 case 'G':
                     FormatGeneral(_precision, nfi); break;
                 default:
-                    throw new FormatException("The specified format '" + format.Specifier + "' is invalid");
+                    string message = string.Format("The specified format '{0}' is invalid", format.Specifier);
+                    throw new FormatException(message);
                 }
             }
 

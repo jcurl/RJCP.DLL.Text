@@ -674,45 +674,32 @@
             Assert.That(StringUtilities.SPrintF("%-10G", Double.NegativeInfinity), Is.EqualTo("-INF      "));
         }
 
-        private static int CountDigits(PrivateType pt, long value)
-        {
-            return (int)pt.InvokeStatic("CountDigits", new object[] { value });
-        }
-
-        // Used to test the count routine temporarily, but it needs to be made public
         [Test]
         public void SPrintF_CountDigitsLong()
         {
-            PrivateType pt = new PrivateType(typeof(StringUtilities));
+            Assert.That(StringUtilitiesAccessor.CountDigits(-1), Is.EqualTo(1));
+            Assert.That(StringUtilitiesAccessor.CountDigits(0), Is.EqualTo(1));
+            Assert.That(StringUtilitiesAccessor.CountDigits(1), Is.EqualTo(1));
 
-            Assert.That(CountDigits(pt, -1), Is.EqualTo(1));
-            Assert.That(CountDigits(pt, 0), Is.EqualTo(1));
-            Assert.That(CountDigits(pt, 1), Is.EqualTo(1));
-
-            long value = 10;
+            long value = 1;
             int digits = 2;
             while (digits <= 19) {
-                Assert.That(CountDigits(pt, value - 1), Is.EqualTo(digits - 1));
-                Assert.That(CountDigits(pt, value), Is.EqualTo(digits));
-                Assert.That(CountDigits(pt, value + 1), Is.EqualTo(digits));
-                digits++;
                 value *= 10;
+                Assert.That(StringUtilitiesAccessor.CountDigits(value - 1), Is.EqualTo(digits - 1));
+                Assert.That(StringUtilitiesAccessor.CountDigits(value), Is.EqualTo(digits));
+                Assert.That(StringUtilitiesAccessor.CountDigits(value + 1), Is.EqualTo(digits));
+                digits++;
             }
 
-            value = -10;
+            value = -1;
             digits = 2;
             while (digits <= 19) {
-                Assert.That(CountDigits(pt, value - 1), Is.EqualTo(digits));
-                Assert.That(CountDigits(pt, value), Is.EqualTo(digits));
-                Assert.That(CountDigits(pt, value + 1), Is.EqualTo(digits - 1));
-                digits++;
                 value *= 10;
+                Assert.That(StringUtilitiesAccessor.CountDigits(value - 1), Is.EqualTo(digits));
+                Assert.That(StringUtilitiesAccessor.CountDigits(value), Is.EqualTo(digits));
+                Assert.That(StringUtilitiesAccessor.CountDigits(value + 1), Is.EqualTo(digits - 1));
+                digits++;
             }
-        }
-
-        private static int CountBitDigits(PrivateType pt, ulong value, int bitsPerDigit)
-        {
-            return (int)pt.InvokeStatic("CountBitDigits", new object[] { value, bitsPerDigit });
         }
 
         [Test]
@@ -720,18 +707,18 @@
         {
             PrivateType pt = new PrivateType(typeof(StringUtilities));
 
-            Assert.That(CountBitDigits(pt, 0, 4), Is.EqualTo(1));
+            Assert.That(StringUtilitiesAccessor.CountBitDigits(0, 4), Is.EqualTo(1));
 
             ulong value = 1;
             int digits = 1;
             while (digits < 16) {
-                Assert.That(CountBitDigits(pt, value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
+                Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
                 value = value << 1;
-                Assert.That(CountBitDigits(pt, value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
+                Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
                 value = value << 1;
-                Assert.That(CountBitDigits(pt, value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
+                Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
                 value = value << 1;
-                Assert.That(CountBitDigits(pt, value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
+                Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
                 value = value << 1;
                 digits++;
             }
@@ -742,16 +729,16 @@
         {
             PrivateType pt = new PrivateType(typeof(StringUtilities));
 
-            Assert.That(CountBitDigits(pt, 0, 3), Is.EqualTo(1));
+            Assert.That(StringUtilitiesAccessor.CountBitDigits(0, 3), Is.EqualTo(1));
 
             ulong value = 1;
             int digits = 1;
             while (digits < 22) {
-                Assert.That(CountBitDigits(pt, value, 3), Is.EqualTo(digits), "Value 0x{0:X16}", value);
+                Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 3), Is.EqualTo(digits), "Value 0x{0:X16}", value);
                 value = value << 1;
-                Assert.That(CountBitDigits(pt, value, 3), Is.EqualTo(digits), "Value 0x{0:X16}", value);
+                Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 3), Is.EqualTo(digits), "Value 0x{0:X16}", value);
                 value = value << 1;
-                Assert.That(CountBitDigits(pt, value, 3), Is.EqualTo(digits), "Value 0x{0:X16}", value);
+                Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 3), Is.EqualTo(digits), "Value 0x{0:X16}", value);
                 value = value << 1;
                 digits++;
             }

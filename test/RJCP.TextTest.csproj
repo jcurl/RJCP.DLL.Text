@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Text\StringUtilitiesAccessor.cs" />
     <Compile Include="Text\StringUtilities_SPrintFTest.cs" />
     <Compile Include="Text\StringUtilities_SprintFPerformance.cs" />
   </ItemGroup>
@@ -46,9 +47,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\nunitextensions\NUnitExtensions\NUnitExtensions.csproj">
-      <Project>{a4d356f2-15ac-4ffe-b0c4-1d3d0973a124}</Project>
-      <Name>NUnitExtensions</Name>
+    <ProjectReference Include="..\..\nunitextensions\NUnitExtensions\RJCP.NUnitExtensions.csproj">
+      <Project>{a3397842-bcc1-4da7-95fa-437c511b7912}</Project>
+      <Name>RJCP.NUnitExtensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\code\RJCP.Text.csproj">
       <Project>{f9d056a3-db23-4e4b-9d3c-e08151472923}</Project>
