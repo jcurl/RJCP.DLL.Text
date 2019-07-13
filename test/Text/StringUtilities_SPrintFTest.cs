@@ -73,6 +73,30 @@
         }
 
         [Test]
+        public void SPrintF_CharVarFieldWidth()
+        {
+            Assert.That(StringUtilities.SPrintF("%*c", 0, 'a'), Is.EqualTo("a"));
+            Assert.That(StringUtilities.SPrintF("%*c", 1, 'a'), Is.EqualTo("a"));
+            Assert.That(StringUtilities.SPrintF("%*c", 2, 'a'), Is.EqualTo(" a"));
+            Assert.That(StringUtilities.SPrintF("%*c", 3, 'a'), Is.EqualTo("  a"));
+            Assert.That(StringUtilities.SPrintF("%*c", 4, 'a'), Is.EqualTo("   a"));
+            Assert.That(StringUtilities.SPrintF("%*c", 5, 'a'), Is.EqualTo("    a"));
+
+            Assert.That(StringUtilities.SPrintF("%*c", -1, 'a'), Is.EqualTo("a"));
+            Assert.That(StringUtilities.SPrintF("%*c", -2, 'a'), Is.EqualTo("a "));
+            Assert.That(StringUtilities.SPrintF("%*c", -3, 'a'), Is.EqualTo("a  "));
+            Assert.That(StringUtilities.SPrintF("%*c", -4, 'a'), Is.EqualTo("a   "));
+            Assert.That(StringUtilities.SPrintF("%*c", -5, 'a'), Is.EqualTo("a    "));
+        }
+
+        [Test]
+        public void SPrintF_CharVarFieldWidthInvalid()
+        {
+            Assert.That(() => { StringUtilities.SPrintF("%*c", "1", 'a'); }, Throws.TypeOf<FormatException>());
+            Assert.That(() => { StringUtilities.SPrintF("%*c", new object(), 'a'); }, Throws.TypeOf<FormatException>());
+        }
+
+        [Test]
         public void SPrintF_CharConversions()
         {
             // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
