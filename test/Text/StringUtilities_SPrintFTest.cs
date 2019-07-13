@@ -45,16 +45,14 @@
             Assert.That(StringUtilities.SPrintF("%+2c", 'a'), Is.EqualTo(" a"));
             Assert.That(StringUtilities.SPrintF("% 2c", 'a'), Is.EqualTo(" a"));
             Assert.That(StringUtilities.SPrintF("%#2c", 'a'), Is.EqualTo(" a"));
-            Assert.That(StringUtilities.SPrintF("%02c", 'a'), Is.EqualTo("0a"));       // Cygwin GCC 4.8.0
-            //Assert.That(StringUtilities.SPrintF("%02c", 'a'), Is.EqualTo(" a"));     // GCC 7.4.0
+            Assert.That(StringUtilities.SPrintF("%02c", 'a'), Is.EqualTo(" a"));
             Assert.That(StringUtilities.SPrintF("%-2c", 'a'), Is.EqualTo("a "));
             Assert.That(StringUtilities.SPrintF("%+c", 'a'), Is.EqualTo("a"));
             Assert.That(StringUtilities.SPrintF("% c", 'a'), Is.EqualTo("a"));
             Assert.That(StringUtilities.SPrintF("%#c", 'a'), Is.EqualTo("a"));
             Assert.That(StringUtilities.SPrintF("%0c", 'a'), Is.EqualTo("a"));
             Assert.That(StringUtilities.SPrintF("%-c", 'a'), Is.EqualTo("a"));
-            Assert.That(StringUtilities.SPrintF("%05c", 'a'), Is.EqualTo("0000a"));    // Cygwin GCC 4.8.0
-            //Assert.That(StringUtilities.SPrintF("%05c", 'a'), Is.EqualTo("    a"));  // GCC 7.4.0
+            Assert.That(StringUtilities.SPrintF("%05c", 'a'), Is.EqualTo("    a"));
 
             // Because .NET is always wide char, the length modifier 'l' doesn't change anything
             Assert.That(StringUtilities.SPrintF("%lc", 65), Is.EqualTo("A"));
@@ -64,16 +62,14 @@
             Assert.That(StringUtilities.SPrintF("%+2lc", 'a'), Is.EqualTo(" a"));
             Assert.That(StringUtilities.SPrintF("% 2lc", 'a'), Is.EqualTo(" a"));
             Assert.That(StringUtilities.SPrintF("%#2lc", 'a'), Is.EqualTo(" a"));
-            Assert.That(StringUtilities.SPrintF("%02lc", 'a'), Is.EqualTo("0a"));      // Cygwin GCC 4.8.0
-            //Assert.That(StringUtilities.SPrintF("%02lc", 'a'), Is.EqualTo(" a"));    // GCC 7.4.0
+            Assert.That(StringUtilities.SPrintF("%02lc", 'a'), Is.EqualTo(" a"));
             Assert.That(StringUtilities.SPrintF("%-2lc", 'a'), Is.EqualTo("a "));
             Assert.That(StringUtilities.SPrintF("%+lc", 'a'), Is.EqualTo("a"));
             Assert.That(StringUtilities.SPrintF("% lc", 'a'), Is.EqualTo("a"));
             Assert.That(StringUtilities.SPrintF("%#lc", 'a'), Is.EqualTo("a"));
             Assert.That(StringUtilities.SPrintF("%0lc", 'a'), Is.EqualTo("a"));
             Assert.That(StringUtilities.SPrintF("%-lc", 'a'), Is.EqualTo("a"));
-            Assert.That(StringUtilities.SPrintF("%05lc", 'a'), Is.EqualTo("0000a"));   // Cygwin GCC 4.8.0
-            //Assert.That(StringUtilities.SPrintF("%05lc", 'a'), Is.EqualTo("    a")); // GCC 7.4.0
+            Assert.That(StringUtilities.SPrintF("%05lc", 'a'), Is.EqualTo("    a"));
         }
 
         [Test]
@@ -101,8 +97,7 @@
             Assert.That(StringUtilities.SPrintF("%s", "foo"), Is.EqualTo("foo"));
             Assert.That(StringUtilities.SPrintF("%-10s", "foo"), Is.EqualTo("foo       "));
             Assert.That(StringUtilities.SPrintF("%10s", "foo"), Is.EqualTo("       foo"));
-            Assert.That(StringUtilities.SPrintF("%010s", "foo"), Is.EqualTo("0000000foo"));    // Cygwin GCC 4.8.0
-            //Assert.That(StringUtilities.SPrintF("%010s", "foo"), Is.EqualTo("       foo"));  // GCC 7.4.0
+            Assert.That(StringUtilities.SPrintF("%010s", "foo"), Is.EqualTo("       foo"));
             Assert.That(StringUtilities.SPrintF("%+10s", "foo"), Is.EqualTo("       foo"));
             Assert.That(StringUtilities.SPrintF("% 10s", "foo"), Is.EqualTo("       foo"));
             Assert.That(StringUtilities.SPrintF("%#10s", "foo"), Is.EqualTo("       foo"));
@@ -113,8 +108,7 @@
             Assert.That(StringUtilities.SPrintF("%ls", "foo"), Is.EqualTo("foo"));
             Assert.That(StringUtilities.SPrintF("%-10ls", "foo"), Is.EqualTo("foo       "));
             Assert.That(StringUtilities.SPrintF("%10ls", "foo"), Is.EqualTo("       foo"));
-            Assert.That(StringUtilities.SPrintF("%010ls", "foo"), Is.EqualTo("0000000foo"));    // Cygwin GCC 4.8.0
-            //Assert.That(StringUtilities.SPrintF("%010ls", "foo"), Is.EqualTo("       foo"));  // GCC 7.4.0
+            Assert.That(StringUtilities.SPrintF("%010ls", "foo"), Is.EqualTo("       foo"));
             Assert.That(StringUtilities.SPrintF("%+10ls", "foo"), Is.EqualTo("       foo"));
             Assert.That(StringUtilities.SPrintF("% 10ls", "foo"), Is.EqualTo("       foo"));
             Assert.That(StringUtilities.SPrintF("%#10ls", "foo"), Is.EqualTo("       foo"));

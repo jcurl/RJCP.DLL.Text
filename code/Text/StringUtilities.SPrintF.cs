@@ -24,7 +24,7 @@ namespace RJCP.Text
         /// <para>This method takes a <paramref name="format"/> specifier and converts it to a string based on the
         /// values provided. See http://www.cplusplus.com/reference/cstdio/printf or http://en.cppreference.com/w/cpp/io/c/fprintf.
         /// The string specifiers are of the format <c>%[flags][width][.precision][length]specifier</c>.</para>
-        /// <para>Results are compatible with GCC 4.8.3 on Cygwin compiled under x86.</para>
+        /// <para>Results are compatible with GCC 7.4.0 on Ubuntu 18.04 compiled under x64.</para>
         /// <para>The specifiers supported are:</para>
         /// <list type="bullet">
         ///   <item><c>d</c> or <c>i</c>: signed decimal integer.
@@ -36,7 +36,7 @@ namespace RJCP.Text
         ///       <item><c>ll</c>, <c>z</c>, <c>t</c> and <c>j</c> are treated as a signed 64-bit <c>int64_t</c> type. If an
         ///       unsigned value is given, it is typecast to a signed value so that large positive values will then be printed
         ///       as a negative value.</item>
-        ///       <item>The length modifier <c>j</c> is not supported on GCC 4.8.3, but treated as a 64-bit as this is the maximum
+        ///       <item>The length modifier <c>j</c> is not supported, but treated as a 64-bit as this is the maximum
         ///       bit size that .NET supports.</item>
         ///     </list>
         ///   </item>
@@ -47,9 +47,9 @@ namespace RJCP.Text
         ///       <item><c>h</c> is truncated to 16-bit and treated as a <c>uint16_t</c>.</item>
         ///       <item><c>l</c> and no length modifier are truncated to 32-bit and treated as a <c>uint32_t</c>.</item>
         ///       <item><c>ll</c>, <c>z</c>, <c>t</c> and <c>j</c> are treated as a signed 64-bit <c>uint64_t</c> type.</item>
-        ///       <item>The length modifier <c>j</c> is not supported on GCC 4.8.3, but treated as a 64-bit as this is the maximum
+        ///       <item>The length modifier <c>j</c> is not supported, but treated as a 64-bit as this is the maximum
         ///       bit size that .NET supports.</item>
-        ///       <item>GCC 4.8.3 ignores the flags <i>space</i> and <c>+</c> and this implementation ignores these flags also.</item>
+        ///       <item>The flags <i>space</i> and <c>+</c> are ignored.</item>
         ///       <item>All negative numbers are typecast to their bit equivalent unsigned value.</item>
         ///     </list>
         ///   </item>
@@ -62,7 +62,7 @@ namespace RJCP.Text
         ///       <item><c>ll</c>, <c>z</c>, <c>t</c> and <c>j</c> are treated as a signed 64-bit <c>uint64_t</c> type.</item>
         ///       <item>The length modifier <c>j</c> is not supported on GCC 4.8.3, but treated as a 64-bit as this is the maximum
         ///       bit size that .NET supports.</item>
-        ///       <item>GCC 4.8.3 ignores the flags <i>space</i> and <c>+</c> and this implementation ignores these flags also.</item>
+        ///       <item>The flags <i>space</i> and <c>+</c> are ignored.</item>
         ///       <item>All negative numbers are typecast to their bit equivalent unsigned value.</item>
         ///       <item>The alternative flag <c>#</c> can be used to add a <c>0</c> at the front, but only if the value itself isn't already
         ///       zero.</item>
@@ -78,7 +78,7 @@ namespace RJCP.Text
         ///       <item><c>ll</c>, <c>z</c>, <c>t</c> and <c>j</c> are treated as a signed 64-bit <c>uint64_t</c> type.</item>
         ///       <item>The length modifier <c>j</c> is not supported on GCC 4.8.3, but treated as a 64-bit as this is the maximum
         ///       bit size that .NET supports.</item>
-        ///       <item>GCC 4.8.3 ignores the flags <i>space</i> and <c>+</c> and this implementation ignores these flags also.</item>
+        ///       <item>The flags <i>space</i> and <c>+</c> are ignored.</item>
         ///       <item>All negative numbers are typecast to their bit equivalent unsigned value.</item>
         ///       <item>The alternative flag <c>#</c> can be used to add a <c>0x</c> or <c>0X</c> at the front, but only if the value
         ///       itself isn't already zero.</item>
@@ -491,11 +491,7 @@ namespace RJCP.Text
                         str.Append((char)c);
                         str.Append(' ', formatSpecifier.Width - 1);
                     } else {
-                        if (formatSpecifier.FormatFlags.HasFlag(FormatFlags.ZeroPad)) {
-                            str.Append('0', formatSpecifier.Width - 1);
-                        } else {
-                            str.Append(' ', formatSpecifier.Width - 1);
-                        }
+                        str.Append(' ', formatSpecifier.Width - 1);
                         str.Append((char)c);
                     }
                     return;
@@ -540,11 +536,7 @@ namespace RJCP.Text
                         str.Append(s);
                         str.Append(' ', formatSpecifier.Width - s.Length);
                     } else {
-                        if (formatSpecifier.FormatFlags.HasFlag(FormatFlags.ZeroPad)) {
-                            str.Append('0', formatSpecifier.Width - s.Length);
-                        } else {
-                            str.Append(' ', formatSpecifier.Width - s.Length);
-                        }
+                        str.Append(' ', formatSpecifier.Width - s.Length);
                         str.Append(s);
                     }
                     return;
@@ -906,7 +898,7 @@ namespace RJCP.Text
                 baseNumber = 10;
                 baseDigits = BaseDigitsLower;
 #if SHOW_ULONG_SIGN
-                // In GCC 4.8.3, these options appear to be ignored, and so is commented out.
+                // In GCC, these options appear to be ignored, and so is commented out.
                 if (formatSpecifier.FormatFlags.HasFlag(FormatFlags.ShowSign)) {
                     sign = formatSpecifier.NumberFormatInfo.PositiveSign.Length;
                 } else if (formatSpecifier.FormatFlags.HasFlag(FormatFlags.Blank)) {
@@ -942,7 +934,7 @@ namespace RJCP.Text
             }
 
 #if SHOW_ULONG_SIGN
-            // In GCC 4.8.3, these options appear to be ignored, and so is commented out.
+            // In GCC, these options appear to be ignored, and so is commented out.
             if (sign > 0) {
                 if (formatSpecifier.FormatFlags.HasFlag(FormatFlags.ShowSign)) {
                     str.Append(formatSpecifier.NumberFormatInfo.PositiveSign);
