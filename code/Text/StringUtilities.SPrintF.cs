@@ -238,7 +238,7 @@ namespace RJCP.Text
             {
                 Width = -1;
                 Precision = -1;
-                NumberFormatInfo = CultureInfo.CurrentCulture.NumberFormat;
+                NumberFormatInfo = CultureInfo.InvariantCulture.NumberFormat;
             }
 
             public int ArgumentLength { get; set; }

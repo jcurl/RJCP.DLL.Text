@@ -4,10 +4,12 @@
 #include <math.h>
 
 void test_sprintf(char *, char *, ...);
+void test_function(char *);
+void test_function_end();
 
 int main(void)
 {
-  printf("========== Character encoding\n");
+  test_function("Char");
   test_sprintf("65", "%c", 65);
   test_sprintf("'a'", "%c", 'a');
   test_sprintf("'a'", "%-2c", 'a');
@@ -23,8 +25,9 @@ int main(void)
   test_sprintf("'a'", "%0c", 'a');
   test_sprintf("'a'", "%-c", 'a');
   test_sprintf("'a'", "%05c", 'a');
+  test_function_end();
 
-  printf("\n========== String encoding\n");
+  test_function("String");
   test_sprintf("\"foo\"", "%s", "foo");
   test_sprintf("\"foo\"", "%-10s", "foo");
   test_sprintf("\"foo\"", "%10s", "foo");
@@ -34,8 +37,9 @@ int main(void)
   test_sprintf("\"foo\"", "%#10s", "foo");
   test_sprintf("\"foobar\"", "%2s", "foobar");
   test_sprintf("\"foobar\"", "%-2s", "foobar");
+  test_function_end();
 
-  printf("\n========== Integer encoding\n");
+  test_function("Integer");
   test_sprintf("16384", "%d", 16384);
   test_sprintf("16384", "%2d", 16384);
   test_sprintf("16384", "%.1d", 16384);
@@ -102,8 +106,9 @@ int main(void)
   test_sprintf("0xF7F", "%hhi", 0xF7F);
   test_sprintf("0x37F", "%hhi", 0x37F);
   test_sprintf("0x8000000000000000UL", "%lld", 0x8000000000000000ULL);
+  test_function_end();
 
-  printf("\n========== Unsigned Integer encoding\n");
+  test_function("UnsignedInteger");
   test_sprintf("16384", "%u", 16384);
   test_sprintf("16384", "%2u", 16384);
   test_sprintf("16384", "%.1u", 16384);
@@ -163,8 +168,9 @@ int main(void)
   test_sprintf("0xF7F", "%hhu", 0xF7F);
   test_sprintf("0x37F", "%hhu", 0x37F);
   test_sprintf("0x8000000000000000UL", "%llu", 0x8000000000000000ULL);
+  test_function_end();
 
-  printf("\n========== Unsigned Hex encoding\n");
+  test_function("Hexadecimal");
   test_sprintf("16384", "%x", 16384);
   test_sprintf("16384", "%2x", 16384);
   test_sprintf("16384", "%.1x", 16384);
@@ -224,8 +230,9 @@ int main(void)
   test_sprintf("0xF7F", "%hhx", 0xF7F);
   test_sprintf("0x37F", "%hhx", 0x37F);
   test_sprintf("0x8000000000000000UL", "%llx", 0x8000000000000000ULL);
+  test_function_end();
 
-  printf("\n========== Unsigned Octal encoding\n");
+  test_function("Octal");
   test_sprintf("16384", "%o", 16384);
   test_sprintf("16384", "%2o", 16384);
   test_sprintf("16384", "%.1o", 16384);
@@ -285,8 +292,9 @@ int main(void)
   test_sprintf("0xF7F", "%hho", 0xF7F);
   test_sprintf("0x37F", "%hho", 0x37F);
   test_sprintf("0x8000000000000000UL", "%llo", 0x8000000000000000ULL);
+  test_function_end();
 
-  printf("\n========== Double fixed point encoding\n");
+  test_function("FixedDouble");
   test_sprintf("10", "%f", 10.0);
   test_sprintf("123456.789", "%f", 123456.789);
   test_sprintf("123456.789", "%.2f", 123456.789);
@@ -364,8 +372,9 @@ int main(void)
   test_sprintf("Double.NegativeInfinity", "%#F", -INFINITY);
   test_sprintf("Double.NegativeInfinity", "%-10f", -INFINITY);
   test_sprintf("Double.NegativeInfinity", "%-10F", -INFINITY);
+  test_function_end();
 
-  printf("\n========== Double exponent encoding\n");
+  test_function("ExponentDouble");
   test_sprintf("10", "%e", 10.0);
   test_sprintf("10", "%12e", 10.0);
   test_sprintf("10", "%E", 10.0);
@@ -439,8 +448,9 @@ int main(void)
   test_sprintf("Double.NegativeInfinity", "%#E", -INFINITY);
   test_sprintf("Double.NegativeInfinity", "%-10e", -INFINITY);
   test_sprintf("Double.NegativeInfinity", "%-10E", -INFINITY);
+  test_function_end();
 
-  printf("\n========== Double general encoding\n");
+  test_function("GeneralDouble");
   test_sprintf("0.000001", "%g", 0.000001);
   test_sprintf("0.00001", "%g", 0.00001);
   test_sprintf("0.0001", "%g", 0.0001);
@@ -541,7 +551,22 @@ int main(void)
   test_sprintf("Double.NegativeInfinity", "%#G", -INFINITY);
   test_sprintf("Double.NegativeInfinity", "%-10g", -INFINITY);
   test_sprintf("Double.NegativeInfinity", "%-10G", -INFINITY);
+  test_function_end();
+
   return EXIT_SUCCESS;
+}
+
+void test_function(char *function_name)
+{
+  printf("        [Test]\n");
+  printf("        public void SPrintF_%s()\n", function_name);
+  printf("        {\n");
+}
+
+void test_function_end()
+{
+  printf("        }\n");
+  printf("\n");
 }
 
 // params is the parameter list in C# notation
@@ -555,11 +580,11 @@ void test_sprintf(char *params, char *format, ...)
   va_start (ap, format);
   result = vsprintf(buffer, format, ap);
   if (params == NULL) {
-    printf("Assert.That(StringUtilities.SPrintF(\"%s\"), Is.EqualTo(\"%s\"));\n",
-	  buffer, format);
+    printf("            Assert.That(StringUtilities.SPrintF(\"%s\"), Is.EqualTo(\"%s\"));\n",
+	   format, buffer);
   } else {
-    printf("Assert.That(StringUtilities.SPrintF(\"%s\", %s), Is.EqualTo(\"%s\"));\n",
-	  buffer, format, params);
+    printf("            Assert.That(StringUtilities.SPrintF(\"%s\", %s), Is.EqualTo(\"%s\"));\n",
+	   format, params, buffer);
   }
   va_end(ap);
 }

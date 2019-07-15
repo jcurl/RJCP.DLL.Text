@@ -37,7 +37,7 @@
         [Test]
         public void SPrintF_Char()
         {
-            // Obtained when testing Cygwin x86 GCC 4.8.3
+            // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.That(StringUtilities.SPrintF("%c", 65), Is.EqualTo("A"));
             Assert.That(StringUtilities.SPrintF("%c", 'a'), Is.EqualTo("a"));
             Assert.That(StringUtilities.SPrintF("%-2c", 'a'), Is.EqualTo("a "));
@@ -45,14 +45,16 @@
             Assert.That(StringUtilities.SPrintF("%+2c", 'a'), Is.EqualTo(" a"));
             Assert.That(StringUtilities.SPrintF("% 2c", 'a'), Is.EqualTo(" a"));
             Assert.That(StringUtilities.SPrintF("%#2c", 'a'), Is.EqualTo(" a"));
-            Assert.That(StringUtilities.SPrintF("%02c", 'a'), Is.EqualTo("0a"));
+            Assert.That(StringUtilities.SPrintF("%02c", 'a'), Is.EqualTo("0a"));       // Cygwin GCC 4.8.0
+            //Assert.That(StringUtilities.SPrintF("%02c", 'a'), Is.EqualTo(" a"));     // GCC 7.4.0
             Assert.That(StringUtilities.SPrintF("%-2c", 'a'), Is.EqualTo("a "));
             Assert.That(StringUtilities.SPrintF("%+c", 'a'), Is.EqualTo("a"));
             Assert.That(StringUtilities.SPrintF("% c", 'a'), Is.EqualTo("a"));
             Assert.That(StringUtilities.SPrintF("%#c", 'a'), Is.EqualTo("a"));
             Assert.That(StringUtilities.SPrintF("%0c", 'a'), Is.EqualTo("a"));
             Assert.That(StringUtilities.SPrintF("%-c", 'a'), Is.EqualTo("a"));
-            Assert.That(StringUtilities.SPrintF("%05c", 'a'), Is.EqualTo("0000a"));
+            Assert.That(StringUtilities.SPrintF("%05c", 'a'), Is.EqualTo("0000a"));    // Cygwin GCC 4.8.0
+            //Assert.That(StringUtilities.SPrintF("%05c", 'a'), Is.EqualTo("    a"));  // GCC 7.4.0
 
             // Because .NET is always wide char, the length modifier 'l' doesn't change anything
             Assert.That(StringUtilities.SPrintF("%lc", 65), Is.EqualTo("A"));
@@ -62,19 +64,22 @@
             Assert.That(StringUtilities.SPrintF("%+2lc", 'a'), Is.EqualTo(" a"));
             Assert.That(StringUtilities.SPrintF("% 2lc", 'a'), Is.EqualTo(" a"));
             Assert.That(StringUtilities.SPrintF("%#2lc", 'a'), Is.EqualTo(" a"));
-            Assert.That(StringUtilities.SPrintF("%02lc", 'a'), Is.EqualTo("0a"));
+            Assert.That(StringUtilities.SPrintF("%02lc", 'a'), Is.EqualTo("0a"));      // Cygwin GCC 4.8.0
+            //Assert.That(StringUtilities.SPrintF("%02lc", 'a'), Is.EqualTo(" a"));    // GCC 7.4.0
             Assert.That(StringUtilities.SPrintF("%-2lc", 'a'), Is.EqualTo("a "));
             Assert.That(StringUtilities.SPrintF("%+lc", 'a'), Is.EqualTo("a"));
             Assert.That(StringUtilities.SPrintF("% lc", 'a'), Is.EqualTo("a"));
             Assert.That(StringUtilities.SPrintF("%#lc", 'a'), Is.EqualTo("a"));
             Assert.That(StringUtilities.SPrintF("%0lc", 'a'), Is.EqualTo("a"));
             Assert.That(StringUtilities.SPrintF("%-lc", 'a'), Is.EqualTo("a"));
-            Assert.That(StringUtilities.SPrintF("%05c", 'a'), Is.EqualTo("0000a"));
+            Assert.That(StringUtilities.SPrintF("%05lc", 'a'), Is.EqualTo("0000a"));   // Cygwin GCC 4.8.0
+            //Assert.That(StringUtilities.SPrintF("%05lc", 'a'), Is.EqualTo("    a")); // GCC 7.4.0
         }
 
         [Test]
         public void SPrintF_CharConversions()
         {
+            // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.That(StringUtilities.SPrintF("%c", (char)'A'), Is.EqualTo("A"));
             Assert.That(StringUtilities.SPrintF("%c", (byte)65), Is.EqualTo("A"));
             Assert.That(StringUtilities.SPrintF("%c", (sbyte)65), Is.EqualTo("A"));
@@ -92,11 +97,12 @@
         [Test]
         public void SPrintF_String()
         {
-            // Obtained when testing Cygwin x86 GCC 4.8.3
+            // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.That(StringUtilities.SPrintF("%s", "foo"), Is.EqualTo("foo"));
             Assert.That(StringUtilities.SPrintF("%-10s", "foo"), Is.EqualTo("foo       "));
             Assert.That(StringUtilities.SPrintF("%10s", "foo"), Is.EqualTo("       foo"));
-            Assert.That(StringUtilities.SPrintF("%010s", "foo"), Is.EqualTo("0000000foo"));
+            Assert.That(StringUtilities.SPrintF("%010s", "foo"), Is.EqualTo("0000000foo"));    // Cygwin GCC 4.8.0
+            //Assert.That(StringUtilities.SPrintF("%010s", "foo"), Is.EqualTo("       foo"));  // GCC 7.4.0
             Assert.That(StringUtilities.SPrintF("%+10s", "foo"), Is.EqualTo("       foo"));
             Assert.That(StringUtilities.SPrintF("% 10s", "foo"), Is.EqualTo("       foo"));
             Assert.That(StringUtilities.SPrintF("%#10s", "foo"), Is.EqualTo("       foo"));
@@ -107,7 +113,8 @@
             Assert.That(StringUtilities.SPrintF("%ls", "foo"), Is.EqualTo("foo"));
             Assert.That(StringUtilities.SPrintF("%-10ls", "foo"), Is.EqualTo("foo       "));
             Assert.That(StringUtilities.SPrintF("%10ls", "foo"), Is.EqualTo("       foo"));
-            Assert.That(StringUtilities.SPrintF("%010ls", "foo"), Is.EqualTo("0000000foo"));
+            Assert.That(StringUtilities.SPrintF("%010ls", "foo"), Is.EqualTo("0000000foo"));    // Cygwin GCC 4.8.0
+            //Assert.That(StringUtilities.SPrintF("%010ls", "foo"), Is.EqualTo("       foo"));  // GCC 7.4.0
             Assert.That(StringUtilities.SPrintF("%+10ls", "foo"), Is.EqualTo("       foo"));
             Assert.That(StringUtilities.SPrintF("% 10ls", "foo"), Is.EqualTo("       foo"));
             Assert.That(StringUtilities.SPrintF("%#10ls", "foo"), Is.EqualTo("       foo"));
@@ -142,7 +149,7 @@
         [Test]
         public void SPrintF_Integer()
         {
-            // Obtained when testing Cygwin x86 GCC 4.8.3
+            // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.That(StringUtilities.SPrintF("%d", 16384), Is.EqualTo("16384"));
             Assert.That(StringUtilities.SPrintF("%2d", 16384), Is.EqualTo("16384"));
             Assert.That(StringUtilities.SPrintF("%.1d", 16384), Is.EqualTo("16384"));
@@ -214,7 +221,7 @@
         [Test]
         public void SPrintF_UnsignedInteger()
         {
-            // Obtained when testing Cygwin x86 GCC 4.8.3
+            // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.That(StringUtilities.SPrintF("%u", 16384), Is.EqualTo("16384"));
             Assert.That(StringUtilities.SPrintF("%2u", 16384), Is.EqualTo("16384"));
             Assert.That(StringUtilities.SPrintF("%.1u", 16384), Is.EqualTo("16384"));
@@ -279,7 +286,7 @@
         [Test]
         public void SPrintF_Hexadecimal()
         {
-            // Obtained when testing Cygwin x86 GCC 4.8.3
+            // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.That(StringUtilities.SPrintF("%x", 16384), Is.EqualTo("4000"));
             Assert.That(StringUtilities.SPrintF("%2x", 16384), Is.EqualTo("4000"));
             Assert.That(StringUtilities.SPrintF("%.1x", 16384), Is.EqualTo("4000"));
@@ -344,7 +351,7 @@
         [Test]
         public void SPrintF_Octal()
         {
-            // Obtained when testing Cygwin x86 GCC 4.8.3
+            // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.That(StringUtilities.SPrintF("%o", 16384), Is.EqualTo("40000"));
             Assert.That(StringUtilities.SPrintF("%2o", 16384), Is.EqualTo("40000"));
             Assert.That(StringUtilities.SPrintF("%.1o", 16384), Is.EqualTo("40000"));
@@ -409,6 +416,7 @@
         [Test]
         public void SPrintF_FixedDouble()
         {
+            // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.That(StringUtilities.SPrintF("%f", 10), Is.EqualTo("10.000000"));
             Assert.That(StringUtilities.SPrintF("%f", 123456.789), Is.EqualTo("123456.789000"));
             Assert.That(StringUtilities.SPrintF("%.2f", 123456.789), Is.EqualTo("123456.79"));
@@ -492,7 +500,7 @@
         [Test]
         public void SPrintF_ExponentDouble()
         {
-            // Obtained when testing MSVCRT (GCC and MSVCRT differ in the number of zeroes in the exponent)
+            // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.That(StringUtilities.SPrintF("%e", 10), Is.EqualTo("1.000000e+01"));
             Assert.That(StringUtilities.SPrintF("%12e", 10), Is.EqualTo("1.000000e+01"));
             Assert.That(StringUtilities.SPrintF("%E", 10), Is.EqualTo("1.000000E+01"));
@@ -571,7 +579,7 @@
         [Test]
         public void SPrintF_GeneralDouble()
         {
-            // Obtained when testing Cygwin x86 GCC 4.8.3
+            // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.That(StringUtilities.SPrintF("%g", 0.000001), Is.EqualTo("1e-06"));
             Assert.That(StringUtilities.SPrintF("%g", 0.00001), Is.EqualTo("1e-05"));
             Assert.That(StringUtilities.SPrintF("%g", 0.0001), Is.EqualTo("0.0001"));
