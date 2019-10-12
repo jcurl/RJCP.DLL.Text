@@ -20,6 +20,8 @@
             PerformanceTest("SPrintF Single %g", 13, 10, 100000, () => { StringUtilities.SPrintF("%g", (float)123456.789); });
             PerformanceTest("SPrintF Integer %d", 13, 10, 100000, () => { StringUtilities.SPrintF("%d", 16384); });
             PerformanceTest("SPrintF Unsigned %u", 13, 10, 100000, () => { StringUtilities.SPrintF("%u", 16384); });
+
+            Assert.Pass();  // S2699: Performance test, user should check results.
         }
 
         [Test]
@@ -29,6 +31,8 @@
         {
             PerformanceTest("SPrintF Integer %d", 13, 10, 100000, () => { StringUtilities.SPrintF("%d", 16384); });
             PerformanceTest(".NET Integer      ", 13, 10, 100000, () => { String.Format("{0}", 16384); });
+
+            Assert.Pass();  // S2699: Performance test, user should check results.
         }
 
         [Test]
@@ -38,6 +42,8 @@
         {
             PerformanceTest("SPrintF Unsigned %u", 13, 10, 100000, () => { StringUtilities.SPrintF("%u", 16384); });
             PerformanceTest(".NET Integer      ", 13, 10, 100000, () => { String.Format("{0}", 16384); });
+
+            Assert.Pass();  // S2699: Performance test, user should check results.
         }
 
         [Test]
@@ -47,6 +53,8 @@
         {
             PerformanceTest("SPrintF Double %e", 13, 10, 100000, () => { StringUtilities.SPrintF("%e", (double)123456.789); });
             PerformanceTest(".NET Double {E}  ", 13, 10, 100000, () => { String.Format("{0:E}", (double)123456.789); });
+
+            Assert.Pass();  // S2699: Performance test, user should check results.
         }
 
         [Test]
@@ -56,6 +64,8 @@
         {
             PerformanceTest("SPrintF Single %e", 13, 10, 100000, () => { StringUtilities.SPrintF("%e", (float)123456.789); });
             PerformanceTest(".NET Single {E}  ", 13, 10, 100000, () => { String.Format("{0:E}", (float)123456.789); });
+
+            Assert.Pass();  // S2699: Performance test, user should check results.
         }
 
         [Test]
@@ -65,6 +75,8 @@
         {
             PerformanceTest("SPrintF Double %f", 13, 10, 100000, () => { StringUtilities.SPrintF("%f", (double)123456.789); });
             PerformanceTest(".NET Double {F}  ", 13, 10, 100000, () => { String.Format("{0:F}", (double)123456.789); });
+
+            Assert.Pass();  // S2699: Performance test, user should check results.
         }
 
         [Test]
@@ -74,6 +86,8 @@
         {
             PerformanceTest("SPrintF Single %f", 13, 10, 100000, () => { StringUtilities.SPrintF("%f", (float)123456.789); });
             PerformanceTest(".NET Single {F}  ", 13, 10, 100000, () => { String.Format("{0:F}", (float)123456.789); });
+
+            Assert.Pass();  // S2699: Performance test, user should check results.
         }
 
         [Test]
@@ -83,6 +97,8 @@
         {
             PerformanceTest("SPrintF Double %g", 13, 10, 100000, () => { StringUtilities.SPrintF("%g", (double)123456.789); });
             PerformanceTest(".NET Double {G}  ", 13, 10, 100000, () => { String.Format("{0:G}", (double)123456.789); });
+
+            Assert.Pass();  // S2699: Performance test, user should check results.
         }
 
         [Test]
@@ -92,6 +108,8 @@
         {
             PerformanceTest("SPrintF Single %g", 13, 10, 100000, () => { StringUtilities.SPrintF("%g", (float)123456.789); });
             PerformanceTest(".NET Single {G}  ", 13, 10, 100000, () => { String.Format("{0:G}", (float)123456.789); });
+
+            Assert.Pass();  // S2699: Performance test, user should check results.
         }
 
         [Test]
@@ -100,6 +118,8 @@
         public void SPrintF_PerformanceInteger_ForProfiling()
         {
             PerformanceTest("SPrintF Integer %d", 2, 0, 1000, () => { StringUtilities.SPrintF("%d", 16384); });
+
+            Assert.Pass();  // S2699: Performance test, user should check results.
         }
 
         private static void PerformanceTest(string test, int cycles, int validCycles, int count, Action action)
