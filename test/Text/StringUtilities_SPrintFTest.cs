@@ -4,7 +4,7 @@
     using NUnit.Framework;
 
     [TestFixture(Category = "String.SPrintF")]
-    public class StringUtilitiesSPrintFTest
+    public class StringUtilities_SPrintFTest
     {
         [Test]
         public void SPrintF_IntegerNormal()
