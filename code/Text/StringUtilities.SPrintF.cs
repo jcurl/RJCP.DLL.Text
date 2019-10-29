@@ -141,16 +141,16 @@ namespace RJCP.Text
         /// </list>
         /// <para>The SPrintF library is slower than the standard .NET implementation. That means, you should only use this method
         /// where required (e.g. where input strings are in a C format) and not use this method where the .NET method
-        /// <c>System.String.Format()</c> can be used.</para>
+        /// <c>string.Format()</c> can be used.</para>
         /// <para>On an Intel i7-4930K 3.4GHz processor, the following measurements (of 100,000 cycles) were obtained
         /// (Release build, .NET 4.5 Windows 7 x64). Values should not be treated as absolute, as this depends on the Operating
         /// System, CPU and .NET version installed.</para>
         /// <list type="bullet">
-        /// <item>Integer %d: SPrintF = ~39ms. System.String.Format = ~17ms.</item>
-        /// <item>Integer %u: SPrintF = ~29ms. System.String.Format = ~17ms.</item>
-        /// <item>IEEE-754 %f: 123456.789. SPrintF (double/float) = ~42ms/45ms. System.String.Format = ~31ms/33ms.</item>
-        /// <item>IEEE-754 %e: 123456.789. SPrintF (double/float) = ~41ms/47ms. System.String.Format = ~33ms/35ms.</item>
-        /// <item>IEEE-754 %g: 123456.789. SPrintF (double/float) = ~45ms/48ms. System.String.Format = ~32ms/33ms.</item>
+        /// <item>Integer %d: SPrintF = ~39ms. string.Format = ~17ms.</item>
+        /// <item>Integer %u: SPrintF = ~29ms. string.Format = ~17ms.</item>
+        /// <item>IEEE-754 %f: 123456.789. SPrintF (double/float) = ~42ms/45ms. string.Format = ~31ms/33ms.</item>
+        /// <item>IEEE-754 %e: 123456.789. SPrintF (double/float) = ~41ms/47ms. string.Format = ~33ms/35ms.</item>
+        /// <item>IEEE-754 %g: 123456.789. SPrintF (double/float) = ~45ms/48ms. string.Format = ~32ms/33ms.</item>
         /// </list>
         /// </remarks>
         public static string SPrintF(string format, params object[] values)
@@ -716,11 +716,11 @@ namespace RJCP.Text
         {
             if (value == 0) return 1;  // zero also needs one character
             int firstBitPos = 64;
-            if (value <= 0x00000000FFFFFFFF) { firstBitPos -= 32; value = value << 32; }
-            if (value <= 0x0000FFFFFFFFFFFF) { firstBitPos -= 16; value = value << 16; }
-            if (value <= 0x00FFFFFFFFFFFFFF) { firstBitPos -= 8; value = value << 8; }
-            if (value <= 0x0FFFFFFFFFFFFFFF) { firstBitPos -= 4; value = value << 4; }
-            if (value <= 0x3FFFFFFFFFFFFFFF) { firstBitPos -= 2; value = value << 2; }
+            if (value <= 0x00000000FFFFFFFF) { firstBitPos -= 32; value <<= 32; }
+            if (value <= 0x0000FFFFFFFFFFFF) { firstBitPos -= 16; value <<= 16; }
+            if (value <= 0x00FFFFFFFFFFFFFF) { firstBitPos -= 8; value <<= 8; }
+            if (value <= 0x0FFFFFFFFFFFFFFF) { firstBitPos -= 4; value <<= 4; }
+            if (value <= 0x3FFFFFFFFFFFFFFF) { firstBitPos -= 2; value <<= 2; }
             if (value <= 0x7FFFFFFFFFFFFFFF) { firstBitPos -= 1; }
 
             return firstBitPos / bitsPerDigit + (firstBitPos % bitsPerDigit == 0 ? 0 : 1);
@@ -778,7 +778,7 @@ namespace RJCP.Text
                 long tValue = value;
                 for (int i = digits; i > 0; --i) {
                     int digit = Math.Abs((int)(tValue % 10));
-                    tValue = tValue / 10;
+                    tValue /= 10;
                     rawnum[i - 1] = (char)(digit + '0');
                 }
                 str.Append(rawnum);
@@ -853,7 +853,7 @@ namespace RJCP.Text
         private static void UlongToString(StringBuilder str, FormatSpecifier formatSpecifier, ulong value)
         {
             int alternative = 0;
-            ulong baseNumber = 10;
+            ulong baseNumber;
             char[] baseDigits;
             int sign = 0;
             int digits = 0;
@@ -957,7 +957,7 @@ namespace RJCP.Text
                 ulong tValue = value;
                 for (int i = digits; i > 0; --i) {
                     int digit = (int)(tValue % baseNumber);
-                    tValue = tValue / baseNumber;
+                    tValue /= baseNumber;
                     rawnum[i - 1] = baseDigits[digit];
                 }
                 str.Append(rawnum);
@@ -1041,7 +1041,7 @@ namespace RJCP.Text
                     value -= HundredMillion * (ulong)div1;
                     if (div1 >= HundredMillion) {
                         int div2 = (int)(div1 / HundredMillion);
-                        div1 = div1 - div2 * (long)HundredMillion;
+                        div1 -= div2 * (long)HundredMillion;
                         _val3 = ToDecHex(div2);
                     }
                     if (div1 != 0)
@@ -1218,7 +1218,7 @@ namespace RJCP.Text
                     ulong mm = hi * lo2 + lo * hi2 + ((lo * lo2) >> 32);
                     long res = (long)(hi * hi2 + (mm >> 32));
                     while (res < SeventeenDigitsThreshold) {
-                        mm = (mm & UInt32.MaxValue) * 10;
+                        mm = (mm & uint.MaxValue) * 10;
                         res = res * 10 + (long)(mm >> 32);
                         expAdjust--;
                     }
@@ -1393,6 +1393,7 @@ namespace RJCP.Text
             #endregion Round
 
             #region public number formatting methods
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "May be useful later")]
             public static void FloatToString(StringBuilder str, FormatSpecifier format, float value, IFormatProvider fp)
             {
                 NumberFormatter inst = new NumberFormatter(str, format);
@@ -1402,6 +1403,7 @@ namespace RJCP.Text
                 inst.NumberToString(format, nfi);
             }
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "May be useful later")]
             public static void DoubleToString(StringBuilder str, FormatSpecifier format, double value, IFormatProvider fp)
             {
                 NumberFormatter inst = new NumberFormatter(str, format);
@@ -1529,25 +1531,25 @@ namespace RJCP.Text
                         // Right justify with zero's
                         if (signLen > 0) FormatSign(nfi);
                         _sbuf.Append('0', _formatSpecifier.Width - bufLen);
-                        FormatGeneralBasic(precision, nfi, digits, decDigits, intDigits, extraDigits);
+                        FormatGeneralBasic(nfi, digits, decDigits, intDigits, extraDigits);
                     } else {
                         if (_formatSpecifier.FormatFlags.HasFlag(FormatFlags.LeftJustify)) {
                             if (signLen > 0) FormatSign(nfi);
-                            FormatGeneralBasic(precision, nfi, digits, decDigits, intDigits, extraDigits);
+                            FormatGeneralBasic(nfi, digits, decDigits, intDigits, extraDigits);
                             _sbuf.Append(' ', _formatSpecifier.Width - bufLen);
                         } else {
                             _sbuf.Append(' ', _formatSpecifier.Width - bufLen);
                             if (signLen > 0) FormatSign(nfi);
-                            FormatGeneralBasic(precision, nfi, digits, decDigits, intDigits, extraDigits);
+                            FormatGeneralBasic(nfi, digits, decDigits, intDigits, extraDigits);
                         }
                     }
                 } else {
                     if (signLen > 0) FormatSign(nfi);
-                    FormatGeneralBasic(precision, nfi, digits, decDigits, intDigits, extraDigits);
+                    FormatGeneralBasic(nfi, digits, decDigits, intDigits, extraDigits);
                 }
             }
 
-            private void FormatGeneralBasic(int precision, NumberFormatInfo nfi, int digits, int decDigits, int intDigits, int extraDigits)
+            private void FormatGeneralBasic(NumberFormatInfo nfi, int digits, int decDigits, int intDigits, int extraDigits)
             {
                 if (intDigits == 0)
                     _sbuf.Append('0');
@@ -1715,6 +1717,8 @@ namespace RJCP.Text
                 _sbuf.Append((char)('0' | v & 0xf));
             }
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1121:Assignments should not be made from within sub-expressions", Justification = "Conflicts with IDE0054 for variable 'v'")]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S907:\"goto\" statement should not be used", Justification = "Original code came from Mono, keeping it as it is")]
             private void AppendDigits(int start, int end)
             {
                 if (start >= end)
@@ -1776,6 +1780,7 @@ namespace RJCP.Text
             }
             #endregion Append helpers
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3358:Ternary operators should not be nested", Justification = "This case is still readable")]
             private bool FormatInfNan(FormatSpecifier formatSpecifier, bool useC)
             {
                 if (_NaN) {

@@ -100,12 +100,12 @@
         public void SPrintF_CharConversions()
         {
             // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
-            Assert.That(StringUtilities.SPrintF("%c", (char)'A'), Is.EqualTo("A"));
+            Assert.That(StringUtilities.SPrintF("%c", 'A'), Is.EqualTo("A"));
             Assert.That(StringUtilities.SPrintF("%c", (byte)65), Is.EqualTo("A"));
             Assert.That(StringUtilities.SPrintF("%c", (sbyte)65), Is.EqualTo("A"));
             Assert.That(StringUtilities.SPrintF("%c", (short)65), Is.EqualTo("A"));
             Assert.That(StringUtilities.SPrintF("%c", (ushort)65), Is.EqualTo("A"));
-            Assert.That(StringUtilities.SPrintF("%c", (int)65), Is.EqualTo("A"));
+            Assert.That(StringUtilities.SPrintF("%c", 65), Is.EqualTo("A"));
             Assert.That(StringUtilities.SPrintF("%c", (uint)65), Is.EqualTo("A"));
             Assert.That(StringUtilities.SPrintF("%c", (long)65), Is.EqualTo("A"));
             Assert.That(StringUtilities.SPrintF("%c", (ulong)65), Is.EqualTo("A"));
@@ -432,6 +432,8 @@
         }
 
         [Test]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S125:Sections of code should not be commented out",
+            Justification = "Commented code was generated, and after review is obviously wrong (a GCC 'feature' still within C standards)")]
         public void SPrintF_FixedDouble()
         {
             // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
@@ -731,21 +733,19 @@
         [Test]
         public void SPrintF_CountBitDigitsHex()
         {
-            PrivateType pt = new PrivateType(typeof(StringUtilities));
-
             Assert.That(StringUtilitiesAccessor.CountBitDigits(0, 4), Is.EqualTo(1));
 
             ulong value = 1;
             int digits = 1;
             while (digits < 16) {
                 Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
-                value = value << 1;
+                value <<= 1;
                 Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
-                value = value << 1;
+                value <<= 1;
                 Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
-                value = value << 1;
+                value <<= 1;
                 Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
-                value = value << 1;
+                value <<= 1;
                 digits++;
             }
         }
@@ -753,19 +753,17 @@
         [Test]
         public void SPrintF_CountBitDigitsOctal()
         {
-            PrivateType pt = new PrivateType(typeof(StringUtilities));
-
             Assert.That(StringUtilitiesAccessor.CountBitDigits(0, 3), Is.EqualTo(1));
 
             ulong value = 1;
             int digits = 1;
             while (digits < 22) {
                 Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 3), Is.EqualTo(digits), "Value 0x{0:X16}", value);
-                value = value << 1;
+                value <<= 1;
                 Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 3), Is.EqualTo(digits), "Value 0x{0:X16}", value);
-                value = value << 1;
+                value <<= 1;
                 Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 3), Is.EqualTo(digits), "Value 0x{0:X16}", value);
-                value = value << 1;
+                value <<= 1;
                 digits++;
             }
         }

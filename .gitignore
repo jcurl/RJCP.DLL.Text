@@ -1,3 +1,4 @@
+/.vs
 *.user
 *.suo
 /packages
@@ -6,4 +7,3 @@ bin
 obj
 *.GhostDoc.xml
 *.userprefs
-
