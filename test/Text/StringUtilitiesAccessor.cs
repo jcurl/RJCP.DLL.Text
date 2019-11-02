@@ -1,6 +1,5 @@
 ﻿namespace RJCP.Text
 {
-    using System;
     using NUnit.Framework;
 
     public static class StringUtilitiesAccessor
