@@ -506,18 +506,19 @@ namespace RJCP.Text
                 throw new FormatException(message, e);
             }
         }
+
         private static int GetChar(object value)
         {
             unchecked {
-                if (value is char) return (char)value;
-                if (value is sbyte) return (byte)((sbyte)value);
-                if (value is byte) return (byte)value;
-                if (value is short) return (short)value;
-                if (value is ushort) return (short)((ushort)value);
-                if (value is int) return (short)((int)value);
-                if (value is uint) return (short)((uint)value);
-                if (value is long) return (short)((long)value);
-                if (value is ulong) return (short)((ulong)value);
+                if (value is char vChar) return vChar;
+                if (value is sbyte vsByte) return (byte)vsByte;
+                if (value is byte vByte) return vByte;
+                if (value is short vShort) return vShort;
+                if (value is ushort vuShort) return (short)vuShort;
+                if (value is int vInt) return (short)vInt;
+                if (value is uint vuInt) return (short)vuInt;
+                if (value is long vLong) return (short)vLong;
+                if (value is ulong vuLong) return (short)vuLong;
                 throw new FormatException("Parameter doesn't map to an integer");
             }
         }
@@ -555,46 +556,47 @@ namespace RJCP.Text
             try {
                 long value = 0;
                 if (formatSpecifier.Length == null || formatSpecifier.Length.Equals("l")) {
-                    // 32-bit signed
-                    int p = unchecked((int)(GetLong(values[currentArg]) & 0xFFFFFFFF));
-                    value = p;
+                    value = GetLongInt(values[currentArg]);
                 } else if (formatSpecifier.Length.Equals("hh")) {
-                    // 8-bit signed
-                    sbyte p = unchecked((sbyte)(GetLong(values[currentArg]) & 0xFF));
-                    value = p;
+                    value = GetLongSByte(values[currentArg]);
                 } else if (formatSpecifier.Length.Equals("h")) {
-                    // 16-bit signed
-                    short p = unchecked((short)(GetLong(values[currentArg]) & 0xFFFF));
-                    value = p;
+                    value = GetLongShort(values[currentArg]);
                 } else if (formatSpecifier.Length.Equals("ll") || formatSpecifier.Length.Equals("z") ||
                     formatSpecifier.Length.Equals("t") || formatSpecifier.Length.Equals("j")) {
-                    // 64-bit signed
                     value = GetLong(values[currentArg]);
                 } else {
-                    int p = unchecked((int)(GetLong(values[currentArg]) & 0xFFFFFFFF));
-                    value = p;
+                    value = GetLongInt(values[currentArg]);
                 }
                 currentArg++;
                 LongToString(str, formatSpecifier, value);
                 return;
             } catch (InvalidCastException e) {
-                throw new FormatException("Couldn't convert argument " + currentArg + " to an integer", e);
+                string message = string.Format("Couldn't convert argument {0} to an integer", currentArg);
+                throw new FormatException(message, e);
             }
         }
+
+        private static int GetLongInt(object arg) { return unchecked((int)(GetLong(arg) & 0xFFFFFFFF)); }
+
+        private static sbyte GetLongSByte(object arg) { return unchecked((sbyte)(GetLong(arg) & 0xFF)); }
+
+        private static short GetLongShort(object arg) { return unchecked((short)(GetLong(arg) & 0xFFFF)); }
+
+        private static long GetLongBool(bool value) { return value ? -1 : 0; }
 
         private static long GetLong(object value)
         {
             unchecked {
-                if (value is int) return (int)value;
-                if (value is long) return (long)value;
-                if (value is bool) return (bool)value ? -1 : 0;
-                if (value is short) return (short)value;
-                if (value is char) return (char)value;
-                if (value is sbyte) return (sbyte)value;
-                if (value is byte) return (byte)value;
-                if (value is uint) return (uint)value;
-                if (value is ulong) return (long)((ulong)value);
-                if (value is ushort) return (ushort)value;
+                if (value is int vInt) return vInt;
+                if (value is long vLong) return vLong;
+                if (value is bool vBool) return GetLongBool(vBool);
+                if (value is short vShort) return vShort;
+                if (value is char vChar) return vChar;
+                if (value is sbyte vsByte) return vsByte;
+                if (value is byte vByte) return vByte;
+                if (value is uint vuInt) return vuInt;
+                if (value is ulong vuLong) return (long)vuLong;
+                if (value is ushort vuShort) return vuShort;
                 throw new FormatException("Parameter doesn't map to an integer");
             }
         }
@@ -796,24 +798,16 @@ namespace RJCP.Text
             try {
                 ulong value = 0;
                 if (formatSpecifier.Length == null || formatSpecifier.Length.Equals("l")) {
-                    // 32-bit signed
-                    uint p = unchecked((uint)(GetULong(values[currentArg]) & 0xFFFFFFFF));
-                    value = p;
+                    value = GetULongUInt(values[currentArg]);
                 } else if (formatSpecifier.Length.Equals("hh")) {
-                    // 8-bit signed
-                    byte p = unchecked((byte)(GetULong(values[currentArg]) & 0xFF));
-                    value = p;
+                    value = GetULongByte(values[currentArg]);
                 } else if (formatSpecifier.Length.Equals("h")) {
-                    // 16-bit signed
-                    ushort p = unchecked((ushort)(GetULong(values[currentArg]) & 0xFFFF));
-                    value = p;
+                    value = GetULongUShort(values[currentArg]);
                 } else if (formatSpecifier.Length.Equals("ll") || formatSpecifier.Length.Equals("z") ||
                     formatSpecifier.Length.Equals("t") || formatSpecifier.Length.Equals("j")) {
-                    // 64-bit signed
                     value = GetULong(values[currentArg]);
                 } else {
-                    uint p = unchecked((uint)(GetULong(values[currentArg]) & 0xFFFFFFFF));
-                    value = p;
+                    value = GetULongUInt(values[currentArg]);
                 }
                 currentArg++;
                 UlongToString(str, formatSpecifier, value);
@@ -823,19 +817,27 @@ namespace RJCP.Text
             }
         }
 
+        private static uint GetULongUInt(object arg) { return unchecked((uint)(GetULong(arg) & 0xFFFFFFFF)); }
+
+        private static byte GetULongByte(object arg) { return unchecked((byte)(GetULong(arg) & 0xFF)); }
+
+        private static ushort GetULongUShort(object arg) { return unchecked((ushort)(GetULong(arg) & 0xFFFF)); }
+
+        private static ulong GetULongBool(bool value) { return value ? unchecked((ulong)-1) : 0; }
+
         private static ulong GetULong(object value)
         {
             unchecked {
-                if (value is int) return (ulong)((int)value);
-                if (value is long) return (ulong)((long)value);
-                if (value is bool) return (bool)value ? (ulong)-1 : 0;
-                if (value is short) return (ulong)((short)value);
-                if (value is char) return (char)value;
-                if (value is sbyte) return (ulong)((sbyte)value);
-                if (value is byte) return (byte)value;
-                if (value is uint) return (uint)value;
-                if (value is ulong) return (ulong)value;
-                if (value is ushort) return (ushort)value;
+                if (value is int vInt) return (ulong)vInt;
+                if (value is long vLong) return (ulong)vLong;
+                if (value is bool vBool) return GetULongBool(vBool);
+                if (value is short vShort) return (ulong)vShort;
+                if (value is char vChar) return vChar;
+                if (value is sbyte vsByte) return (ulong)vsByte;
+                if (value is byte vByte) return vByte;
+                if (value is uint vuInt) return vuInt;
+                if (value is ulong vuLong) return vuLong;
+                if (value is ushort vuShort) return vuShort;
                 throw new FormatException("Parameter doesn't map to an unsigned integer");
             }
         }
@@ -1877,21 +1879,23 @@ namespace RJCP.Text
             }
         }
 
+        private static double GetDoubleBool(bool value) { return value ? -1 : 0; }
+
         private static double GetDouble(object value)
         {
-            if (value is double) return (double)value;
-            if (value is float) return (float)value;
-            if (value is int) return (int)value;
-            if (value is long) return (long)value;
-            if (value is decimal) return (double)((decimal)value);
-            if (value is bool) return (bool)value ? -1 : 0;
-            if (value is short) return (short)value;
-            if (value is byte) return (byte)value;
-            if (value is char) return (char)value;
-            if (value is uint) return (uint)value;
-            if (value is ulong) return (ulong)value;
-            if (value is ushort) return (ushort)value;
-            if (value is sbyte) return (sbyte)value;
+            if (value is double vDouble) return vDouble;
+            if (value is float vFloat) return vFloat;
+            if (value is int vInt) return vInt;
+            if (value is long vLong) return vLong;
+            if (value is decimal vDec) return (double)vDec;
+            if (value is bool vBool) return GetDoubleBool(vBool);
+            if (value is short vShort) return vShort;
+            if (value is byte vByte) return vByte;
+            if (value is char vChar) return vChar;
+            if (value is uint vuInt) return vuInt;
+            if (value is ulong vuLong) return vuLong;
+            if (value is ushort vuShort) return vuShort;
+            if (value is sbyte vsByte) return vsByte;
             throw new FormatException("Parameter doesn't map to a double");
         }
 
