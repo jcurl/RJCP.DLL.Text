@@ -1009,5 +1009,17 @@
             Assert.That(SPrintF("handlerTransmitThread: 0x , 0x%02", 0, 2176), Is.EqualTo("handlerTransmitThread: 0x , 0x%02"));
             Assert.That(SPrintF("handlerTransmitThread: 0x%02, 0x%02", 0, 2176), Is.EqualTo("handlerTransmitThread: 0x%02, 0x%02"));
         }
+
+        [TestCase("%c", "x", "x")]
+        [TestCase("%d", "0", "0")]
+        [TestCase("%d", "-1", "-1")]
+        [TestCase("%u", "10", "10")]
+        [TestCase("%x", "10", "a")]
+        [TestCase("%f", "3.14", "3.140000")]
+        [TestCase("%6.3f", "3.14", " 3.140")]
+        public void SPrintF_StringTypeConversion(string format, string value, string expected)
+        {
+            Assert.That(SPrintF(format, value), Is.EqualTo(expected));
+        }
     }
 }
