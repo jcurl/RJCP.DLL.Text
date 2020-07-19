@@ -599,7 +599,8 @@ namespace RJCP.Text
                 if (value is ulong vuLong) return (long)vuLong;
                 if (value is ushort vuShort) return vuShort;
                 if (value is string vString && vString.Length > 0) {
-                    if (long.TryParse(vString, out long vsLong)) return vsLong;
+                    if (long.TryParse(vString, NumberStyles.Integer, CultureInfo.InvariantCulture, out long vsLong))
+                        return vsLong;
                 }
                 throw new FormatException("Parameter doesn't map to an integer");
             }
@@ -843,7 +844,8 @@ namespace RJCP.Text
                 if (value is ulong vuLong) return vuLong;
                 if (value is ushort vuShort) return vuShort;
                 if (value is string vString && vString.Length > 0) {
-                    if (ulong.TryParse(vString, out ulong vsuLong)) return vsuLong;
+                    if (ulong.TryParse(vString, NumberStyles.Integer, CultureInfo.InvariantCulture, out ulong vsuLong))
+                        return vsuLong;
                 }
                 throw new FormatException("Parameter doesn't map to an unsigned integer");
             }
@@ -1904,7 +1906,8 @@ namespace RJCP.Text
             if (value is ushort vuShort) return vuShort;
             if (value is sbyte vsByte) return vsByte;
             if (value is string vString && vString.Length > 0) {
-                if (double.TryParse(vString, out double vsDouble)) return vsDouble;
+                if (double.TryParse(vString, NumberStyles.Any, CultureInfo.InvariantCulture, out double vsDouble))
+                    return vsDouble;
             }
             throw new FormatException("Parameter doesn't map to a double");
         }
