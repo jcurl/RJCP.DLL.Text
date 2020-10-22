@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>RJCP.Text</id>
+        <version></version>
+        <authors>Jason Curl</authors>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>.NET library for useful text functions.</description>
+        <language>en-US</language>
+    </metadata>
+    <files>
+        <file src="bin\build\net40\RJCP.Text.dll" target="lib\net40" />
+        <file src="bin\build\net40\RJCP.Text.pdb" target="lib\net40" />
+        <file src="bin\build\net40\RJCP.Text.xml" target="lib\net40" />
+        <file src="RJCP.Text.csproj" target="src" />
+        <file src="**.cs" target="src" />
+        <file src="..\*.md" target="doc" />
+    </files>
+</package>
