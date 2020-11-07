@@ -9,8 +9,8 @@
     <ProjectGuid>{EB153A07-A8CB-4343-B235-984F4E23C23E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RJCP.TextTest</RootNamespace>
-    <AssemblyName>RJCP.TextTest</AssemblyName>
+    <RootNamespace>RJCP.Core</RootNamespace>
+    <AssemblyName>RJCP.Core.TextTest</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -55,9 +55,9 @@
       <Project>{a4d356f2-15ac-4ffe-b0c4-1d3d0973a124}</Project>
       <Name>RJCP.CodeQuality</Name>
     </ProjectReference>
-    <ProjectReference Include="..\code\RJCP.Text.csproj">
+    <ProjectReference Include="..\code\RJCP.Core.Text.csproj">
       <Project>{f9d056a3-db23-4e4b-9d3c-e08151472923}</Project>
-      <Name>RJCP.Text</Name>
+      <Name>RJCP.Core.Text</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,7 @@
 ﻿// GCC doesn't show blanks, plus symbol when displaying unsigned integers. Define this if that's what you want.
 //#undef SHOW_ULONG_SIGN
 
-namespace RJCP.Text
+namespace RJCP.Core.Text
 {
     using System;
     using System.Globalization;

@@ -1,4 +1,4 @@
-﻿namespace RJCP.Text
+﻿namespace RJCP.Core.Text
 {
     using CodeQuality;
 

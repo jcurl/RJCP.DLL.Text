@@ -7,8 +7,8 @@
     <ProjectGuid>{F9D056A3-DB23-4E4B-9D3C-E08151472923}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RJCP.Text</RootNamespace>
-    <AssemblyName>RJCP.Text</AssemblyName>
+    <RootNamespace>RJCP.Core</RootNamespace>
+    <AssemblyName>RJCP.Core.Text</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,7 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\RJCP.Text.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\RJCP.Core.Text.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
