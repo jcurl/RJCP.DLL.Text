@@ -50,6 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Text\StringUtilities.SPrintF.cs" />
     <None Include="..\LICENSE.md" Pack="true" PackagePath="\" />

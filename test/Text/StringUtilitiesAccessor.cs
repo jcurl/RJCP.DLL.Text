@@ -4,7 +4,7 @@
 
     public static class StringUtilitiesAccessor
     {
-        private static PrivateType StringUtilitiesType = new PrivateType(typeof(StringUtilities));
+        private readonly static PrivateType StringUtilitiesType = new PrivateType(typeof(StringUtilities));
 
         public static int CountDigits(long value)
         {
