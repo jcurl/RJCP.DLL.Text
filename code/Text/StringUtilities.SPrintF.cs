@@ -606,7 +606,7 @@ namespace RJCP.Core.Text
             }
         }
 
-        private static long[] LongPowerOfTenNegative = new long[] {
+        private static readonly long[] LongPowerOfTenNegative = new long[] {
             -10,                                 //  2
             -100,                                //  3
             -1000,                               //  4
@@ -627,7 +627,7 @@ namespace RJCP.Core.Text
             -1000000000000000000,                // 19 digits
         };
 
-        private static long[] LongPowerOfTenPositive = new long[] {
+        private static readonly long[] LongPowerOfTenPositive = new long[] {
             10,                                  //  2
             100,                                 //  3
             1000,                                //  4
@@ -648,7 +648,7 @@ namespace RJCP.Core.Text
             1000000000000000000,                 // 19 digits (long)
         };
 
-        private static ulong[] ULongPowerOfTenPositive = new ulong[] {
+        private static readonly ulong[] ULongPowerOfTenPositive = new ulong[] {
             10,                                  //  2
             100,                                 //  3
             1000,                                //  4
@@ -851,12 +851,12 @@ namespace RJCP.Core.Text
             }
         }
 
-        private static char[] BaseDigitsLower = new[] {
+        private static readonly char[] BaseDigitsLower = new[] {
             '0', '1', '2', '3', '4', '5', '6', '7',
             '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
         };
 
-        private static char[] BaseDigitsUpper = new[] {
+        private static readonly char[] BaseDigitsUpper = new[] {
             '0', '1', '2', '3', '4', '5', '6', '7',
             '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
         };
@@ -1019,7 +1019,7 @@ namespace RJCP.Core.Text
             #endregion Static Fields
 
             #region Fields
-            private StringBuilder _sbuf;
+            private readonly StringBuilder _sbuf;
 
             private bool _NaN;
             private bool _infinity;
@@ -1404,7 +1404,7 @@ namespace RJCP.Core.Text
             #endregion Round
 
             #region public number formatting methods
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "May be useful later")]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Provided for code consistency")]
             public static void FloatToString(StringBuilder str, FormatSpecifier format, float value, IFormatProvider fp)
             {
                 NumberFormatter inst = new NumberFormatter(str, format);
@@ -1414,7 +1414,7 @@ namespace RJCP.Core.Text
                 inst.NumberToString(format, nfi);
             }
 
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "May be useful later")]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Provided for code consistency")]
             public static void DoubleToString(StringBuilder str, FormatSpecifier format, double value, IFormatProvider fp)
             {
                 NumberFormatter inst = new NumberFormatter(str, format);
@@ -1728,8 +1728,6 @@ namespace RJCP.Core.Text
                 _sbuf.Append((char)('0' | v & 0xf));
             }
 
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1121:Assignments should not be made from within sub-expressions", Justification = "Conflicts with IDE0054 for variable 'v'")]
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S907:\"goto\" statement should not be used", Justification = "Original code came from Mono, keeping it as it is")]
             private void AppendDigits(int start, int end)
             {
                 if (start >= end)
@@ -1791,7 +1789,6 @@ namespace RJCP.Core.Text
             }
             #endregion Append helpers
 
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3358:Ternary operators should not be nested", Justification = "This case is still readable")]
             private bool FormatInfNan(FormatSpecifier formatSpecifier, bool useC)
             {
                 if (_NaN) {
@@ -1928,7 +1925,7 @@ namespace RJCP.Core.Text
         // Taken from Mono sources
         // * mono/metatdata/number-formatter.h
         //   master/9af0b8a2224e2eb6a05f00607805a180b1c67a35 (commit date 27/05/2008, as of 08/Jan/2015)
-        private static ulong[] Formatter_MantissaBitsTable = new ulong[] {
+        private static readonly ulong[] Formatter_MantissaBitsTable = new ulong[] {
             4556951262222748432, 9113902524445496865, 1822780504889099373,
             3645561009778198746, 7291122019556397492, 14582244039112794984,
             2916448807822558996, 5832897615645117993, 11665795231290235987,
@@ -2617,7 +2614,7 @@ namespace RJCP.Core.Text
         // Taken from Mono sources
         // * mono/metatdata/number-formatter.h
         //   master/9af0b8a2224e2eb6a05f00607805a180b1c67a35 (commit date 27/05/2008, as of 08/Jan/2015)
-        private static int[] Formatter_TensExponentTable = new[] {
+        private static readonly int[] Formatter_TensExponentTable = new[] {
             -323, -323, -322, -322, -322, -322, -321, -321, -321, -320, -320, -320,
             -319, -319, -319, -319, -318, -318, -318, -317, -317, -317, -316, -316,
             -316, -316, -315, -315, -315, -314, -314, -314, -313, -313, -313, -313,
@@ -2793,7 +2790,7 @@ namespace RJCP.Core.Text
 
         // DecHexDigits s a translation table from a decimal number to its
         // digits hexadecimal representation (e.g. DecHexDigits [34] = 0x34).
-        private static int[] Formatter_DecHexDigits = new int[] {
+        private static readonly int[] Formatter_DecHexDigits = new int[] {
             0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09,
             0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19,
             0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29,

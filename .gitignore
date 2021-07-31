@@ -1,9 +1,9 @@
-/.vs
+/.vs/
+/packages/
+bin/
+obj/
+TestResults/
+*~
 *.user
-*.suo
-/packages
-distribute
-bin
-obj
-*.GhostDoc.xml
 *.userprefs
+*.suo

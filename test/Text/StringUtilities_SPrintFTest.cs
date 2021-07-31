@@ -74,7 +74,6 @@
         }
 
         [Test]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S1905:Redundant casts should not be used", Justification = "Provided to make reading test case explicit")]
         public void SPrintF_CharTypeConversions()
         {
             Assert.That(SPrintF("%c", 'A'), Is.EqualTo("A"));
@@ -273,7 +272,6 @@
 
         [TestCase("%d")]
         [TestCase("%ld")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S1905:Redundant casts should not be used", Justification = "Provided to make reading test case explicit")]
         public void SPrintF_IntegerConversions(string specifier)
         {
             Assert.That(SPrintF(specifier, (byte)127), Is.EqualTo("127"));
@@ -320,7 +318,6 @@
         }
 
         [Test]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S1905:Redundant casts should not be used", Justification = "Provided to make reading test case explicit")]
         public void SPrintF_LongIntegerConversions()
         {
             Assert.That(SPrintF("%lld", (byte)127), Is.EqualTo("127"));
@@ -435,7 +432,6 @@
 
         [TestCase("%u")]
         [TestCase("%lu")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S1905:Redundant casts should not be used", Justification = "Provided to make reading test case explicit")]
         public void SPrintF_UnsignedIntegerConversions(string specifier)
         {
             Assert.That(SPrintF(specifier, (byte)127), Is.EqualTo("127"));
@@ -482,7 +478,6 @@
         }
 
         [Test]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S1905:Redundant casts should not be used", Justification = "Provided to make reading test case explicit")]
         public void SPrintF_LongUnsignedIntegerConversions()
         {
             Assert.That(SPrintF("%llu", (byte)127), Is.EqualTo("127"));
@@ -661,8 +656,6 @@
         }
 
         [Test]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S125:Sections of code should not be commented out",
-            Justification = "Commented code was generated, and after review is obviously wrong (a GCC 'feature' still within C standards)")]
         public void SPrintF_FixedDouble()
         {
             // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
