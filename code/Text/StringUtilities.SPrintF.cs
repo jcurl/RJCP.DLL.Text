@@ -167,18 +167,30 @@ namespace RJCP.Core.Text
                 nextCharPos = PrintFGetNextSpecialChar(format, charPos);
                 if (nextCharPos == -1) {
                     // No more special characters seen.
+#if NETFRAMEWORK
                     sb.Append(format.Substring(charPos));
+#else
+                    sb.Append(format.AsSpan(charPos));
+#endif
                     return sb.ToString();
                 }
                 if (nextCharPos > charPos) {
+#if NETFRAMEWORK
                     sb.Append(format.Substring(charPos, nextCharPos - charPos));
+#else
+                    sb.Append(format.AsSpan(charPos, nextCharPos - charPos));
+#endif
                     charPos = nextCharPos;
                 }
 
                 FormatSpecifier formatSpecifier = ParseFormatSpecifier(format, ref nextCharPos);
                 if (formatSpecifier == null) {
                     // The format specifier is invalid, so copy it verbatim.
+#if NETFRAMEWORK
                     sb.Append(format.Substring(charPos, nextCharPos - charPos));
+#else
+                    sb.Append(format.AsSpan(charPos, nextCharPos - charPos));
+#endif
                     continue;
                 }
 

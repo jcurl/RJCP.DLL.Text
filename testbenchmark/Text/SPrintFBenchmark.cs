@@ -1,6 +1,5 @@
 namespace RJCP.Core.Text
 {
-    using System;
     using BenchmarkDotNet.Attributes;
     using static StringUtilities;
 
