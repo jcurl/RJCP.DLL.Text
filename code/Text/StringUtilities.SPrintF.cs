@@ -541,8 +541,7 @@ namespace RJCP.Core.Text
         private static void ConvertFormatSpecifierString(StringBuilder str, FormatSpecifier formatSpecifier, ref int currentArg, params object[] values)
         {
             try {
-                string s = (string)values[currentArg];
-                if (s == null) s = string.Empty;
+                string s = (string)values[currentArg] ?? string.Empty;
                 currentArg++;
                 if (formatSpecifier.Width == -1) formatSpecifier.Width = 0;
                 if (formatSpecifier.Width > s.Length) {
