@@ -1,8 +1,10 @@
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
 #include <math.h>
 
+void test_sprintf_double(uint64_t);
 void test_sprintf(char *, char *, ...);
 void test_function(char *);
 void test_function_end();
@@ -553,6 +555,29 @@ int main(void)
   test_sprintf("Double.NegativeInfinity", "%-10G", -INFINITY);
   test_function_end();
 
+  test_function("DoubleBinary");
+  test_sprintf_double(0x0000000000000000);
+  printf("            // Subnormals\n");
+  test_sprintf_double(0x0000000000000001);
+  test_sprintf_double(0x0000000000000002);
+  test_sprintf_double(0x0000000000000004);
+  test_sprintf_double(0x0000000000000008);
+  test_sprintf_double(0x0000000000000010);
+  test_sprintf_double(0x0000000000000100);
+  test_sprintf_double(0x0000000000001000);
+  test_sprintf_double(0x0000000000010000);
+  test_sprintf_double(0x0000000000100000);
+  test_sprintf_double(0x0000000001000000);
+  test_sprintf_double(0x0000000010000000);
+  test_sprintf_double(0x0000000100000000);
+  test_sprintf_double(0x0001000000000000);
+  test_sprintf_double(0x000FFFFFFFFFFFFF);
+  printf("            // All exponents\n");
+  for (uint64_t i = 1; i < 2047; i++) {
+    test_sprintf_double(i << 52);
+  }
+  test_function_end();
+
   return EXIT_SUCCESS;
 }
 
@@ -575,16 +600,24 @@ void test_sprintf(char *params, char *format, ...)
 {
   char buffer[1024];
   int result;
-  
+
   va_list ap;
   va_start (ap, format);
   result = vsprintf(buffer, format, ap);
   if (params == NULL) {
-    printf("            Assert.That(StringUtilities.SPrintF(\"%s\"), Is.EqualTo(\"%s\"));\n",
+    printf("            Assert.That(SPrintF(\"%s\"), Is.EqualTo(\"%s\"));\n",
 	   format, buffer);
   } else {
-    printf("            Assert.That(StringUtilities.SPrintF(\"%s\", %s), Is.EqualTo(\"%s\"));\n",
+    printf("            Assert.That(SPrintF(\"%s\", %s), Is.EqualTo(\"%s\"));\n",
 	   format, params, buffer);
   }
   va_end(ap);
+}
+
+void test_sprintf_double(uint64_t binary)
+{
+  double value = *(double *)&binary;
+
+  printf("            Assert.That(SPrintF(\"%%.15g\", UInt64ToDouble(0x%016llx)), Is.EqualTo(\"%.15g\"));\n",
+    binary, value);
 }

@@ -1,44 +1,6 @@
-﻿namespace RJCP.Core.Text
-{
-    using System;
-    using NUnit.Framework;
-    using static StringUtilities;
-
-    [TestFixture(Category = "String.SPrintF")]
-    public class StringUtilities_SPrintFTest
-    {
-        [Test]
-        public void SPrintF_IntegerNormal()
-        {
-            string r = SPrintF("My Number: %d", 5);
-            Assert.That(r, Is.EqualTo("My Number: 5"));
-        }
-
-        [Test]
-        public void SPrintF_IntegerWidth()
-        {
-            string r = SPrintF("My Number: %10d", 5);
-            Assert.That(r, Is.EqualTo("My Number:          5"));
-        }
-
-        [Test]
-        public void SPrintF_IntegerWidthLeftAligned()
-        {
-            string r = SPrintF("My Number: %-10d", 5);
-            Assert.That(r, Is.EqualTo("My Number: 5         "));
-        }
-
-        [Test]
-        public void SPrintF_Percent()
-        {
-            string r = SPrintF("Processor Load %u%%", 6);
-            Assert.That(r, Is.EqualTo("Processor Load 6%"));
-        }
-
         [Test]
         public void SPrintF_Char()
         {
-            // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%c", 65), Is.EqualTo("A"));
                 Assert.That(SPrintF("%c", 'a'), Is.EqualTo("a"));
@@ -47,175 +9,36 @@
                 Assert.That(SPrintF("%+2c", 'a'), Is.EqualTo(" a"));
                 Assert.That(SPrintF("% 2c", 'a'), Is.EqualTo(" a"));
                 Assert.That(SPrintF("%#2c", 'a'), Is.EqualTo(" a"));
-                Assert.That(SPrintF("%02c", 'a'), Is.EqualTo(" a"));
+                Assert.That(SPrintF("%02c", 'a'), Is.EqualTo("0a"));
                 Assert.That(SPrintF("%-2c", 'a'), Is.EqualTo("a "));
                 Assert.That(SPrintF("%+c", 'a'), Is.EqualTo("a"));
                 Assert.That(SPrintF("% c", 'a'), Is.EqualTo("a"));
                 Assert.That(SPrintF("%#c", 'a'), Is.EqualTo("a"));
                 Assert.That(SPrintF("%0c", 'a'), Is.EqualTo("a"));
                 Assert.That(SPrintF("%-c", 'a'), Is.EqualTo("a"));
-                Assert.That(SPrintF("%05c", 'a'), Is.EqualTo("    a"));
-            });
-
-            // Because .NET is always wide char, the length modifier 'l' doesn't change anything
-            Assert.Multiple(() => {
-                Assert.That(SPrintF("%lc", 65), Is.EqualTo("A"));
-                Assert.That(SPrintF("%lc", 'a'), Is.EqualTo("a"));
-                Assert.That(SPrintF("%-2lc", 'a'), Is.EqualTo("a "));
-                Assert.That(SPrintF("%2lc", 'a'), Is.EqualTo(" a"));
-                Assert.That(SPrintF("%+2lc", 'a'), Is.EqualTo(" a"));
-                Assert.That(SPrintF("% 2lc", 'a'), Is.EqualTo(" a"));
-                Assert.That(SPrintF("%#2lc", 'a'), Is.EqualTo(" a"));
-                Assert.That(SPrintF("%02lc", 'a'), Is.EqualTo(" a"));
-                Assert.That(SPrintF("%-2lc", 'a'), Is.EqualTo("a "));
-                Assert.That(SPrintF("%+lc", 'a'), Is.EqualTo("a"));
-                Assert.That(SPrintF("% lc", 'a'), Is.EqualTo("a"));
-                Assert.That(SPrintF("%#lc", 'a'), Is.EqualTo("a"));
-                Assert.That(SPrintF("%0lc", 'a'), Is.EqualTo("a"));
-                Assert.That(SPrintF("%-lc", 'a'), Is.EqualTo("a"));
-                Assert.That(SPrintF("%05lc", 'a'), Is.EqualTo("    a"));
-            });
-        }
-
-        [Test]
-        public void SPrintF_CharTypeConversions()
-        {
-            Assert.Multiple(() => {
-                Assert.That(SPrintF("%c", 'A'), Is.EqualTo("A"));
-                Assert.That(SPrintF("%c", (byte)65), Is.EqualTo("A"));
-                Assert.That(SPrintF("%c", (sbyte)65), Is.EqualTo("A"));
-                Assert.That(SPrintF("%c", (short)65), Is.EqualTo("A"));
-                Assert.That(SPrintF("%c", (ushort)65), Is.EqualTo("A"));
-                Assert.That(SPrintF("%c", 65), Is.EqualTo("A"));
-                Assert.That(SPrintF("%c", (uint)65), Is.EqualTo("A"));
-                Assert.That(SPrintF("%c", (long)65), Is.EqualTo("A"));
-                Assert.That(SPrintF("%c", (ulong)65), Is.EqualTo("A"));
-
-                Assert.That(SPrintF("%c", (byte)255), Is.EqualTo("ÿ"));
-                Assert.That(SPrintF("%c", (sbyte)-1), Is.EqualTo("ÿ"));
-
-                Assert.That(SPrintF("%c", (short)255), Is.EqualTo("ÿ"));
-                Assert.That(SPrintF("%c", (ushort)255), Is.EqualTo("ÿ"));
-                Assert.That(SPrintF("%c", (short)0x20ac), Is.EqualTo("€"));
-                Assert.That(SPrintF("%c", (ushort)0x20ac), Is.EqualTo("€"));
-                Assert.That(SPrintF("%c", unchecked((short)0xAB30)), Is.EqualTo("ꬰ"));
-                Assert.That(SPrintF("%c", (ushort)0xAB30), Is.EqualTo("ꬰ"));
-
-                Assert.That(SPrintF("%c", (int)255), Is.EqualTo("ÿ"));
-                Assert.That(SPrintF("%c", (uint)255), Is.EqualTo("ÿ"));
-                Assert.That(SPrintF("%c", (int)0x20ac), Is.EqualTo("€"));
-                Assert.That(SPrintF("%c", (uint)0x20ac), Is.EqualTo("€"));
-                Assert.That(SPrintF("%c", (int)0xAB30), Is.EqualTo("ꬰ"));
-                Assert.That(SPrintF("%c", (uint)0xAB30), Is.EqualTo("ꬰ"));
-                Assert.That(SPrintF("%c", (int)0xff20ac), Is.EqualTo("€"));
-                Assert.That(SPrintF("%c", (uint)0xff20ac), Is.EqualTo("€"));
-                Assert.That(SPrintF("%c", unchecked((int)0xffff20ac)), Is.EqualTo("€"));
-                Assert.That(SPrintF("%c", (uint)0xffff20ac), Is.EqualTo("€"));
-
-                Assert.That(SPrintF("%c", (long)255), Is.EqualTo("ÿ"));
-                Assert.That(SPrintF("%c", (ulong)255), Is.EqualTo("ÿ"));
-                Assert.That(SPrintF("%c", (long)0x20ac), Is.EqualTo("€"));
-                Assert.That(SPrintF("%c", (ulong)0x20ac), Is.EqualTo("€"));
-                Assert.That(SPrintF("%c", (long)0xAB30), Is.EqualTo("ꬰ"));
-                Assert.That(SPrintF("%c", (ulong)0xAB30), Is.EqualTo("ꬰ"));
-                Assert.That(SPrintF("%c", (long)0xffff20ac), Is.EqualTo("€"));
-                Assert.That(SPrintF("%c", (ulong)0xffff20ac), Is.EqualTo("€"));
-                Assert.That(SPrintF("%c", unchecked((long)0xffffffffffffAB30)), Is.EqualTo("ꬰ"));
-                Assert.That(SPrintF("%c", (ulong)0xffffffffffffAB30), Is.EqualTo("ꬰ"));
-
-                Assert.That(SPrintF("%c", (sbyte)-1), Is.EqualTo("ÿ"));    // -1 = 0xFF. The signed is type casted to unsigned with no bit modifications.
-                Assert.That(SPrintF("%c", (short)-1280), Is.EqualTo("ﬀ")); // -1280 = 0xFB00. The signed is type casted to unsigned with no bit modifications.
-
-                Assert.That(() => { _ = SPrintF("%c", true); }, Throws.TypeOf<FormatException>());
-            });
-        }
-
-        [Test]
-        public void SPrintF_CharVarFieldWidth()
-        {
-            Assert.Multiple(() => {
-                Assert.That(SPrintF("%*c", 0, 'a'), Is.EqualTo("a"));
-                Assert.That(SPrintF("%*c", 1, 'a'), Is.EqualTo("a"));
-                Assert.That(SPrintF("%*c", 2, 'a'), Is.EqualTo(" a"));
-                Assert.That(SPrintF("%*c", 3, 'a'), Is.EqualTo("  a"));
-                Assert.That(SPrintF("%*c", 4, 'a'), Is.EqualTo("   a"));
-                Assert.That(SPrintF("%*c", 5, 'a'), Is.EqualTo("    a"));
-
-                Assert.That(SPrintF("%*c", -1, 'a'), Is.EqualTo("a"));
-                Assert.That(SPrintF("%*c", -2, 'a'), Is.EqualTo("a "));
-                Assert.That(SPrintF("%*c", -3, 'a'), Is.EqualTo("a  "));
-                Assert.That(SPrintF("%*c", -4, 'a'), Is.EqualTo("a   "));
-                Assert.That(SPrintF("%*c", -5, 'a'), Is.EqualTo("a    "));
-            });
-        }
-
-        [Test]
-        public void SPrintF_CharVarFieldWidthInvalid()
-        {
-            Assert.Multiple(() => {
-                Assert.That(() => { SPrintF("%*c", "1", 'a'); }, Throws.TypeOf<FormatException>());
-                Assert.That(() => { SPrintF("%*c", new object(), 'a'); }, Throws.TypeOf<FormatException>());
+                Assert.That(SPrintF("%05c", 'a'), Is.EqualTo("0000a"));
             });
         }
 
         [Test]
         public void SPrintF_String()
         {
-            // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%s", "foo"), Is.EqualTo("foo"));
                 Assert.That(SPrintF("%-10s", "foo"), Is.EqualTo("foo       "));
                 Assert.That(SPrintF("%10s", "foo"), Is.EqualTo("       foo"));
-                Assert.That(SPrintF("%010s", "foo"), Is.EqualTo("       foo"));
+                Assert.That(SPrintF("%010s", "foo"), Is.EqualTo("0000000foo"));
                 Assert.That(SPrintF("%+10s", "foo"), Is.EqualTo("       foo"));
                 Assert.That(SPrintF("% 10s", "foo"), Is.EqualTo("       foo"));
                 Assert.That(SPrintF("%#10s", "foo"), Is.EqualTo("       foo"));
                 Assert.That(SPrintF("%2s", "foobar"), Is.EqualTo("foobar"));
                 Assert.That(SPrintF("%-2s", "foobar"), Is.EqualTo("foobar"));
             });
-
-            // Because .NET is always wide char, the length modifier 'l' doesn't change anything
-            Assert.Multiple(() => {
-                Assert.That(SPrintF("%ls", "foo"), Is.EqualTo("foo"));
-                Assert.That(SPrintF("%-10ls", "foo"), Is.EqualTo("foo       "));
-                Assert.That(SPrintF("%10ls", "foo"), Is.EqualTo("       foo"));
-                Assert.That(SPrintF("%010ls", "foo"), Is.EqualTo("       foo"));
-                Assert.That(SPrintF("%+10ls", "foo"), Is.EqualTo("       foo"));
-                Assert.That(SPrintF("% 10ls", "foo"), Is.EqualTo("       foo"));
-                Assert.That(SPrintF("%#10ls", "foo"), Is.EqualTo("       foo"));
-                Assert.That(SPrintF("%2ls", "foobar"), Is.EqualTo("foobar"));
-                Assert.That(SPrintF("%-2ls", "foobar"), Is.EqualTo("foobar"));
-            });
-        }
-
-        [Test]
-        public void SPrintF_StringEmpty()
-        {
-            Assert.That(SPrintF("%s", string.Empty), Is.EqualTo(""));
-        }
-
-        [Test]
-        public void SPrintF_StringNoParameters()
-        {
-            // This is tricky. You might thing you're passing a null string here, but instead
-            // it's really a null parameter list.
-            Assert.That(() => { SPrintF("%s", null); }, Throws.TypeOf<FormatException>());
-        }
-
-        [Test]
-        public void SPrintF_StringNull()
-        {
-            // To pass a string of null, we need to construct the parameter list manually.
-            Assert.That(SPrintF("%s", new object[] { null }), Is.EqualTo(""));
-
-            string nulls = null;
-            Assert.That(SPrintF("%s", nulls), Is.EqualTo(""));
         }
 
         [Test]
         public void SPrintF_Integer()
         {
-            // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%d", 16384), Is.EqualTo("16384"));
                 Assert.That(SPrintF("%2d", 16384), Is.EqualTo("16384"));
@@ -287,107 +110,8 @@
         }
 
         [Test]
-        public void SPrintF_IntegerConversions([Values("%d", "%ld")] string specifier)
-        {
-            Assert.Multiple(() => {
-                Assert.That(SPrintF(specifier, (byte)127), Is.EqualTo("127"));
-                Assert.That(SPrintF(specifier, (byte)255), Is.EqualTo("255"));
-                Assert.That(SPrintF(specifier, (sbyte)127), Is.EqualTo("127"));
-                Assert.That(SPrintF(specifier, (sbyte)-1), Is.EqualTo("-1"));
-
-                Assert.That(SPrintF(specifier, (short)127), Is.EqualTo("127"));
-                Assert.That(SPrintF(specifier, (short)255), Is.EqualTo("255"));
-                Assert.That(SPrintF(specifier, (short)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF(specifier, (short)-1), Is.EqualTo("-1"));
-
-                Assert.That(SPrintF(specifier, (ushort)127), Is.EqualTo("127"));
-                Assert.That(SPrintF(specifier, (ushort)255), Is.EqualTo("255"));
-                Assert.That(SPrintF(specifier, (ushort)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF(specifier, (ushort)65535), Is.EqualTo("65535"));
-
-                Assert.That(SPrintF(specifier, (int)127), Is.EqualTo("127"));
-                Assert.That(SPrintF(specifier, (int)255), Is.EqualTo("255"));
-                Assert.That(SPrintF(specifier, (int)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF(specifier, (int)131072), Is.EqualTo("131072"));
-                Assert.That(SPrintF(specifier, (int)-1), Is.EqualTo("-1"));
-
-                Assert.That(SPrintF(specifier, (uint)127), Is.EqualTo("127"));
-                Assert.That(SPrintF(specifier, (uint)255), Is.EqualTo("255"));
-                Assert.That(SPrintF(specifier, (uint)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF(specifier, (uint)131072), Is.EqualTo("131072"));
-                Assert.That(SPrintF(specifier, (uint)0xFFFFFFFF), Is.EqualTo("-1"));
-
-                Assert.That(SPrintF(specifier, (long)127), Is.EqualTo("127"));
-                Assert.That(SPrintF(specifier, (long)255), Is.EqualTo("255"));
-                Assert.That(SPrintF(specifier, (long)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF(specifier, (long)131072), Is.EqualTo("131072"));
-                Assert.That(SPrintF(specifier, (long)0xFFFFFFFF), Is.EqualTo("-1"));
-
-                Assert.That(SPrintF(specifier, (ulong)127), Is.EqualTo("127"));
-                Assert.That(SPrintF(specifier, (ulong)255), Is.EqualTo("255"));
-                Assert.That(SPrintF(specifier, (ulong)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF(specifier, (ulong)131072), Is.EqualTo("131072"));
-                Assert.That(SPrintF(specifier, (ulong)0xFFFFFFFF), Is.EqualTo("-1"));
-
-                Assert.That(SPrintF(specifier, false), Is.EqualTo("0"));
-                Assert.That(SPrintF(specifier, true), Is.EqualTo("-1"));
-            });
-        }
-
-        [Test]
-        public void SPrintF_LongIntegerConversions()
-        {
-            Assert.Multiple(() => {
-                Assert.That(SPrintF("%lld", (byte)127), Is.EqualTo("127"));
-                Assert.That(SPrintF("%lld", (byte)255), Is.EqualTo("255"));
-                Assert.That(SPrintF("%lld", (sbyte)127), Is.EqualTo("127"));
-                Assert.That(SPrintF("%lld", (sbyte)-1), Is.EqualTo("-1"));
-
-                Assert.That(SPrintF("%lld", (short)127), Is.EqualTo("127"));
-                Assert.That(SPrintF("%lld", (short)255), Is.EqualTo("255"));
-                Assert.That(SPrintF("%lld", (short)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF("%lld", (short)-1), Is.EqualTo("-1"));
-
-                Assert.That(SPrintF("%lld", (ushort)127), Is.EqualTo("127"));
-                Assert.That(SPrintF("%lld", (ushort)255), Is.EqualTo("255"));
-                Assert.That(SPrintF("%lld", (ushort)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF("%lld", (ushort)65535), Is.EqualTo("65535"));
-
-                Assert.That(SPrintF("%lld", (int)127), Is.EqualTo("127"));
-                Assert.That(SPrintF("%lld", (int)255), Is.EqualTo("255"));
-                Assert.That(SPrintF("%lld", (int)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF("%lld", (int)131072), Is.EqualTo("131072"));
-                Assert.That(SPrintF("%lld", (int)-1), Is.EqualTo("-1"));
-
-                Assert.That(SPrintF("%lld", (uint)127), Is.EqualTo("127"));
-                Assert.That(SPrintF("%lld", (uint)255), Is.EqualTo("255"));
-                Assert.That(SPrintF("%lld", (uint)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF("%lld", (uint)131072), Is.EqualTo("131072"));
-                Assert.That(SPrintF("%lld", (uint)0xFFFFFFFF), Is.EqualTo("4294967295"));
-
-                Assert.That(SPrintF("%lld", (long)127), Is.EqualTo("127"));
-                Assert.That(SPrintF("%lld", (long)255), Is.EqualTo("255"));
-                Assert.That(SPrintF("%lld", (long)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF("%lld", (long)131072), Is.EqualTo("131072"));
-                Assert.That(SPrintF("%lld", (long)0xFFFFFFFF), Is.EqualTo("4294967295"));
-                Assert.That(SPrintF("%lld", unchecked((long)0xFFFFFFFFFFFFFFFF)), Is.EqualTo("-1"));
-
-                Assert.That(SPrintF("%lld", (ulong)127), Is.EqualTo("127"));
-                Assert.That(SPrintF("%lld", (ulong)255), Is.EqualTo("255"));
-                Assert.That(SPrintF("%lld", (ulong)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF("%lld", (ulong)131072), Is.EqualTo("131072"));
-                Assert.That(SPrintF("%lld", (ulong)0xFFFFFFFF), Is.EqualTo("4294967295"));
-                Assert.That(SPrintF("%lld", (ulong)0xFFFFFFFFFFFFFFFF), Is.EqualTo("-1"));
-
-                Assert.That(SPrintF("%lld", false), Is.EqualTo("0"));
-                Assert.That(SPrintF("%lld", true), Is.EqualTo("-1"));
-            });
-        }
-
-        [Test]
         public void SPrintF_UnsignedInteger()
         {
-            // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%u", 16384), Is.EqualTo("16384"));
                 Assert.That(SPrintF("%2u", 16384), Is.EqualTo("16384"));
@@ -452,107 +176,8 @@
         }
 
         [Test]
-        public void SPrintF_UnsignedIntegerConversions([Values("%u", "%lu")] string specifier)
-        {
-            Assert.Multiple(() => {
-                Assert.That(SPrintF(specifier, (byte)127), Is.EqualTo("127"));
-                Assert.That(SPrintF(specifier, (byte)255), Is.EqualTo("255"));
-                Assert.That(SPrintF(specifier, (sbyte)127), Is.EqualTo("127"));
-                Assert.That(SPrintF(specifier, (sbyte)-1), Is.EqualTo("4294967295"));
-
-                Assert.That(SPrintF(specifier, (short)127), Is.EqualTo("127"));
-                Assert.That(SPrintF(specifier, (short)255), Is.EqualTo("255"));
-                Assert.That(SPrintF(specifier, (short)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF(specifier, (short)-1), Is.EqualTo("4294967295"));
-
-                Assert.That(SPrintF(specifier, (ushort)127), Is.EqualTo("127"));
-                Assert.That(SPrintF(specifier, (ushort)255), Is.EqualTo("255"));
-                Assert.That(SPrintF(specifier, (ushort)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF(specifier, (ushort)65535), Is.EqualTo("65535"));
-
-                Assert.That(SPrintF(specifier, (int)127), Is.EqualTo("127"));
-                Assert.That(SPrintF(specifier, (int)255), Is.EqualTo("255"));
-                Assert.That(SPrintF(specifier, (int)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF(specifier, (int)131072), Is.EqualTo("131072"));
-                Assert.That(SPrintF(specifier, (int)-1), Is.EqualTo("4294967295"));
-
-                Assert.That(SPrintF(specifier, (uint)127), Is.EqualTo("127"));
-                Assert.That(SPrintF(specifier, (uint)255), Is.EqualTo("255"));
-                Assert.That(SPrintF(specifier, (uint)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF(specifier, (uint)131072), Is.EqualTo("131072"));
-                Assert.That(SPrintF(specifier, (uint)0xFFFFFFFF), Is.EqualTo("4294967295"));
-
-                Assert.That(SPrintF(specifier, (long)127), Is.EqualTo("127"));
-                Assert.That(SPrintF(specifier, (long)255), Is.EqualTo("255"));
-                Assert.That(SPrintF(specifier, (long)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF(specifier, (long)131072), Is.EqualTo("131072"));
-                Assert.That(SPrintF(specifier, (long)0xFFFFFFFF), Is.EqualTo("4294967295"));
-
-                Assert.That(SPrintF(specifier, (ulong)127), Is.EqualTo("127"));
-                Assert.That(SPrintF(specifier, (ulong)255), Is.EqualTo("255"));
-                Assert.That(SPrintF(specifier, (ulong)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF(specifier, (ulong)131072), Is.EqualTo("131072"));
-                Assert.That(SPrintF(specifier, (ulong)0xFFFFFFFF), Is.EqualTo("4294967295"));
-
-                Assert.That(SPrintF(specifier, false), Is.EqualTo("0"));
-                Assert.That(SPrintF(specifier, true), Is.EqualTo("4294967295"));
-            });
-        }
-
-        [Test]
-        public void SPrintF_LongUnsignedIntegerConversions()
-        {
-            Assert.Multiple(() => {
-                Assert.That(SPrintF("%llu", (byte)127), Is.EqualTo("127"));
-                Assert.That(SPrintF("%llu", (byte)255), Is.EqualTo("255"));
-                Assert.That(SPrintF("%llu", (sbyte)127), Is.EqualTo("127"));
-                Assert.That(SPrintF("%llu", (sbyte)-1), Is.EqualTo("8446744073709551615"));
-
-                Assert.That(SPrintF("%llu", (short)127), Is.EqualTo("127"));
-                Assert.That(SPrintF("%llu", (short)255), Is.EqualTo("255"));
-                Assert.That(SPrintF("%llu", (short)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF("%llu", (short)-1), Is.EqualTo("8446744073709551615"));
-
-                Assert.That(SPrintF("%llu", (ushort)127), Is.EqualTo("127"));
-                Assert.That(SPrintF("%llu", (ushort)255), Is.EqualTo("255"));
-                Assert.That(SPrintF("%llu", (ushort)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF("%llu", (ushort)65535), Is.EqualTo("65535"));
-
-                Assert.That(SPrintF("%llu", (int)127), Is.EqualTo("127"));
-                Assert.That(SPrintF("%llu", (int)255), Is.EqualTo("255"));
-                Assert.That(SPrintF("%llu", (int)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF("%llu", (int)131072), Is.EqualTo("131072"));
-                Assert.That(SPrintF("%llu", (int)-1), Is.EqualTo("8446744073709551615"));
-
-                Assert.That(SPrintF("%llu", (uint)127), Is.EqualTo("127"));
-                Assert.That(SPrintF("%llu", (uint)255), Is.EqualTo("255"));
-                Assert.That(SPrintF("%llu", (uint)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF("%llu", (uint)131072), Is.EqualTo("131072"));
-                Assert.That(SPrintF("%llu", (uint)0xFFFFFFFF), Is.EqualTo("4294967295"));
-
-                Assert.That(SPrintF("%llu", (long)127), Is.EqualTo("127"));
-                Assert.That(SPrintF("%llu", (long)255), Is.EqualTo("255"));
-                Assert.That(SPrintF("%llu", (long)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF("%llu", (long)131072), Is.EqualTo("131072"));
-                Assert.That(SPrintF("%llu", (long)0xFFFFFFFF), Is.EqualTo("4294967295"));
-                Assert.That(SPrintF("%llu", unchecked((long)0xFFFFFFFFFFFFFFFF)), Is.EqualTo("8446744073709551615"));
-
-                Assert.That(SPrintF("%llu", (ulong)127), Is.EqualTo("127"));
-                Assert.That(SPrintF("%llu", (ulong)255), Is.EqualTo("255"));
-                Assert.That(SPrintF("%llu", (ulong)32767), Is.EqualTo("32767"));
-                Assert.That(SPrintF("%llu", (ulong)131072), Is.EqualTo("131072"));
-                Assert.That(SPrintF("%llu", (ulong)0xFFFFFFFF), Is.EqualTo("4294967295"));
-                Assert.That(SPrintF("%llu", (ulong)0xFFFFFFFFFFFFFFFF), Is.EqualTo("8446744073709551615"));
-
-                Assert.That(SPrintF("%llu", false), Is.EqualTo("0"));
-                Assert.That(SPrintF("%llu", true), Is.EqualTo("8446744073709551615"));
-            });
-        }
-
-        [Test]
         public void SPrintF_Hexadecimal()
         {
-            // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%x", 16384), Is.EqualTo("4000"));
                 Assert.That(SPrintF("%2x", 16384), Is.EqualTo("4000"));
@@ -619,7 +244,6 @@
         [Test]
         public void SPrintF_Octal()
         {
-            // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%o", 16384), Is.EqualTo("40000"));
                 Assert.That(SPrintF("%2o", 16384), Is.EqualTo("40000"));
@@ -686,7 +310,6 @@
         [Test]
         public void SPrintF_FixedDouble()
         {
-            // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%f", 10), Is.EqualTo("10.000000"));
                 Assert.That(SPrintF("%f", 123456.789), Is.EqualTo("123456.789000"));
@@ -727,52 +350,50 @@
                 Assert.That(SPrintF("%012f", -10), Is.EqualTo("-0010.000000"));
                 Assert.That(SPrintF("%-012f", -10), Is.EqualTo("-10.000000  "));
                 Assert.That(SPrintF("%05f", -10), Is.EqualTo("-10.000000"));
-                //Assert.That(SPrintF("%f", 1e100), Is.EqualTo("10000000000000000159028911097599180468360810000000000000000000000000000000000000000000000000000000000.000000"));
-                Assert.That(SPrintF("%f", 1e100), Is.EqualTo("10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000.000000"));
+                Assert.That(SPrintF("%f", 1e100), Is.EqualTo("10000000000000000159028911097599180468360808563945281389781327557747838772170381060813469985856815104.000000"));
                 Assert.That(SPrintF("%f", 1e-100), Is.EqualTo("0.000000"));
-                Assert.That(SPrintF("%f", double.NaN), Is.EqualTo("nan"));
-                Assert.That(SPrintF("%F", double.NaN), Is.EqualTo("NAN"));
-                Assert.That(SPrintF("%10.2f", double.NaN), Is.EqualTo("       nan"));
-                Assert.That(SPrintF("%10.2F", double.NaN), Is.EqualTo("       NAN"));
-                Assert.That(SPrintF("%#f", double.NaN), Is.EqualTo("nan"));
-                Assert.That(SPrintF("%#F", double.NaN), Is.EqualTo("NAN"));
-                Assert.That(SPrintF("% f", double.NaN), Is.EqualTo(" nan"));
-                Assert.That(SPrintF("% F", double.NaN), Is.EqualTo(" NAN"));
-                Assert.That(SPrintF("%+f", double.NaN), Is.EqualTo("+nan"));
-                Assert.That(SPrintF("%+F", double.NaN), Is.EqualTo("+NAN"));
-                Assert.That(SPrintF("%-10f", double.NaN), Is.EqualTo("nan       "));
-                Assert.That(SPrintF("%-10F", double.NaN), Is.EqualTo("NAN       "));
-                Assert.That(SPrintF("%010f", double.NaN), Is.EqualTo("       nan"));
-                Assert.That(SPrintF("%010F", double.NaN), Is.EqualTo("       NAN"));
-                Assert.That(SPrintF("%f", double.PositiveInfinity), Is.EqualTo("inf"));
-                Assert.That(SPrintF("%F", double.PositiveInfinity), Is.EqualTo("INF"));
-                Assert.That(SPrintF("%10.2f", double.PositiveInfinity), Is.EqualTo("       inf"));
-                Assert.That(SPrintF("%10.2F", double.PositiveInfinity), Is.EqualTo("       INF"));
-                Assert.That(SPrintF("% f", double.PositiveInfinity), Is.EqualTo(" inf"));
-                Assert.That(SPrintF("% F", double.PositiveInfinity), Is.EqualTo(" INF"));
-                Assert.That(SPrintF("%+f", double.PositiveInfinity), Is.EqualTo("+inf"));
-                Assert.That(SPrintF("%+F", double.PositiveInfinity), Is.EqualTo("+INF"));
-                Assert.That(SPrintF("%#f", double.PositiveInfinity), Is.EqualTo("inf"));
-                Assert.That(SPrintF("%#F", double.PositiveInfinity), Is.EqualTo("INF"));
-                Assert.That(SPrintF("%-10f", double.PositiveInfinity), Is.EqualTo("inf       "));
-                Assert.That(SPrintF("%-10F", double.PositiveInfinity), Is.EqualTo("INF       "));
-                Assert.That(SPrintF("%010f", double.PositiveInfinity), Is.EqualTo("       inf"));
-                Assert.That(SPrintF("%010F", double.PositiveInfinity), Is.EqualTo("       INF"));
-                Assert.That(SPrintF("%f", double.NegativeInfinity), Is.EqualTo("-inf"));
-                Assert.That(SPrintF("%F", double.NegativeInfinity), Is.EqualTo("-INF"));
-                Assert.That(SPrintF("%10.2f", double.NegativeInfinity), Is.EqualTo("      -inf"));
-                Assert.That(SPrintF("%10.2F", double.NegativeInfinity), Is.EqualTo("      -INF"));
-                Assert.That(SPrintF("%#f", double.NegativeInfinity), Is.EqualTo("-inf"));
-                Assert.That(SPrintF("%#F", double.NegativeInfinity), Is.EqualTo("-INF"));
-                Assert.That(SPrintF("%-10f", double.NegativeInfinity), Is.EqualTo("-inf      "));
-                Assert.That(SPrintF("%-10F", double.NegativeInfinity), Is.EqualTo("-INF      "));
+                Assert.That(SPrintF("%f", Double.NaN), Is.EqualTo("nan"));
+                Assert.That(SPrintF("%F", Double.NaN), Is.EqualTo("NAN"));
+                Assert.That(SPrintF("%10.2f", Double.NaN), Is.EqualTo("       nan"));
+                Assert.That(SPrintF("%10.2F", Double.NaN), Is.EqualTo("       NAN"));
+                Assert.That(SPrintF("%#f", Double.NaN), Is.EqualTo("nan"));
+                Assert.That(SPrintF("%#F", Double.NaN), Is.EqualTo("NAN"));
+                Assert.That(SPrintF("% f", Double.NaN), Is.EqualTo(" nan"));
+                Assert.That(SPrintF("% F", Double.NaN), Is.EqualTo(" NAN"));
+                Assert.That(SPrintF("%+f", Double.NaN), Is.EqualTo("+nan"));
+                Assert.That(SPrintF("%+F", Double.NaN), Is.EqualTo("+NAN"));
+                Assert.That(SPrintF("%-10f", Double.NaN), Is.EqualTo("nan       "));
+                Assert.That(SPrintF("%-10F", Double.NaN), Is.EqualTo("NAN       "));
+                Assert.That(SPrintF("%010f", Double.NaN), Is.EqualTo("       nan"));
+                Assert.That(SPrintF("%010F", Double.NaN), Is.EqualTo("       NAN"));
+                Assert.That(SPrintF("%f", Double.PositiveInfinity), Is.EqualTo("inf"));
+                Assert.That(SPrintF("%F", Double.PositiveInfinity), Is.EqualTo("INF"));
+                Assert.That(SPrintF("%10.2f", Double.PositiveInfinity), Is.EqualTo("       inf"));
+                Assert.That(SPrintF("%10.2F", Double.PositiveInfinity), Is.EqualTo("       INF"));
+                Assert.That(SPrintF("% f", Double.PositiveInfinity), Is.EqualTo(" inf"));
+                Assert.That(SPrintF("% F", Double.PositiveInfinity), Is.EqualTo(" INF"));
+                Assert.That(SPrintF("%+f", Double.PositiveInfinity), Is.EqualTo("+inf"));
+                Assert.That(SPrintF("%+F", Double.PositiveInfinity), Is.EqualTo("+INF"));
+                Assert.That(SPrintF("%#f", Double.PositiveInfinity), Is.EqualTo("inf"));
+                Assert.That(SPrintF("%#F", Double.PositiveInfinity), Is.EqualTo("INF"));
+                Assert.That(SPrintF("%-10f", Double.PositiveInfinity), Is.EqualTo("inf       "));
+                Assert.That(SPrintF("%-10F", Double.PositiveInfinity), Is.EqualTo("INF       "));
+                Assert.That(SPrintF("%010f", Double.PositiveInfinity), Is.EqualTo("       inf"));
+                Assert.That(SPrintF("%010F", Double.PositiveInfinity), Is.EqualTo("       INF"));
+                Assert.That(SPrintF("%f", Double.NegativeInfinity), Is.EqualTo("-inf"));
+                Assert.That(SPrintF("%F", Double.NegativeInfinity), Is.EqualTo("-INF"));
+                Assert.That(SPrintF("%10.2f", Double.NegativeInfinity), Is.EqualTo("      -inf"));
+                Assert.That(SPrintF("%10.2F", Double.NegativeInfinity), Is.EqualTo("      -INF"));
+                Assert.That(SPrintF("%#f", Double.NegativeInfinity), Is.EqualTo("-inf"));
+                Assert.That(SPrintF("%#F", Double.NegativeInfinity), Is.EqualTo("-INF"));
+                Assert.That(SPrintF("%-10f", Double.NegativeInfinity), Is.EqualTo("-inf      "));
+                Assert.That(SPrintF("%-10F", Double.NegativeInfinity), Is.EqualTo("-INF      "));
             });
         }
 
         [Test]
         public void SPrintF_ExponentDouble()
         {
-            // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%e", 10), Is.EqualTo("1.000000e+01"));
                 Assert.That(SPrintF("%12e", 10), Is.EqualTo("1.000000e+01"));
@@ -823,37 +444,36 @@
                 Assert.That(SPrintF("%015e", -10), Is.EqualTo("-001.000000e+01"));
                 Assert.That(SPrintF("%-015e", -10), Is.EqualTo("-1.000000e+01  "));
                 Assert.That(SPrintF("%05e", -10), Is.EqualTo("-1.000000e+01"));
-                Assert.That(SPrintF("%e", double.NaN), Is.EqualTo("nan"));
-                Assert.That(SPrintF("%E", double.NaN), Is.EqualTo("NAN"));
-                Assert.That(SPrintF("%10.2e", double.NaN), Is.EqualTo("       nan"));
-                Assert.That(SPrintF("%10.2E", double.NaN), Is.EqualTo("       NAN"));
-                Assert.That(SPrintF("%#e", double.NaN), Is.EqualTo("nan"));
-                Assert.That(SPrintF("%#E", double.NaN), Is.EqualTo("NAN"));
-                Assert.That(SPrintF("%-10e", double.NaN), Is.EqualTo("nan       "));
-                Assert.That(SPrintF("%-10E", double.NaN), Is.EqualTo("NAN       "));
-                Assert.That(SPrintF("%e", double.PositiveInfinity), Is.EqualTo("inf"));
-                Assert.That(SPrintF("%E", double.PositiveInfinity), Is.EqualTo("INF"));
-                Assert.That(SPrintF("%10.2e", double.PositiveInfinity), Is.EqualTo("       inf"));
-                Assert.That(SPrintF("%10.2E", double.PositiveInfinity), Is.EqualTo("       INF"));
-                Assert.That(SPrintF("%#e", double.PositiveInfinity), Is.EqualTo("inf"));
-                Assert.That(SPrintF("%#E", double.PositiveInfinity), Is.EqualTo("INF"));
-                Assert.That(SPrintF("%-10e", double.PositiveInfinity), Is.EqualTo("inf       "));
-                Assert.That(SPrintF("%-10E", double.PositiveInfinity), Is.EqualTo("INF       "));
-                Assert.That(SPrintF("%e", double.NegativeInfinity), Is.EqualTo("-inf"));
-                Assert.That(SPrintF("%E", double.NegativeInfinity), Is.EqualTo("-INF"));
-                Assert.That(SPrintF("%10.2e", double.NegativeInfinity), Is.EqualTo("      -inf"));
-                Assert.That(SPrintF("%10.2E", double.NegativeInfinity), Is.EqualTo("      -INF"));
-                Assert.That(SPrintF("%#e", double.NegativeInfinity), Is.EqualTo("-inf"));
-                Assert.That(SPrintF("%#E", double.NegativeInfinity), Is.EqualTo("-INF"));
-                Assert.That(SPrintF("%-10e", double.NegativeInfinity), Is.EqualTo("-inf      "));
-                Assert.That(SPrintF("%-10E", double.NegativeInfinity), Is.EqualTo("-INF      "));
+                Assert.That(SPrintF("%e", Double.NaN), Is.EqualTo("nan"));
+                Assert.That(SPrintF("%E", Double.NaN), Is.EqualTo("NAN"));
+                Assert.That(SPrintF("%10.2e", Double.NaN), Is.EqualTo("       nan"));
+                Assert.That(SPrintF("%10.2E", Double.NaN), Is.EqualTo("       NAN"));
+                Assert.That(SPrintF("%#e", Double.NaN), Is.EqualTo("nan"));
+                Assert.That(SPrintF("%#E", Double.NaN), Is.EqualTo("NAN"));
+                Assert.That(SPrintF("%-10e", Double.NaN), Is.EqualTo("nan       "));
+                Assert.That(SPrintF("%-10E", Double.NaN), Is.EqualTo("NAN       "));
+                Assert.That(SPrintF("%e", Double.PositiveInfinity), Is.EqualTo("inf"));
+                Assert.That(SPrintF("%E", Double.PositiveInfinity), Is.EqualTo("INF"));
+                Assert.That(SPrintF("%10.2e", Double.PositiveInfinity), Is.EqualTo("       inf"));
+                Assert.That(SPrintF("%10.2E", Double.PositiveInfinity), Is.EqualTo("       INF"));
+                Assert.That(SPrintF("%#e", Double.PositiveInfinity), Is.EqualTo("inf"));
+                Assert.That(SPrintF("%#E", Double.PositiveInfinity), Is.EqualTo("INF"));
+                Assert.That(SPrintF("%-10e", Double.PositiveInfinity), Is.EqualTo("inf       "));
+                Assert.That(SPrintF("%-10E", Double.PositiveInfinity), Is.EqualTo("INF       "));
+                Assert.That(SPrintF("%e", Double.NegativeInfinity), Is.EqualTo("-inf"));
+                Assert.That(SPrintF("%E", Double.NegativeInfinity), Is.EqualTo("-INF"));
+                Assert.That(SPrintF("%10.2e", Double.NegativeInfinity), Is.EqualTo("      -inf"));
+                Assert.That(SPrintF("%10.2E", Double.NegativeInfinity), Is.EqualTo("      -INF"));
+                Assert.That(SPrintF("%#e", Double.NegativeInfinity), Is.EqualTo("-inf"));
+                Assert.That(SPrintF("%#E", Double.NegativeInfinity), Is.EqualTo("-INF"));
+                Assert.That(SPrintF("%-10e", Double.NegativeInfinity), Is.EqualTo("-inf      "));
+                Assert.That(SPrintF("%-10E", Double.NegativeInfinity), Is.EqualTo("-INF      "));
             });
         }
 
         [Test]
         public void SPrintF_GeneralDouble()
         {
-            // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%g", 0.000001), Is.EqualTo("1e-06"));
                 Assert.That(SPrintF("%g", 0.00001), Is.EqualTo("1e-05"));
@@ -931,44 +551,40 @@
                 Assert.That(SPrintF("%012g", -10), Is.EqualTo("-00000000010"));
                 Assert.That(SPrintF("%-012g", -10), Is.EqualTo("-10         "));
                 Assert.That(SPrintF("%05g", -10), Is.EqualTo("-0010"));
-                Assert.That(SPrintF("%g", double.NaN), Is.EqualTo("nan"));
-                Assert.That(SPrintF("%G", double.NaN), Is.EqualTo("NAN"));
-                Assert.That(SPrintF("%10.2g", double.NaN), Is.EqualTo("       nan"));
-                Assert.That(SPrintF("%10.2G", double.NaN), Is.EqualTo("       NAN"));
-                Assert.That(SPrintF("%#g", double.NaN), Is.EqualTo("nan"));
-                Assert.That(SPrintF("%#G", double.NaN), Is.EqualTo("NAN"));
-                Assert.That(SPrintF("%-10g", double.NaN), Is.EqualTo("nan       "));
-                Assert.That(SPrintF("%-10G", double.NaN), Is.EqualTo("NAN       "));
-                Assert.That(SPrintF("%g", double.PositiveInfinity), Is.EqualTo("inf"));
-                Assert.That(SPrintF("%G", double.PositiveInfinity), Is.EqualTo("INF"));
-                Assert.That(SPrintF("%10.2g", double.PositiveInfinity), Is.EqualTo("       inf"));
-                Assert.That(SPrintF("%10.2G", double.PositiveInfinity), Is.EqualTo("       INF"));
-                Assert.That(SPrintF("%#g", double.PositiveInfinity), Is.EqualTo("inf"));
-                Assert.That(SPrintF("%#G", double.PositiveInfinity), Is.EqualTo("INF"));
-                Assert.That(SPrintF("%-10g", double.PositiveInfinity), Is.EqualTo("inf       "));
-                Assert.That(SPrintF("%-10G", double.PositiveInfinity), Is.EqualTo("INF       "));
-                Assert.That(SPrintF("%g", double.NegativeInfinity), Is.EqualTo("-inf"));
-                Assert.That(SPrintF("%G", double.NegativeInfinity), Is.EqualTo("-INF"));
-                Assert.That(SPrintF("%10.2g", double.NegativeInfinity), Is.EqualTo("      -inf"));
-                Assert.That(SPrintF("%10.2G", double.NegativeInfinity), Is.EqualTo("      -INF"));
-                Assert.That(SPrintF("%#g", double.NegativeInfinity), Is.EqualTo("-inf"));
-                Assert.That(SPrintF("%#G", double.NegativeInfinity), Is.EqualTo("-INF"));
-                Assert.That(SPrintF("%-10g", double.NegativeInfinity), Is.EqualTo("-inf      "));
-                Assert.That(SPrintF("%-10G", double.NegativeInfinity), Is.EqualTo("-INF      "));
+                Assert.That(SPrintF("%g", Double.NaN), Is.EqualTo("nan"));
+                Assert.That(SPrintF("%G", Double.NaN), Is.EqualTo("NAN"));
+                Assert.That(SPrintF("%10.2g", Double.NaN), Is.EqualTo("       nan"));
+                Assert.That(SPrintF("%10.2G", Double.NaN), Is.EqualTo("       NAN"));
+                Assert.That(SPrintF("%#g", Double.NaN), Is.EqualTo("nan"));
+                Assert.That(SPrintF("%#G", Double.NaN), Is.EqualTo("NAN"));
+                Assert.That(SPrintF("%-10g", Double.NaN), Is.EqualTo("nan       "));
+                Assert.That(SPrintF("%-10G", Double.NaN), Is.EqualTo("NAN       "));
+                Assert.That(SPrintF("%g", Double.PositiveInfinity), Is.EqualTo("inf"));
+                Assert.That(SPrintF("%G", Double.PositiveInfinity), Is.EqualTo("INF"));
+                Assert.That(SPrintF("%10.2g", Double.PositiveInfinity), Is.EqualTo("       inf"));
+                Assert.That(SPrintF("%10.2G", Double.PositiveInfinity), Is.EqualTo("       INF"));
+                Assert.That(SPrintF("%#g", Double.PositiveInfinity), Is.EqualTo("inf"));
+                Assert.That(SPrintF("%#G", Double.PositiveInfinity), Is.EqualTo("INF"));
+                Assert.That(SPrintF("%-10g", Double.PositiveInfinity), Is.EqualTo("inf       "));
+                Assert.That(SPrintF("%-10G", Double.PositiveInfinity), Is.EqualTo("INF       "));
+                Assert.That(SPrintF("%g", Double.NegativeInfinity), Is.EqualTo("-inf"));
+                Assert.That(SPrintF("%G", Double.NegativeInfinity), Is.EqualTo("-INF"));
+                Assert.That(SPrintF("%10.2g", Double.NegativeInfinity), Is.EqualTo("      -inf"));
+                Assert.That(SPrintF("%10.2G", Double.NegativeInfinity), Is.EqualTo("      -INF"));
+                Assert.That(SPrintF("%#g", Double.NegativeInfinity), Is.EqualTo("-inf"));
+                Assert.That(SPrintF("%#G", Double.NegativeInfinity), Is.EqualTo("-INF"));
+                Assert.That(SPrintF("%-10g", Double.NegativeInfinity), Is.EqualTo("-inf      "));
+                Assert.That(SPrintF("%-10G", Double.NegativeInfinity), Is.EqualTo("-INF      "));
             });
-        }
-
-        private static unsafe double UInt64ToDouble(ulong value)
-        {
-            return *(double*)&value;
         }
 
         [Test]
         public void SPrintF_DoubleBinary()
         {
             Assert.Multiple(() => {
+                // Zero special case
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000000000000)), Is.EqualTo("0"));
-                // Subnormals
+                // Subnormals have exponent with bias of zero
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000000000001)), Is.EqualTo("4.94065645841247e-324"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000000000002)), Is.EqualTo("9.88131291682493e-324"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000000000004)), Is.EqualTo("1.97626258336499e-323"));
@@ -978,12 +594,12 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000000001000)), Is.EqualTo("2.02369288536575e-320"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000000010000)), Is.EqualTo("3.23790861658519e-319"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000000100000)), Is.EqualTo("5.18065378653631e-318"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000001000000)), Is.EqualTo("8.2890460584581e-317"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000001000000)), Is.EqualTo("8.28904605845809e-317"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000010000000)), Is.EqualTo("1.3262473693533e-315"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000100000000)), Is.EqualTo("2.12199579096527e-314"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0001000000000000)), Is.EqualTo("1.390671161567e-309"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x000fffffffffffff)), Is.EqualTo("2.2250738585072e-308"));
-                // All exponents
+                // All possible exponents
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0010000000000000)), Is.EqualTo("2.2250738585072e-308"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0020000000000000)), Is.EqualTo("4.4501477170144e-308"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0030000000000000)), Is.EqualTo("8.90029543402881e-308"));
@@ -1028,7 +644,7 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x02a0000000000000)), Is.EqualTo("4.89298916017816e-296"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x02b0000000000000)), Is.EqualTo("9.78597832035631e-296"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x02c0000000000000)), Is.EqualTo("1.95719566407126e-295"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x02d0000000000000)), Is.EqualTo("3.91439132814253e-295"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x02d0000000000000)), Is.EqualTo("3.91439132814252e-295"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x02e0000000000000)), Is.EqualTo("7.82878265628505e-295"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x02f0000000000000)), Is.EqualTo("1.56575653125701e-294"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0300000000000000)), Is.EqualTo("3.13151306251402e-294"));
@@ -1470,7 +1086,7 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x1e40000000000000)), Is.EqualTo("5.55689687371269e-163"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x1e50000000000000)), Is.EqualTo("1.11137937474254e-162"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x1e60000000000000)), Is.EqualTo("2.22275874948508e-162"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x1e70000000000000)), Is.EqualTo("4.44551749897016e-162"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x1e70000000000000)), Is.EqualTo("4.44551749897015e-162"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x1e80000000000000)), Is.EqualTo("8.89103499794031e-162"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x1e90000000000000)), Is.EqualTo("1.77820699958806e-161"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x1ea0000000000000)), Is.EqualTo("3.55641399917612e-161"));
@@ -1511,7 +1127,7 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x20d0000000000000)), Is.EqualTo("1.22197454539984e-150"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x20e0000000000000)), Is.EqualTo("2.44394909079968e-150"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x20f0000000000000)), Is.EqualTo("4.88789818159937e-150"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2100000000000000)), Is.EqualTo("9.77579636319874e-150"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2100000000000000)), Is.EqualTo("9.77579636319873e-150"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2110000000000000)), Is.EqualTo("1.95515927263975e-149"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2120000000000000)), Is.EqualTo("3.91031854527949e-149"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2130000000000000)), Is.EqualTo("7.82063709055899e-149"));
@@ -1598,7 +1214,7 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2640000000000000)), Is.EqualTo("1.89091402092252e-124"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2650000000000000)), Is.EqualTo("3.78182804184504e-124"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2660000000000000)), Is.EqualTo("7.56365608369007e-124"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2670000000000000)), Is.EqualTo("1.51273121673802e-123"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2670000000000000)), Is.EqualTo("1.51273121673801e-123"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2680000000000000)), Is.EqualTo("3.02546243347603e-123"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2690000000000000)), Is.EqualTo("6.05092486695206e-123"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x26a0000000000000)), Is.EqualTo("1.21018497339041e-122"));
@@ -1674,7 +1290,7 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2b00000000000000)), Is.EqualTo("1.42873423910284e-101"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2b10000000000000)), Is.EqualTo("2.85746847820569e-101"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2b20000000000000)), Is.EqualTo("5.71493695641137e-101"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2b30000000000000)), Is.EqualTo("1.14298739128228e-100"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2b30000000000000)), Is.EqualTo("1.14298739128227e-100"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2b40000000000000)), Is.EqualTo("2.28597478256455e-100"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2b50000000000000)), Is.EqualTo("4.5719495651291e-100"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2b60000000000000)), Is.EqualTo("9.1438991302582e-100"));
@@ -1712,7 +1328,7 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2d60000000000000)), Is.EqualTo("3.92727477223818e-90"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2d70000000000000)), Is.EqualTo("7.85454954447636e-90"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2d80000000000000)), Is.EqualTo("1.57090990889527e-89"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2d90000000000000)), Is.EqualTo("3.14181981779055e-89"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2d90000000000000)), Is.EqualTo("3.14181981779054e-89"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2da0000000000000)), Is.EqualTo("6.28363963558109e-89"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2db0000000000000)), Is.EqualTo("1.25672792711622e-88"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2dc0000000000000)), Is.EqualTo("2.51345585423244e-88"));
@@ -1984,7 +1600,7 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x3e60000000000000)), Is.EqualTo("2.98023223876953e-08"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x3e70000000000000)), Is.EqualTo("5.96046447753906e-08"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x3e80000000000000)), Is.EqualTo("1.19209289550781e-07"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x3e90000000000000)), Is.EqualTo("2.38418579101563e-07"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x3e90000000000000)), Is.EqualTo("2.38418579101562e-07"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x3ea0000000000000)), Is.EqualTo("4.76837158203125e-07"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x3eb0000000000000)), Is.EqualTo("9.5367431640625e-07"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x3ec0000000000000)), Is.EqualTo("1.9073486328125e-06"));
@@ -2226,7 +1842,7 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x4d80000000000000)), Is.EqualTo("2.10624583337114e+65"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x4d90000000000000)), Is.EqualTo("4.21249166674229e+65"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x4da0000000000000)), Is.EqualTo("8.42498333348457e+65"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x4db0000000000000)), Is.EqualTo("1.68499666669692e+66"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x4db0000000000000)), Is.EqualTo("1.68499666669691e+66"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x4dc0000000000000)), Is.EqualTo("3.36999333339383e+66"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x4dd0000000000000)), Is.EqualTo("6.73998666678766e+66"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x4de0000000000000)), Is.EqualTo("1.34799733335753e+67"));
@@ -2386,7 +2002,7 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x5780000000000000)), Is.EqualTo("3.07828173409332e+113"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x5790000000000000)), Is.EqualTo("6.15656346818664e+113"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x57a0000000000000)), Is.EqualTo("1.23131269363733e+114"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x57b0000000000000)), Is.EqualTo("2.46262538727466e+114"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x57b0000000000000)), Is.EqualTo("2.46262538727465e+114"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x57c0000000000000)), Is.EqualTo("4.92525077454931e+114"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x57d0000000000000)), Is.EqualTo("9.85050154909862e+114"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x57e0000000000000)), Is.EqualTo("1.97010030981972e+115"));
@@ -2736,7 +2352,7 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x6d60000000000000)), Is.EqualTo("7.06003489677054e+218"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x6d70000000000000)), Is.EqualTo("1.41200697935411e+219"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x6d80000000000000)), Is.EqualTo("2.82401395870822e+219"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x6d90000000000000)), Is.EqualTo("5.64802791741644e+219"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x6d90000000000000)), Is.EqualTo("5.64802791741643e+219"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x6da0000000000000)), Is.EqualTo("1.12960558348329e+220"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x6db0000000000000)), Is.EqualTo("2.25921116696657e+220"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x6dc0000000000000)), Is.EqualTo("4.51842233393315e+220"));
@@ -2930,7 +2546,7 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x7980000000000000)), Is.EqualTo("1.77266229209636e+277"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x7990000000000000)), Is.EqualTo("3.54532458419271e+277"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x79a0000000000000)), Is.EqualTo("7.09064916838542e+277"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x79b0000000000000)), Is.EqualTo("1.41812983367709e+278"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x79b0000000000000)), Is.EqualTo("1.41812983367708e+278"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x79c0000000000000)), Is.EqualTo("2.83625966735417e+278"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x79d0000000000000)), Is.EqualTo("5.67251933470834e+278"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x79e0000000000000)), Is.EqualTo("1.13450386694167e+279"));
@@ -3033,95 +2649,3 @@
             });
         }
 
-        [Test]
-        public void SPrintF_CountDigitsLong()
-        {
-            Assert.That(StringUtilitiesAccessor.CountDigits(-1), Is.EqualTo(1));
-            Assert.That(StringUtilitiesAccessor.CountDigits(0), Is.EqualTo(1));
-            Assert.That(StringUtilitiesAccessor.CountDigits(1), Is.EqualTo(1));
-
-            long value = 1;
-            int digits = 2;
-            while (digits <= 19) {
-                value *= 10;
-                Assert.That(StringUtilitiesAccessor.CountDigits(value - 1), Is.EqualTo(digits - 1));
-                Assert.That(StringUtilitiesAccessor.CountDigits(value), Is.EqualTo(digits));
-                Assert.That(StringUtilitiesAccessor.CountDigits(value + 1), Is.EqualTo(digits));
-                digits++;
-            }
-
-            value = -1;
-            digits = 2;
-            while (digits <= 19) {
-                value *= 10;
-                Assert.That(StringUtilitiesAccessor.CountDigits(value - 1), Is.EqualTo(digits));
-                Assert.That(StringUtilitiesAccessor.CountDigits(value), Is.EqualTo(digits));
-                Assert.That(StringUtilitiesAccessor.CountDigits(value + 1), Is.EqualTo(digits - 1));
-                digits++;
-            }
-        }
-
-        [Test]
-        public void SPrintF_CountBitDigitsHex()
-        {
-            Assert.That(StringUtilitiesAccessor.CountBitDigits(0, 4), Is.EqualTo(1));
-
-            ulong value = 1;
-            int digits = 1;
-            while (digits < 16) {
-                Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
-                value <<= 1;
-                Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
-                value <<= 1;
-                Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
-                value <<= 1;
-                Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
-                value <<= 1;
-                digits++;
-            }
-        }
-
-        [Test]
-        public void SPrintF_CountBitDigitsOctal()
-        {
-            Assert.That(StringUtilitiesAccessor.CountBitDigits(0, 3), Is.EqualTo(1));
-
-            ulong value = 1;
-            int digits = 1;
-            while (digits < 22) {
-                Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 3), Is.EqualTo(digits), "Value 0x{0:X16}", value);
-                value <<= 1;
-                Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 3), Is.EqualTo(digits), "Value 0x{0:X16}", value);
-                value <<= 1;
-                Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 3), Is.EqualTo(digits), "Value 0x{0:X16}", value);
-                value <<= 1;
-                digits++;
-            }
-        }
-
-        [Test]
-        public void SPrintF_InvalidSpecifier()
-        {
-            Assert.That(SPrintF("handlerTransmitThread: 0x%02 , 0x%02", 0, 2176), Is.EqualTo("handlerTransmitThread: 0x%02 , 0x%02"));
-            Assert.That(SPrintF("handlerTransmitThread: 0x%02 , 0x%0", 0, 2176), Is.EqualTo("handlerTransmitThread: 0x%02 , 0x%0"));
-            Assert.That(SPrintF("handlerTransmitThread: 0x%02 , 0x%", 0, 2176), Is.EqualTo("handlerTransmitThread: 0x%02 , 0x%"));
-            Assert.That(SPrintF("handlerTransmitThread: 0x%02 , 0x", 0, 2176), Is.EqualTo("handlerTransmitThread: 0x%02 , 0x"));
-            Assert.That(SPrintF("handlerTransmitThread: 0x%0 , 0x%02", 0, 2176), Is.EqualTo("handlerTransmitThread: 0x%0 , 0x%02"));
-            Assert.That(SPrintF("handlerTransmitThread: 0x% , 0x%02", 0, 2176), Is.EqualTo("handlerTransmitThread: 0x% , 0x%02"));
-            Assert.That(SPrintF("handlerTransmitThread: 0x , 0x%02", 0, 2176), Is.EqualTo("handlerTransmitThread: 0x , 0x%02"));
-            Assert.That(SPrintF("handlerTransmitThread: 0x%02, 0x%02", 0, 2176), Is.EqualTo("handlerTransmitThread: 0x%02, 0x%02"));
-        }
-
-        [TestCase("%c", "x", "x")]
-        [TestCase("%d", "0", "0")]
-        [TestCase("%d", "-1", "-1")]
-        [TestCase("%u", "10", "10")]
-        [TestCase("%x", "10", "a")]
-        [TestCase("%f", "3.14", "3.140000")]
-        [TestCase("%6.3f", "3.14", " 3.140")]
-        public void SPrintF_StringTypeConversion(string format, string value, string expected)
-        {
-            Assert.That(SPrintF(format, value), Is.EqualTo(expected));
-        }
-    }
-}
