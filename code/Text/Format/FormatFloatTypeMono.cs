@@ -45,17 +45,13 @@
         public static void FloatToString(StringBuilder str, FormatSpecifier format, float value)
         {
             DoubleFormatter inst = new DoubleFormatter(str, format);
-            inst.Init(value, DoubleFormatter.SingleDefPrecision);
-            if (inst.FormatInfNan(true)) return;
-            inst.NumberToString();
+            inst.ToString(value, DoubleFormatter.SingleDefPrecision);
         }
 
         public static void DoubleToString(StringBuilder str, FormatSpecifier format, double value)
         {
             DoubleFormatter inst = new DoubleFormatter(str, format);
-            inst.Init(value, DoubleFormatter.DoubleDefPrecision);
-            if (inst.FormatInfNan(true)) return;
-            inst.NumberToString();
+            inst.ToString(value, DoubleFormatter.DoubleDefPrecision);
         }
     }
 }

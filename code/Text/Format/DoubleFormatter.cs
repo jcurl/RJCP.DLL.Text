@@ -32,17 +32,15 @@
         private const int DoubleBitsExponentMask = 0x7ff;
         private const long DoubleBitsMantissaMask = 0xfffffffffffff;
 
+        private readonly FormatSpecifier _formatSpecifier;
         private readonly StringBuilder _sbuf;
-
+        private readonly bool _specifierIsUpper;
+        private readonly int _precision;
+        private readonly char _specifier;
         private bool _NaN;
         private bool _infinity;
-        private bool _specifierIsUpper;
         private bool _positive;
-        private char _specifier;
-        private int _precision;
         private int _defPrecision;
-
-        private FormatSpecifier _formatSpecifier;
 
         private int _digitsLen;
         private int _offset; // Represent the first digit offset.
@@ -60,11 +58,6 @@
         public DoubleFormatter(StringBuilder sb, FormatSpecifier format)
         {
             _sbuf = sb;
-            Init(format);
-        }
-
-        private void Init(FormatSpecifier format)
-        {
             _val1 = _val2 = _val3 = _val4 = 0;
             _offset = 0;
             _NaN = _infinity = false;
@@ -81,7 +74,13 @@
             _formatSpecifier = format;
         }
 
-        public void Init(double value, int defPrecision)
+        public void ToString(double value, int defPrecision)
+        {
+            Convert(value, defPrecision);
+            NumberToString();
+        }
+
+        private void Convert(double value, int defPrecision)
         {
             _defPrecision = defPrecision;
 
@@ -93,7 +92,7 @@
             // float = (s == 0 ? 1 : -1) * 0.m * 2 ^ -1023     (subnormal; e == 0)
             long bits = BitConverter.DoubleToInt64Bits(value);
             _positive = bits >= 0;
-            bits &= Int64.MaxValue;
+            bits &= long.MaxValue;
             if (bits == 0) {
                 _decPointPos = 1;
                 _digitsLen = 0;
@@ -528,8 +527,18 @@
         #endregion Append helpers
 
         #region Number Formatting
-        public void NumberToString()
+        private void NumberToString()
         {
+            if (_NaN) {
+                FormatNaN(true);
+                return;
+            }
+
+            if (_infinity) {
+                FormatInf(true);
+                return;
+            }
+
             switch (_specifier) {
             case 'E':
                 FormatExponential(_precision); break;
@@ -684,7 +693,7 @@
             if (extraDigits > 0) _sbuf.Append('0', extraDigits);
         }
 
-        public void FormatExponential(int precision)
+        private void FormatExponential(int precision)
         {
             if (precision == -1) precision = DefaultExpPrecision;
 
@@ -768,99 +777,95 @@
             }
         }
 
-        public bool FormatInfNan(bool useC)
+        private void FormatNaN(bool useC)
         {
-            if (_NaN) {
-                string nan = useC ?
-                    (_specifierIsUpper ? "NAN" : "nan") :
-                    (_formatSpecifier.NumberFormatInfo.NaNSymbol);
-                int sign = 0;
+            string nan = useC ?
+                (_specifierIsUpper ? "NAN" : "nan") :
+                (_formatSpecifier.NumberFormatInfo.NaNSymbol);
+            int sign = 0;
+            if (_formatSpecifier.FormatFlags.HasFlag(FormatFlags.Blank)) {
+                sign = 1;
+            } else if (_formatSpecifier.FormatFlags.HasFlag(FormatFlags.ShowSign)) {
+                sign = _formatSpecifier.NumberFormatInfo.PositiveSign.Length;
+            }
+            int length = nan.Length + sign;
+            if (_formatSpecifier.FormatFlags.HasFlag(FormatFlags.LeftJustify)) {
                 if (_formatSpecifier.FormatFlags.HasFlag(FormatFlags.Blank)) {
-                    sign = 1;
+                    _sbuf.Append(' ');
                 } else if (_formatSpecifier.FormatFlags.HasFlag(FormatFlags.ShowSign)) {
-                    sign = _formatSpecifier.NumberFormatInfo.PositiveSign.Length;
+                    _sbuf.Append(_formatSpecifier.NumberFormatInfo.PositiveSign);
                 }
-                int length = nan.Length + sign;
-                if (_formatSpecifier.FormatFlags.HasFlag(FormatFlags.LeftJustify)) {
-                    if (_formatSpecifier.FormatFlags.HasFlag(FormatFlags.Blank)) {
-                        _sbuf.Append(' ');
-                    } else if (_formatSpecifier.FormatFlags.HasFlag(FormatFlags.ShowSign)) {
-                        _sbuf.Append(_formatSpecifier.NumberFormatInfo.PositiveSign);
-                    }
-                    _sbuf.Append(nan);
-                    if (length < _formatSpecifier.Width) {
-                        _sbuf.Append(' ', _formatSpecifier.Width - length);
-                    }
-                } else {
-                    if (length < _formatSpecifier.Width) {
-                        _sbuf.Append(' ', _formatSpecifier.Width - length);
-                    }
-                    if (_formatSpecifier.FormatFlags.HasFlag(FormatFlags.Blank)) {
-                        _sbuf.Append(' ');
-                    } else if (_formatSpecifier.FormatFlags.HasFlag(FormatFlags.ShowSign)) {
-                        _sbuf.Append(_formatSpecifier.NumberFormatInfo.PositiveSign);
-                    }
-                    _sbuf.Append(nan);
+                _sbuf.Append(nan);
+                if (length < _formatSpecifier.Width) {
+                    _sbuf.Append(' ', _formatSpecifier.Width - length);
                 }
-                return true;
+            } else {
+                if (length < _formatSpecifier.Width) {
+                    _sbuf.Append(' ', _formatSpecifier.Width - length);
+                }
+                if (_formatSpecifier.FormatFlags.HasFlag(FormatFlags.Blank)) {
+                    _sbuf.Append(' ');
+                } else if (_formatSpecifier.FormatFlags.HasFlag(FormatFlags.ShowSign)) {
+                    _sbuf.Append(_formatSpecifier.NumberFormatInfo.PositiveSign);
+                }
+                _sbuf.Append(nan);
             }
+        }
 
-            if (_infinity) {
-                string inf;
-                if (useC) {
-                    inf = _specifierIsUpper ? "INF" : "inf";
-                    int sign = 0;
+        private void FormatInf(bool useC)
+        {
+            string inf;
+            if (useC) {
+                inf = _specifierIsUpper ? "INF" : "inf";
+                int sign = 0;
+                if (_positive && _formatSpecifier.FormatFlags.HasFlag(FormatFlags.Blank)) {
+                    sign = 1;
+                } else if (_positive && _formatSpecifier.FormatFlags.HasFlag(FormatFlags.ShowSign)) {
+                    sign = _formatSpecifier.NumberFormatInfo.PositiveSign.Length;
+                } else if (!_positive) {
+                    sign = _formatSpecifier.NumberFormatInfo.NegativeSign.Length;
+                }
+                int length = inf.Length + sign;
+                if (_formatSpecifier.FormatFlags.HasFlag(FormatFlags.LeftJustify)) {
                     if (_positive && _formatSpecifier.FormatFlags.HasFlag(FormatFlags.Blank)) {
-                        sign = 1;
+                        _sbuf.Append(' ');
                     } else if (_positive && _formatSpecifier.FormatFlags.HasFlag(FormatFlags.ShowSign)) {
-                        sign = _formatSpecifier.NumberFormatInfo.PositiveSign.Length;
+                        _sbuf.Append(_formatSpecifier.NumberFormatInfo.PositiveSign);
                     } else if (!_positive) {
-                        sign = _formatSpecifier.NumberFormatInfo.NegativeSign.Length;
+                        _sbuf.Append(_formatSpecifier.NumberFormatInfo.NegativeSign);
                     }
-                    int length = inf.Length + sign;
-                    if (_formatSpecifier.FormatFlags.HasFlag(FormatFlags.LeftJustify)) {
-                        if (_positive && _formatSpecifier.FormatFlags.HasFlag(FormatFlags.Blank)) {
-                            _sbuf.Append(' ');
-                        } else if (_positive && _formatSpecifier.FormatFlags.HasFlag(FormatFlags.ShowSign)) {
-                            _sbuf.Append(_formatSpecifier.NumberFormatInfo.PositiveSign);
-                        } else if (!_positive) {
-                            _sbuf.Append(_formatSpecifier.NumberFormatInfo.NegativeSign);
-                        }
-                        _sbuf.Append(inf);
-                        if (length < _formatSpecifier.Width) {
-                            _sbuf.Append(' ', _formatSpecifier.Width - length);
-                        }
-                    } else {
-                        if (length < _formatSpecifier.Width) {
-                            _sbuf.Append(' ', _formatSpecifier.Width - length);
-                        }
-                        if (_positive && _formatSpecifier.FormatFlags.HasFlag(FormatFlags.Blank)) {
-                            _sbuf.Append(' ');
-                        } else if (_positive && _formatSpecifier.FormatFlags.HasFlag(FormatFlags.ShowSign)) {
-                            _sbuf.Append(_formatSpecifier.NumberFormatInfo.PositiveSign);
-                        } else if (!_positive) {
-                            _sbuf.Append(_formatSpecifier.NumberFormatInfo.NegativeSign);
-                        }
-                        _sbuf.Append(inf);
+                    _sbuf.Append(inf);
+                    if (length < _formatSpecifier.Width) {
+                        _sbuf.Append(' ', _formatSpecifier.Width - length);
                     }
                 } else {
-                    inf = _positive ? _formatSpecifier.NumberFormatInfo.PositiveInfinitySymbol : _formatSpecifier.NumberFormatInfo.NegativeInfinitySymbol;
-                    int length = inf.Length;
-                    if (_formatSpecifier.FormatFlags.HasFlag(FormatFlags.LeftJustify)) {
-                        _sbuf.Append(inf);
-                        if (length < _formatSpecifier.Width) {
-                            _sbuf.Append(' ', _formatSpecifier.Width - length);
-                        }
-                    } else {
-                        if (length < _formatSpecifier.Width) {
-                            _sbuf.Append(' ', _formatSpecifier.Width - length);
-                        }
-                        _sbuf.Append(inf);
+                    if (length < _formatSpecifier.Width) {
+                        _sbuf.Append(' ', _formatSpecifier.Width - length);
                     }
+                    if (_positive && _formatSpecifier.FormatFlags.HasFlag(FormatFlags.Blank)) {
+                        _sbuf.Append(' ');
+                    } else if (_positive && _formatSpecifier.FormatFlags.HasFlag(FormatFlags.ShowSign)) {
+                        _sbuf.Append(_formatSpecifier.NumberFormatInfo.PositiveSign);
+                    } else if (!_positive) {
+                        _sbuf.Append(_formatSpecifier.NumberFormatInfo.NegativeSign);
+                    }
+                    _sbuf.Append(inf);
                 }
-                return true;
+            } else {
+                inf = _positive ? _formatSpecifier.NumberFormatInfo.PositiveInfinitySymbol : _formatSpecifier.NumberFormatInfo.NegativeInfinitySymbol;
+                int length = inf.Length;
+                if (_formatSpecifier.FormatFlags.HasFlag(FormatFlags.LeftJustify)) {
+                    _sbuf.Append(inf);
+                    if (length < _formatSpecifier.Width) {
+                        _sbuf.Append(' ', _formatSpecifier.Width - length);
+                    }
+                } else {
+                    if (length < _formatSpecifier.Width) {
+                        _sbuf.Append(' ', _formatSpecifier.Width - length);
+                    }
+                    _sbuf.Append(inf);
+                }
             }
-            return false;
         }
         #endregion
 
