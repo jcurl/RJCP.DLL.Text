@@ -1,5 +1,5 @@
         [Test]
-        public void SPrintF_Char()
+        public void Char()
         {
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%c", 65), Is.EqualTo("A"));
@@ -21,7 +21,7 @@
         }
 
         [Test]
-        public void SPrintF_String()
+        public void String()
         {
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%s", "foo"), Is.EqualTo("foo"));
@@ -37,7 +37,7 @@
         }
 
         [Test]
-        public void SPrintF_Integer()
+        public void Integer()
         {
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%d", 16384), Is.EqualTo("16384"));
@@ -110,7 +110,7 @@
         }
 
         [Test]
-        public void SPrintF_UnsignedInteger()
+        public void UnsignedInteger()
         {
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%u", 16384), Is.EqualTo("16384"));
@@ -176,7 +176,7 @@
         }
 
         [Test]
-        public void SPrintF_Hexadecimal()
+        public void Hexadecimal()
         {
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%x", 16384), Is.EqualTo("4000"));
@@ -242,7 +242,7 @@
         }
 
         [Test]
-        public void SPrintF_Octal()
+        public void Octal()
         {
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%o", 16384), Is.EqualTo("40000"));
@@ -308,7 +308,7 @@
         }
 
         [Test]
-        public void SPrintF_FixedDouble()
+        public void FixedDouble()
         {
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%f", 10), Is.EqualTo("10.000000"));
@@ -392,7 +392,7 @@
         }
 
         [Test]
-        public void SPrintF_ExponentDouble()
+        public void ExponentDouble()
         {
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%e", 10), Is.EqualTo("1.000000e+01"));
@@ -472,7 +472,7 @@
         }
 
         [Test]
-        public void SPrintF_GeneralDouble()
+        public void GeneralDouble()
         {
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%g", 0.000001), Is.EqualTo("1e-06"));
@@ -579,7 +579,7 @@
         }
 
         [Test]
-        public void SPrintF_DoubleBinary()
+        public void DoubleBinary()
         {
             Assert.Multiple(() => {
                 // Zero special case

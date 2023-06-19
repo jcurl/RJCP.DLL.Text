@@ -4,39 +4,39 @@
     using NUnit.Framework;
     using static StringUtilities;
 
-    [TestFixture(Category = "String.SPrintF")]
+    [TestFixture]
     public class StringUtilities_SPrintFTest
     {
         [Test]
-        public void SPrintF_IntegerNormal()
+        public void IntegerNormal()
         {
             string r = SPrintF("My Number: %d", 5);
             Assert.That(r, Is.EqualTo("My Number: 5"));
         }
 
         [Test]
-        public void SPrintF_IntegerWidth()
+        public void IntegerWidth()
         {
             string r = SPrintF("My Number: %10d", 5);
             Assert.That(r, Is.EqualTo("My Number:          5"));
         }
 
         [Test]
-        public void SPrintF_IntegerWidthLeftAligned()
+        public void IntegerWidthLeftAligned()
         {
             string r = SPrintF("My Number: %-10d", 5);
             Assert.That(r, Is.EqualTo("My Number: 5         "));
         }
 
         [Test]
-        public void SPrintF_Percent()
+        public void Percent()
         {
             string r = SPrintF("Processor Load %u%%", 6);
             Assert.That(r, Is.EqualTo("Processor Load 6%"));
         }
 
         [Test]
-        public void SPrintF_Char()
+        public void Char()
         {
             // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.Multiple(() => {
@@ -78,7 +78,7 @@
         }
 
         [Test]
-        public void SPrintF_CharTypeConversions()
+        public void CharTypeConversions()
         {
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%c", 'A'), Is.EqualTo("A"));
@@ -131,7 +131,7 @@
         }
 
         [Test]
-        public void SPrintF_CharVarFieldWidth()
+        public void CharVarFieldWidth()
         {
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%*c", 0, 'a'), Is.EqualTo("a"));
@@ -150,7 +150,7 @@
         }
 
         [Test]
-        public void SPrintF_CharVarFieldWidthInvalid()
+        public void CharVarFieldWidthInvalid()
         {
             Assert.Multiple(() => {
                 Assert.That(() => { SPrintF("%*c", "1", 'a'); }, Throws.TypeOf<FormatException>());
@@ -159,7 +159,7 @@
         }
 
         [Test]
-        public void SPrintF_String()
+        public void String()
         {
             // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.Multiple(() => {
@@ -189,13 +189,13 @@
         }
 
         [Test]
-        public void SPrintF_StringEmpty()
+        public void StringEmpty()
         {
             Assert.That(SPrintF("%s", string.Empty), Is.EqualTo(""));
         }
 
         [Test]
-        public void SPrintF_StringNoParameters()
+        public void StringNoParameters()
         {
             // This is tricky. You might thing you're passing a null string here, but instead
             // it's really a null parameter list.
@@ -203,7 +203,7 @@
         }
 
         [Test]
-        public void SPrintF_StringNull()
+        public void StringNull()
         {
             // To pass a string of null, we need to construct the parameter list manually.
             Assert.That(SPrintF("%s", new object[] { null }), Is.EqualTo(""));
@@ -213,7 +213,7 @@
         }
 
         [Test]
-        public void SPrintF_Integer()
+        public void Integer()
         {
             // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.Multiple(() => {
@@ -287,7 +287,7 @@
         }
 
         [Test]
-        public void SPrintF_IntegerConversions([Values("%d", "%ld")] string specifier)
+        public void IntegerConversions([Values("%d", "%ld")] string specifier)
         {
             Assert.Multiple(() => {
                 Assert.That(SPrintF(specifier, (byte)127), Is.EqualTo("127"));
@@ -335,7 +335,7 @@
         }
 
         [Test]
-        public void SPrintF_LongIntegerConversions()
+        public void LongIntegerConversions()
         {
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%lld", (byte)127), Is.EqualTo("127"));
@@ -385,7 +385,7 @@
         }
 
         [Test]
-        public void SPrintF_UnsignedInteger()
+        public void UnsignedInteger()
         {
             // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.Multiple(() => {
@@ -452,7 +452,7 @@
         }
 
         [Test]
-        public void SPrintF_UnsignedIntegerConversions([Values("%u", "%lu")] string specifier)
+        public void UnsignedIntegerConversions([Values("%u", "%lu")] string specifier)
         {
             Assert.Multiple(() => {
                 Assert.That(SPrintF(specifier, (byte)127), Is.EqualTo("127"));
@@ -500,7 +500,7 @@
         }
 
         [Test]
-        public void SPrintF_LongUnsignedIntegerConversions()
+        public void LongUnsignedIntegerConversions()
         {
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%llu", (byte)127), Is.EqualTo("127"));
@@ -550,7 +550,7 @@
         }
 
         [Test]
-        public void SPrintF_Hexadecimal()
+        public void Hexadecimal()
         {
             // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.Multiple(() => {
@@ -617,7 +617,7 @@
         }
 
         [Test]
-        public void SPrintF_Octal()
+        public void Octal()
         {
             // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.Multiple(() => {
@@ -684,7 +684,7 @@
         }
 
         [Test]
-        public void SPrintF_FixedDouble()
+        public void FixedDouble()
         {
             // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.Multiple(() => {
@@ -770,7 +770,7 @@
         }
 
         [Test]
-        public void SPrintF_ExponentDouble()
+        public void ExponentDouble()
         {
             // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.Multiple(() => {
@@ -851,7 +851,7 @@
         }
 
         [Test]
-        public void SPrintF_GeneralDouble()
+        public void GeneralDouble()
         {
             // Obtained using Ubuntu 18.04 x64 GCC 7.4.0
             Assert.Multiple(() => {
@@ -964,7 +964,7 @@
         }
 
         [Test]
-        public void SPrintF_DoubleBinary()
+        public void DoubleBinary()
         {
             Assert.Multiple(() => {
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000000000000)), Is.EqualTo("0"));
@@ -3034,73 +3034,7 @@
         }
 
         [Test]
-        public void SPrintF_CountDigitsLong()
-        {
-            Assert.That(StringUtilitiesAccessor.CountDigits(-1), Is.EqualTo(1));
-            Assert.That(StringUtilitiesAccessor.CountDigits(0), Is.EqualTo(1));
-            Assert.That(StringUtilitiesAccessor.CountDigits(1), Is.EqualTo(1));
-
-            long value = 1;
-            int digits = 2;
-            while (digits <= 19) {
-                value *= 10;
-                Assert.That(StringUtilitiesAccessor.CountDigits(value - 1), Is.EqualTo(digits - 1));
-                Assert.That(StringUtilitiesAccessor.CountDigits(value), Is.EqualTo(digits));
-                Assert.That(StringUtilitiesAccessor.CountDigits(value + 1), Is.EqualTo(digits));
-                digits++;
-            }
-
-            value = -1;
-            digits = 2;
-            while (digits <= 19) {
-                value *= 10;
-                Assert.That(StringUtilitiesAccessor.CountDigits(value - 1), Is.EqualTo(digits));
-                Assert.That(StringUtilitiesAccessor.CountDigits(value), Is.EqualTo(digits));
-                Assert.That(StringUtilitiesAccessor.CountDigits(value + 1), Is.EqualTo(digits - 1));
-                digits++;
-            }
-        }
-
-        [Test]
-        public void SPrintF_CountBitDigitsHex()
-        {
-            Assert.That(StringUtilitiesAccessor.CountBitDigits(0, 4), Is.EqualTo(1));
-
-            ulong value = 1;
-            int digits = 1;
-            while (digits < 16) {
-                Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
-                value <<= 1;
-                Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
-                value <<= 1;
-                Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
-                value <<= 1;
-                Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
-                value <<= 1;
-                digits++;
-            }
-        }
-
-        [Test]
-        public void SPrintF_CountBitDigitsOctal()
-        {
-            Assert.That(StringUtilitiesAccessor.CountBitDigits(0, 3), Is.EqualTo(1));
-
-            ulong value = 1;
-            int digits = 1;
-            while (digits < 22) {
-                Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 3), Is.EqualTo(digits), "Value 0x{0:X16}", value);
-                value <<= 1;
-                Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 3), Is.EqualTo(digits), "Value 0x{0:X16}", value);
-                value <<= 1;
-                Assert.That(StringUtilitiesAccessor.CountBitDigits(value, 3), Is.EqualTo(digits), "Value 0x{0:X16}", value);
-                value <<= 1;
-                digits++;
-            }
-        }
-
-        [Test]
-        public void SPrintF_InvalidSpecifier()
+        public void InvalidSpecifier()
         {
             Assert.That(SPrintF("handlerTransmitThread: 0x%02 , 0x%02", 0, 2176), Is.EqualTo("handlerTransmitThread: 0x%02 , 0x%02"));
             Assert.That(SPrintF("handlerTransmitThread: 0x%02 , 0x%0", 0, 2176), Is.EqualTo("handlerTransmitThread: 0x%02 , 0x%0"));
@@ -3119,7 +3053,7 @@
         [TestCase("%x", "10", "a")]
         [TestCase("%f", "3.14", "3.140000")]
         [TestCase("%6.3f", "3.14", " 3.140")]
-        public void SPrintF_StringTypeConversion(string format, string value, string expected)
+        public void StringTypeConversion(string format, string value, string expected)
         {
             Assert.That(SPrintF(format, value), Is.EqualTo(expected));
         }

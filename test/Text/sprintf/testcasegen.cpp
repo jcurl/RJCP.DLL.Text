@@ -10,7 +10,7 @@ TestCaseGen::TestCaseGen()
 auto TestCaseGen::Function(const std::string functionName) -> TestCaseBlock
 {
     std::cout << std::string(offset_, ' ') << "[Test]" << std::endl;
-    std::cout << std::string(offset_, ' ') << "public void SPrintF_" << functionName << "()" << std::endl;
+    std::cout << std::string(offset_, ' ') << "public void " << functionName << "()" << std::endl;
     std::cout << std::string(offset_, ' ') << "{" << std::endl;
 
     TestCaseBlock block{offset_, "}"};
