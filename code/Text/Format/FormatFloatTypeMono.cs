@@ -46,18 +46,16 @@
         {
             DoubleFormatter inst = new DoubleFormatter(str, format);
             inst.Init(value, DoubleFormatter.SingleDefPrecision);
-            NumberFormatInfo nfi = format.NumberFormatInfo;
-            if (inst.FormatInfNan(format, true)) return;
-            inst.NumberToString(format, nfi);
+            if (inst.FormatInfNan(true)) return;
+            inst.NumberToString();
         }
 
         public static void DoubleToString(StringBuilder str, FormatSpecifier format, double value)
         {
             DoubleFormatter inst = new DoubleFormatter(str, format);
             inst.Init(value, DoubleFormatter.DoubleDefPrecision);
-            NumberFormatInfo nfi = format.NumberFormatInfo;
-            if (inst.FormatInfNan(format, true)) return;
-            inst.NumberToString(format, nfi);
+            if (inst.FormatInfNan(true)) return;
+            inst.NumberToString();
         }
     }
 }
