@@ -32,22 +32,22 @@ Intel Core i7-6700T CPU 2.80GHz (Skylake), 1 CPU(s), 8 logical and 4 physical co
 
 | Project 'text' Type | Method                  | mean (net48) | stderr | mean (netcore31) | stderr |
 |:--------------------|:------------------------|-------------:|-------:|-----------------:|-------:|
-| SPrintFBenchmark    | FormatE_Double          | 396.85       | 0.27   | 268.14           | 0.30   |
-| SPrintFBenchmark    | FormatE_Double_System   | 631.72       | 0.74   | 242.34           | 0.21   |
-| SPrintFBenchmark    | FormatE_Single          | 352.92       | 0.52   | 230.80           | 0.16   |
-| SPrintFBenchmark    | FormatE_Single_System   | 482.33       | 0.41   | 245.16           | 0.18   |
-| SPrintFBenchmark    | FormatF_Double          | 357.99       | 0.43   | 241.15           | 0.25   |
-| SPrintFBenchmark    | FormatF_Double_System   | 621.48       | 1.28   | 445.64           | 0.20   |
-| SPrintFBenchmark    | FormatF_Single          | 352.10       | 0.31   | 233.04           | 0.33   |
-| SPrintFBenchmark    | FormatF_Single_System   | 477.11       | 0.52   | 413.53           | 0.27   |
-| SPrintFBenchmark    | FormatG_Double          | 382.52       | 0.32   | 238.05           | 0.12   |
-| SPrintFBenchmark    | FormatG_Double_System   | 624.57       | 0.58   | 250.28           | 0.06   |
-| SPrintFBenchmark    | FormatG_Single          | 374.91       | 0.31   | 222.10           | 0.22   |
-| SPrintFBenchmark    | FormatG_Single_System   | 466.23       | 0.34   | 244.91           | 0.31   |
-| SPrintFBenchmark    | FormatD_Integer         | 290.88       | 0.45   | 131.46           | 0.43   |
-| SPrintFBenchmark    | FormatD_Integer_System  | 152.54       | 0.12   | 76.23            | 0.05   |
-| SPrintFBenchmark    | FormatU_Unsigned        | 266.35       | 0.29   | 197.36           | 0.26   |
-| SPrintFBenchmark    | FormatU_Unsigned_System | 151.88       | 0.14   | 74.06            | 0.07   |
+| SPrintFBenchmark    | FormatE_Double          | 337.00       | 0.64   | 277.11           | 1.24   |
+| SPrintFBenchmark    | FormatE_Double_System   | 629.46       | 0.31   | 247.77           | 1.27   |
+| SPrintFBenchmark    | FormatE_Single          | 308.32       | 0.23   | 230.21           | 0.31   |
+| SPrintFBenchmark    | FormatE_Single_System   | 479.91       | 0.51   | 248.31           | 0.24   |
+| SPrintFBenchmark    | FormatF_Double          | 312.38       | 0.59   | 242.01           | 0.39   |
+| SPrintFBenchmark    | FormatF_Double_System   | 618.90       | 0.43   | 439.72           | 0.54   |
+| SPrintFBenchmark    | FormatF_Single          | 305.15       | 0.21   | 233.82           | 0.43   |
+| SPrintFBenchmark    | FormatF_Single_System   | 477.47       | 1.28   | 417.80           | 0.42   |
+| SPrintFBenchmark    | FormatG_Double          | 307.07       | 0.53   | 233.19           | 0.27   |
+| SPrintFBenchmark    | FormatG_Double_System   | 630.13       | 0.62   | 249.61           | 0.25   |
+| SPrintFBenchmark    | FormatG_Single          | 294.81       | 0.34   | 229.55           | 0.26   |
+| SPrintFBenchmark    | FormatG_Single_System   | 465.74       | 0.45   | 243.49           | 0.30   |
+| SPrintFBenchmark    | FormatD_Integer         | 208.51       | 0.24   | 132.49           | 0.12   |
+| SPrintFBenchmark    | FormatD_Integer_System  | 150.02       | 0.55   | 75.02            | 0.08   |
+| SPrintFBenchmark    | FormatU_Unsigned        | 265.86       | 0.48   | 197.71           | 0.26   |
+| SPrintFBenchmark    | FormatU_Unsigned_System | 160.38       | 0.88   | 73.03            | 0.07   |
 
 ### Notes on the Results
 

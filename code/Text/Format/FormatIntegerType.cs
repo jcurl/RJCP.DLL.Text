@@ -69,9 +69,9 @@
             }
 
             int sign = 0;
-            if (value < 0 || formatSpecifier.FormatFlags.HasFlag(FormatFlags.ShowSign)) {
+            if (value < 0 || formatSpecifier.FormatFlags.Flag(FormatFlags.ShowSign)) {
                 sign = value < 0 ? formatSpecifier.NumberFormatInfo.NegativeSign.Length : formatSpecifier.NumberFormatInfo.PositiveSign.Length;
-            } else if (formatSpecifier.FormatFlags.HasFlag(FormatFlags.Blank)) {
+            } else if (formatSpecifier.FormatFlags.Flag(FormatFlags.Blank)) {
                 sign = 1;
             }
 
@@ -83,21 +83,21 @@
             int len = digits + zeroes + sign;
             int padding = 0;
             if (formatSpecifier.Width >= 1) {
-                if (formatSpecifier.Precision < 0 && formatSpecifier.FormatFlags.HasFlag(FormatFlags.ZeroPad) && !formatSpecifier.FormatFlags.HasFlag(FormatFlags.LeftJustify)) {
+                if (formatSpecifier.Precision < 0 && formatSpecifier.FormatFlags.Flag(FormatFlags.ZeroPad) && !formatSpecifier.FormatFlags.Flag(FormatFlags.LeftJustify)) {
                     zeroes = digits >= formatSpecifier.Width ? 0 : formatSpecifier.Width - digits - sign;
                 } else {
                     padding = len > formatSpecifier.Width ? 0 : formatSpecifier.Width - len;
                 }
 
-                if (padding > 0 && !formatSpecifier.FormatFlags.HasFlag(FormatFlags.LeftJustify)) {
+                if (padding > 0 && !formatSpecifier.FormatFlags.Flag(FormatFlags.LeftJustify)) {
                     str.Append(' ', padding);
                 }
             }
 
             if (value >= 0) {
-                if (formatSpecifier.FormatFlags.HasFlag(FormatFlags.ShowSign)) {
+                if (formatSpecifier.FormatFlags.Flag(FormatFlags.ShowSign)) {
                     str.Append(formatSpecifier.NumberFormatInfo.PositiveSign);
-                } else if (formatSpecifier.FormatFlags.HasFlag(FormatFlags.Blank)) {
+                } else if (formatSpecifier.FormatFlags.Flag(FormatFlags.Blank)) {
                     str.Append(' ');
                 }
             } else {
@@ -117,7 +117,7 @@
                 str.Append(rawnum);
             }
 
-            if (padding > 0 && formatSpecifier.FormatFlags.HasFlag(FormatFlags.LeftJustify)) {
+            if (padding > 0 && formatSpecifier.FormatFlags.Flag(FormatFlags.LeftJustify)) {
                 str.Append(' ', padding);
             }
         }

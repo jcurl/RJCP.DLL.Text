@@ -12,7 +12,7 @@
                 currentArg++;
                 if (formatSpecifier.Width == -1) formatSpecifier.Width = 1;
                 if (formatSpecifier.Width > 1) {
-                    if (formatSpecifier.FormatFlags.HasFlag(FormatFlags.LeftJustify)) {
+                    if (formatSpecifier.FormatFlags.Flag(FormatFlags.LeftJustify)) {
                         str.Append((char)c);
                         str.Append(' ', formatSpecifier.Width - 1);
                     } else {

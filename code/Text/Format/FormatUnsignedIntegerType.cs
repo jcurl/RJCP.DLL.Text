@@ -87,7 +87,7 @@ namespace RJCP.Core.Text.Format
                 // Sign and Blank are ignored
                 if (value != 0) {
                     // Strange, that GCC only displays 0x if the value isn't zero.
-                    if (formatSpecifier.FormatFlags.HasFlag(FormatFlags.Alternative)) alternative = 2;
+                    if (formatSpecifier.FormatFlags.Flag(FormatFlags.Alternative)) alternative = 2;
                     digits = Numbers.CountBitDigits(value, 4);
                 } else if (formatSpecifier.Precision != 0) {
                     digits = Numbers.CountBitDigits(value, 4);
@@ -98,7 +98,7 @@ namespace RJCP.Core.Text.Format
                 baseDigits = BaseDigitsUpper;
                 // Sign and Blank are ignored
                 if (value != 0) {
-                    if (formatSpecifier.FormatFlags.HasFlag(FormatFlags.Alternative)) alternative = 2;
+                    if (formatSpecifier.FormatFlags.Flag(FormatFlags.Alternative)) alternative = 2;
                     digits = Numbers.CountBitDigits(value, 4);
                 } else if (formatSpecifier.Precision != 0) {
                     digits = Numbers.CountBitDigits(value, 4);
@@ -110,7 +110,7 @@ namespace RJCP.Core.Text.Format
                 // Sign and Blank are ignored
                 if (value != 0) {
                     // Strange, that GCC only displays 0x if the value isn't zero.
-                    if (formatSpecifier.FormatFlags.HasFlag(FormatFlags.Alternative)) alternative = 1;
+                    if (formatSpecifier.FormatFlags.Flag(FormatFlags.Alternative)) alternative = 1;
                     digits = Numbers.CountBitDigits(value, 3);
                 } else if (formatSpecifier.Precision != 0) {
                     digits = Numbers.CountBitDigits(value, 3);
@@ -121,9 +121,9 @@ namespace RJCP.Core.Text.Format
                 baseDigits = BaseDigitsLower;
 #if SHOW_ULONG_SIGN
                 // In GCC, these options appear to be ignored, and so is commented out.
-                if (formatSpecifier.FormatFlags.HasFlag(FormatFlags.ShowSign)) {
+                if (formatSpecifier.FormatFlags.Flag(FormatFlags.ShowSign)) {
                     sign = formatSpecifier.NumberFormatInfo.PositiveSign.Length;
-                } else if (formatSpecifier.FormatFlags.HasFlag(FormatFlags.Blank)) {
+                } else if (formatSpecifier.FormatFlags.Flag(FormatFlags.Blank)) {
                     sign = 1;
                 }
 #endif
@@ -144,13 +144,13 @@ namespace RJCP.Core.Text.Format
             int len = alternative + zeroes + digits + sign;
             int padding = 0;
             if (formatSpecifier.Width >= 1) {
-                if (formatSpecifier.Precision < 0 && formatSpecifier.FormatFlags.HasFlag(FormatFlags.ZeroPad) && !formatSpecifier.FormatFlags.HasFlag(FormatFlags.LeftJustify)) {
+                if (formatSpecifier.Precision < 0 && formatSpecifier.FormatFlags.Flag(FormatFlags.ZeroPad) && !formatSpecifier.FormatFlags.Flag(FormatFlags.LeftJustify)) {
                     zeroes = digits >= formatSpecifier.Width ? 0 : formatSpecifier.Width - digits - sign;
                 } else {
                     padding = len > formatSpecifier.Width ? 0 : formatSpecifier.Width - len;
                 }
 
-                if (padding > 0 && !formatSpecifier.FormatFlags.HasFlag(FormatFlags.LeftJustify)) {
+                if (padding > 0 && !formatSpecifier.FormatFlags.Flag(FormatFlags.LeftJustify)) {
                     str.Append(' ', padding);
                 }
             }
@@ -158,9 +158,9 @@ namespace RJCP.Core.Text.Format
 #if SHOW_ULONG_SIGN
             // In GCC, these options appear to be ignored, and so is commented out.
             if (sign > 0) {
-                if (formatSpecifier.FormatFlags.HasFlag(FormatFlags.ShowSign)) {
+                if (formatSpecifier.FormatFlags.Flag(FormatFlags.ShowSign)) {
                     str.Append(formatSpecifier.NumberFormatInfo.PositiveSign);
-                } else if (formatSpecifier.FormatFlags.HasFlag(FormatFlags.Blank)) {
+                } else if (formatSpecifier.FormatFlags.Flag(FormatFlags.Blank)) {
                     str.Append(' ');
                 }
             }
@@ -185,7 +185,7 @@ namespace RJCP.Core.Text.Format
                 str.Append(rawnum);
             }
 
-            if (padding > 0 && formatSpecifier.FormatFlags.HasFlag(FormatFlags.LeftJustify)) {
+            if (padding > 0 && formatSpecifier.FormatFlags.Flag(FormatFlags.LeftJustify)) {
                 str.Append(' ', padding);
             }
         }
