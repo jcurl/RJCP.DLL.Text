@@ -58,10 +58,6 @@
         public DoubleFormatter(StringBuilder sb, FormatSpecifier format)
         {
             _sbuf = sb;
-            _val1 = _val2 = _val3 = _val4 = 0;
-            _offset = 0;
-            _NaN = _infinity = false;
-            _specifierIsUpper = false;
             _precision = format.Precision;
 
             if (format.Specifier >= 'A' && format.Specifier <= 'Z') {
@@ -703,9 +699,8 @@
 
         private void FormatExponential(int precision, int expDigits)
         {
-            int decDigits = _decPointPos;
-            int exponent = decDigits - 1;
-            decDigits = _decPointPos = 1;
+            int exponent = _decPointPos - 1;
+            _decPointPos = 1;
 
             // Calculate the number of characters we need in total
             int signLen = SignLength();
