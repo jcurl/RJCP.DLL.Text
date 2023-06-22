@@ -650,6 +650,9 @@ auto TestDoubleBinary(TestCaseGen &gen) -> void
     for (uint64_t i = 1; i < 2047; i++) {
         gen.TestSPrintFDouble(i << 52);
     }
+    for (uint64_t i = 1; i < 2047; i++) {
+        gen.TestSPrintFDouble(0x000FFFFFFFFFFFFF | (i << 52));
+    }
 }
 
 auto TestFloatBinary(TestCaseGen &gen) -> void
@@ -672,7 +675,10 @@ auto TestFloatBinary(TestCaseGen &gen) -> void
     gen.TestSPrintFSingle(0x00400000);
     gen.TestSPrintFSingle(0x007FFFFF);
     gen.Comment("All possible exponents");
-    for (uint64_t i = 1; i < 255; i++) {
+    for (uint32_t i = 1; i < 255; i++) {
         gen.TestSPrintFSingle(i << 23);
+    }
+    for (uint32_t i = 1; i < 255; i++) {
+        gen.TestSPrintFSingle(0x007FFFFF | (i << 23));
     }
 }

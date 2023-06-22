@@ -134,7 +134,7 @@
                 sb.Append(' ', spc).Append($"// E={finalOffset}");
                 Console.WriteLine(sb.ToString());
             }
-            Console.WriteLine("\n        };");
+            Console.WriteLine("        };\n");
         }
     }
 }
