@@ -967,8 +967,9 @@
         public void DoubleBinary()
         {
             Assert.Multiple(() => {
+                // Zero special case
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000000000000)), Is.EqualTo("0"));
-                // Subnormals
+                // Subnormals have exponent with bias of zero
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000000000001)), Is.EqualTo("4.94065645841247e-324"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000000000002)), Is.EqualTo("9.88131291682493e-324"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000000000004)), Is.EqualTo("1.97626258336499e-323"));
@@ -978,12 +979,12 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000000001000)), Is.EqualTo("2.02369288536575e-320"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000000010000)), Is.EqualTo("3.23790861658519e-319"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000000100000)), Is.EqualTo("5.18065378653631e-318"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000001000000)), Is.EqualTo("8.2890460584581e-317"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000001000000)), Is.EqualTo("8.2890460584581e-317"));   // GCC returns 8.28904605845809e-317
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000010000000)), Is.EqualTo("1.3262473693533e-315"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000100000000)), Is.EqualTo("2.12199579096527e-314"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0001000000000000)), Is.EqualTo("1.390671161567e-309"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x000fffffffffffff)), Is.EqualTo("2.2250738585072e-308"));
-                // All exponents
+                // All possible exponents
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0010000000000000)), Is.EqualTo("2.2250738585072e-308"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0020000000000000)), Is.EqualTo("4.4501477170144e-308"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0030000000000000)), Is.EqualTo("8.90029543402881e-308"));
@@ -1028,7 +1029,7 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x02a0000000000000)), Is.EqualTo("4.89298916017816e-296"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x02b0000000000000)), Is.EqualTo("9.78597832035631e-296"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x02c0000000000000)), Is.EqualTo("1.95719566407126e-295"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x02d0000000000000)), Is.EqualTo("3.91439132814253e-295"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x02d0000000000000)), Is.EqualTo("3.91439132814253e-295"));  // GCC returns 3.91439132814252e-295
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x02e0000000000000)), Is.EqualTo("7.82878265628505e-295"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x02f0000000000000)), Is.EqualTo("1.56575653125701e-294"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0300000000000000)), Is.EqualTo("3.13151306251402e-294"));
@@ -1470,7 +1471,7 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x1e40000000000000)), Is.EqualTo("5.55689687371269e-163"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x1e50000000000000)), Is.EqualTo("1.11137937474254e-162"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x1e60000000000000)), Is.EqualTo("2.22275874948508e-162"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x1e70000000000000)), Is.EqualTo("4.44551749897016e-162"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x1e70000000000000)), Is.EqualTo("4.44551749897016e-162"));  // GCC returns 4.44551749897015e-162
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x1e80000000000000)), Is.EqualTo("8.89103499794031e-162"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x1e90000000000000)), Is.EqualTo("1.77820699958806e-161"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x1ea0000000000000)), Is.EqualTo("3.55641399917612e-161"));
@@ -1511,7 +1512,7 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x20d0000000000000)), Is.EqualTo("1.22197454539984e-150"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x20e0000000000000)), Is.EqualTo("2.44394909079968e-150"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x20f0000000000000)), Is.EqualTo("4.88789818159937e-150"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2100000000000000)), Is.EqualTo("9.77579636319874e-150"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2100000000000000)), Is.EqualTo("9.77579636319874e-150"));  // GCC returns 9.77579636319873e-150
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2110000000000000)), Is.EqualTo("1.95515927263975e-149"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2120000000000000)), Is.EqualTo("3.91031854527949e-149"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2130000000000000)), Is.EqualTo("7.82063709055899e-149"));
@@ -1598,7 +1599,7 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2640000000000000)), Is.EqualTo("1.89091402092252e-124"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2650000000000000)), Is.EqualTo("3.78182804184504e-124"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2660000000000000)), Is.EqualTo("7.56365608369007e-124"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2670000000000000)), Is.EqualTo("1.51273121673802e-123"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2670000000000000)), Is.EqualTo("1.51273121673802e-123"));  // GCC returns 1.51273121673801e-123
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2680000000000000)), Is.EqualTo("3.02546243347603e-123"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2690000000000000)), Is.EqualTo("6.05092486695206e-123"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x26a0000000000000)), Is.EqualTo("1.21018497339041e-122"));
@@ -1674,7 +1675,7 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2b00000000000000)), Is.EqualTo("1.42873423910284e-101"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2b10000000000000)), Is.EqualTo("2.85746847820569e-101"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2b20000000000000)), Is.EqualTo("5.71493695641137e-101"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2b30000000000000)), Is.EqualTo("1.14298739128228e-100"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2b30000000000000)), Is.EqualTo("1.14298739128228e-100"));  // GCC returns 1.14298739128227e-100
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2b40000000000000)), Is.EqualTo("2.28597478256455e-100"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2b50000000000000)), Is.EqualTo("4.5719495651291e-100"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2b60000000000000)), Is.EqualTo("9.1438991302582e-100"));
@@ -1712,7 +1713,7 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2d60000000000000)), Is.EqualTo("3.92727477223818e-90"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2d70000000000000)), Is.EqualTo("7.85454954447636e-90"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2d80000000000000)), Is.EqualTo("1.57090990889527e-89"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2d90000000000000)), Is.EqualTo("3.14181981779055e-89"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2d90000000000000)), Is.EqualTo("3.14181981779055e-89"));   // GCC returns 3.14181981779054e-89
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2da0000000000000)), Is.EqualTo("6.28363963558109e-89"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2db0000000000000)), Is.EqualTo("1.25672792711622e-88"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x2dc0000000000000)), Is.EqualTo("2.51345585423244e-88"));
@@ -1984,7 +1985,7 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x3e60000000000000)), Is.EqualTo("2.98023223876953e-08"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x3e70000000000000)), Is.EqualTo("5.96046447753906e-08"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x3e80000000000000)), Is.EqualTo("1.19209289550781e-07"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x3e90000000000000)), Is.EqualTo("2.38418579101563e-07"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x3e90000000000000)), Is.EqualTo("2.38418579101563e-07"));   // GCC returns 2.38418579101562e-07
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x3ea0000000000000)), Is.EqualTo("4.76837158203125e-07"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x3eb0000000000000)), Is.EqualTo("9.5367431640625e-07"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x3ec0000000000000)), Is.EqualTo("1.9073486328125e-06"));
@@ -2226,7 +2227,7 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x4d80000000000000)), Is.EqualTo("2.10624583337114e+65"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x4d90000000000000)), Is.EqualTo("4.21249166674229e+65"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x4da0000000000000)), Is.EqualTo("8.42498333348457e+65"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x4db0000000000000)), Is.EqualTo("1.68499666669692e+66"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x4db0000000000000)), Is.EqualTo("1.68499666669692e+66"));   // GCC returns 1.68499666669691e+66
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x4dc0000000000000)), Is.EqualTo("3.36999333339383e+66"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x4dd0000000000000)), Is.EqualTo("6.73998666678766e+66"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x4de0000000000000)), Is.EqualTo("1.34799733335753e+67"));
@@ -2386,7 +2387,7 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x5780000000000000)), Is.EqualTo("3.07828173409332e+113"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x5790000000000000)), Is.EqualTo("6.15656346818664e+113"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x57a0000000000000)), Is.EqualTo("1.23131269363733e+114"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x57b0000000000000)), Is.EqualTo("2.46262538727466e+114"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x57b0000000000000)), Is.EqualTo("2.46262538727466e+114"));  // GCC returns 2.46262538727465e+114
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x57c0000000000000)), Is.EqualTo("4.92525077454931e+114"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x57d0000000000000)), Is.EqualTo("9.85050154909862e+114"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x57e0000000000000)), Is.EqualTo("1.97010030981972e+115"));
@@ -2736,7 +2737,7 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x6d60000000000000)), Is.EqualTo("7.06003489677054e+218"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x6d70000000000000)), Is.EqualTo("1.41200697935411e+219"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x6d80000000000000)), Is.EqualTo("2.82401395870822e+219"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x6d90000000000000)), Is.EqualTo("5.64802791741644e+219"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x6d90000000000000)), Is.EqualTo("5.64802791741644e+219"));  // GCC returns 5.64802791741643e+219
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x6da0000000000000)), Is.EqualTo("1.12960558348329e+220"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x6db0000000000000)), Is.EqualTo("2.25921116696657e+220"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x6dc0000000000000)), Is.EqualTo("4.51842233393315e+220"));
@@ -2930,7 +2931,7 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x7980000000000000)), Is.EqualTo("1.77266229209636e+277"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x7990000000000000)), Is.EqualTo("3.54532458419271e+277"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x79a0000000000000)), Is.EqualTo("7.09064916838542e+277"));
-                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x79b0000000000000)), Is.EqualTo("1.41812983367709e+278"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x79b0000000000000)), Is.EqualTo("1.41812983367709e+278"));  // GCC returns 1.41812983367708e+278
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x79c0000000000000)), Is.EqualTo("2.83625966735417e+278"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x79d0000000000000)), Is.EqualTo("5.67251933470834e+278"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x79e0000000000000)), Is.EqualTo("1.13450386694167e+279"));
@@ -3030,6 +3031,288 @@
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x7fc0000000000000)), Is.EqualTo("2.24711641857789e+307"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x7fd0000000000000)), Is.EqualTo("4.49423283715579e+307"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x7fe0000000000000)), Is.EqualTo("8.98846567431158e+307"));
+            });
+        }
+
+        private static unsafe float UInt32ToFloat(uint value)
+        {
+            return *(float*)&value;
+        }
+
+        [Test]
+        public void FloatBinary()
+        {
+            Assert.Multiple(() => {
+                // Zero special case
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x00000000)), Is.EqualTo("0"));
+                // Subnormals have exponent with bias of zero
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x00000001)), Is.EqualTo("1.401298e-45"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x00000002)), Is.EqualTo("2.802597e-45"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x00000004)), Is.EqualTo("5.605194e-45"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x00000008)), Is.EqualTo("1.121039e-44"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x00000010)), Is.EqualTo("2.242078e-44"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x00000100)), Is.EqualTo("3.587324e-43"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x00001000)), Is.EqualTo("5.739719e-42"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x00010000)), Is.EqualTo("9.18355e-41"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x00100000)), Is.EqualTo("1.469368e-39"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x00200000)), Is.EqualTo("2.938736e-39"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x00400000)), Is.EqualTo("5.877472e-39"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x007fffff)), Is.EqualTo("1.175494e-38"));
+                // All possible exponents
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x00800000)), Is.EqualTo("1.175494e-38"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x01000000)), Is.EqualTo("2.350989e-38"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x01800000)), Is.EqualTo("4.701977e-38"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x02000000)), Is.EqualTo("9.403955e-38"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x02800000)), Is.EqualTo("1.880791e-37"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x03000000)), Is.EqualTo("3.761582e-37"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x03800000)), Is.EqualTo("7.523164e-37"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x04000000)), Is.EqualTo("1.504633e-36"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x04800000)), Is.EqualTo("3.009266e-36"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x05000000)), Is.EqualTo("6.018531e-36"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x05800000)), Is.EqualTo("1.203706e-35"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x06000000)), Is.EqualTo("2.407412e-35"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x06800000)), Is.EqualTo("4.814825e-35"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x07000000)), Is.EqualTo("9.62965e-35"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x07800000)), Is.EqualTo("1.92593e-34"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x08000000)), Is.EqualTo("3.85186e-34"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x08800000)), Is.EqualTo("7.70372e-34"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x09000000)), Is.EqualTo("1.540744e-33"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x09800000)), Is.EqualTo("3.081488e-33"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x0a000000)), Is.EqualTo("6.162976e-33"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x0a800000)), Is.EqualTo("1.232595e-32"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x0b000000)), Is.EqualTo("2.46519e-32"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x0b800000)), Is.EqualTo("4.930381e-32"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x0c000000)), Is.EqualTo("9.860761e-32"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x0c800000)), Is.EqualTo("1.972152e-31"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x0d000000)), Is.EqualTo("3.944305e-31"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x0d800000)), Is.EqualTo("7.888609e-31"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x0e000000)), Is.EqualTo("1.577722e-30"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x0e800000)), Is.EqualTo("3.155444e-30"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x0f000000)), Is.EqualTo("6.310887e-30"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x0f800000)), Is.EqualTo("1.262177e-29"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x10000000)), Is.EqualTo("2.524355e-29"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x10800000)), Is.EqualTo("5.04871e-29"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x11000000)), Is.EqualTo("1.009742e-28"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x11800000)), Is.EqualTo("2.019484e-28"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x12000000)), Is.EqualTo("4.038968e-28"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x12800000)), Is.EqualTo("8.077936e-28"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x13000000)), Is.EqualTo("1.615587e-27"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x13800000)), Is.EqualTo("3.231174e-27"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x14000000)), Is.EqualTo("6.462349e-27"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x14800000)), Is.EqualTo("1.29247e-26"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x15000000)), Is.EqualTo("2.584939e-26"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x15800000)), Is.EqualTo("5.169879e-26"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x16000000)), Is.EqualTo("1.033976e-25"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x16800000)), Is.EqualTo("2.067952e-25"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x17000000)), Is.EqualTo("4.135903e-25"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x17800000)), Is.EqualTo("8.271806e-25"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x18000000)), Is.EqualTo("1.654361e-24"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x18800000)), Is.EqualTo("3.308722e-24"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x19000000)), Is.EqualTo("6.617445e-24"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x19800000)), Is.EqualTo("1.323489e-23"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x1a000000)), Is.EqualTo("2.646978e-23"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x1a800000)), Is.EqualTo("5.293956e-23"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x1b000000)), Is.EqualTo("1.058791e-22"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x1b800000)), Is.EqualTo("2.117582e-22"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x1c000000)), Is.EqualTo("4.235165e-22"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x1c800000)), Is.EqualTo("8.470329e-22"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x1d000000)), Is.EqualTo("1.694066e-21"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x1d800000)), Is.EqualTo("3.388132e-21"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x1e000000)), Is.EqualTo("6.776264e-21"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x1e800000)), Is.EqualTo("1.355253e-20"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x1f000000)), Is.EqualTo("2.710505e-20"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x1f800000)), Is.EqualTo("5.421011e-20"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x20000000)), Is.EqualTo("1.084202e-19"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x20800000)), Is.EqualTo("2.168404e-19"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x21000000)), Is.EqualTo("4.336809e-19"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x21800000)), Is.EqualTo("8.673617e-19"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x22000000)), Is.EqualTo("1.734723e-18"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x22800000)), Is.EqualTo("3.469447e-18"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x23000000)), Is.EqualTo("6.938894e-18"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x23800000)), Is.EqualTo("1.387779e-17"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x24000000)), Is.EqualTo("2.775558e-17"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x24800000)), Is.EqualTo("5.551115e-17"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x25000000)), Is.EqualTo("1.110223e-16"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x25800000)), Is.EqualTo("2.220446e-16"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x26000000)), Is.EqualTo("4.440892e-16"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x26800000)), Is.EqualTo("8.881784e-16"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x27000000)), Is.EqualTo("1.776357e-15"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x27800000)), Is.EqualTo("3.552714e-15"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x28000000)), Is.EqualTo("7.105427e-15"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x28800000)), Is.EqualTo("1.421085e-14"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x29000000)), Is.EqualTo("2.842171e-14"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x29800000)), Is.EqualTo("5.684342e-14"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x2a000000)), Is.EqualTo("1.136868e-13"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x2a800000)), Is.EqualTo("2.273737e-13"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x2b000000)), Is.EqualTo("4.547474e-13"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x2b800000)), Is.EqualTo("9.094947e-13"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x2c000000)), Is.EqualTo("1.818989e-12"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x2c800000)), Is.EqualTo("3.637979e-12"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x2d000000)), Is.EqualTo("7.275958e-12"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x2d800000)), Is.EqualTo("1.455192e-11"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x2e000000)), Is.EqualTo("2.910383e-11"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x2e800000)), Is.EqualTo("5.820766e-11"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x2f000000)), Is.EqualTo("1.164153e-10"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x2f800000)), Is.EqualTo("2.328306e-10"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x30000000)), Is.EqualTo("4.656613e-10"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x30800000)), Is.EqualTo("9.313226e-10"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x31000000)), Is.EqualTo("1.862645e-09"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x31800000)), Is.EqualTo("3.72529e-09"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x32000000)), Is.EqualTo("7.450581e-09"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x32800000)), Is.EqualTo("1.490116e-08"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x33000000)), Is.EqualTo("2.980232e-08"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x33800000)), Is.EqualTo("5.960464e-08"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x34000000)), Is.EqualTo("1.192093e-07"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x34800000)), Is.EqualTo("2.384186e-07"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x35000000)), Is.EqualTo("4.768372e-07"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x35800000)), Is.EqualTo("9.536743e-07"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x36000000)), Is.EqualTo("1.907349e-06"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x36800000)), Is.EqualTo("3.814697e-06"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x37000000)), Is.EqualTo("7.629395e-06"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x37800000)), Is.EqualTo("1.525879e-05"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x38000000)), Is.EqualTo("3.051758e-05"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x38800000)), Is.EqualTo("6.103516e-05"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x39000000)), Is.EqualTo("0.0001220703"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x39800000)), Is.EqualTo("0.0002441406"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x3a000000)), Is.EqualTo("0.0004882813")); // GCC returns 0.0004882812
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x3a800000)), Is.EqualTo("0.0009765625"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x3b000000)), Is.EqualTo("0.001953125"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x3b800000)), Is.EqualTo("0.00390625"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x3c000000)), Is.EqualTo("0.0078125"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x3c800000)), Is.EqualTo("0.015625"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x3d000000)), Is.EqualTo("0.03125"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x3d800000)), Is.EqualTo("0.0625"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x3e000000)), Is.EqualTo("0.125"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x3e800000)), Is.EqualTo("0.25"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x3f000000)), Is.EqualTo("0.5"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x3f800000)), Is.EqualTo("1"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x40000000)), Is.EqualTo("2"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x40800000)), Is.EqualTo("4"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x41000000)), Is.EqualTo("8"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x41800000)), Is.EqualTo("16"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x42000000)), Is.EqualTo("32"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x42800000)), Is.EqualTo("64"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x43000000)), Is.EqualTo("128"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x43800000)), Is.EqualTo("256"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x44000000)), Is.EqualTo("512"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x44800000)), Is.EqualTo("1024"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x45000000)), Is.EqualTo("2048"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x45800000)), Is.EqualTo("4096"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x46000000)), Is.EqualTo("8192"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x46800000)), Is.EqualTo("16384"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x47000000)), Is.EqualTo("32768"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x47800000)), Is.EqualTo("65536"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x48000000)), Is.EqualTo("131072"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x48800000)), Is.EqualTo("262144"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x49000000)), Is.EqualTo("524288"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x49800000)), Is.EqualTo("1048576"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x4a000000)), Is.EqualTo("2097152"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x4a800000)), Is.EqualTo("4194304"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x4b000000)), Is.EqualTo("8388608"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x4b800000)), Is.EqualTo("1.677722e+07"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x4c000000)), Is.EqualTo("3.355443e+07"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x4c800000)), Is.EqualTo("6.710886e+07"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x4d000000)), Is.EqualTo("1.342177e+08"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x4d800000)), Is.EqualTo("2.684355e+08"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x4e000000)), Is.EqualTo("5.368709e+08"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x4e800000)), Is.EqualTo("1.073742e+09"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x4f000000)), Is.EqualTo("2.147484e+09"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x4f800000)), Is.EqualTo("4.294967e+09"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x50000000)), Is.EqualTo("8.589935e+09"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x50800000)), Is.EqualTo("1.717987e+10"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x51000000)), Is.EqualTo("3.435974e+10"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x51800000)), Is.EqualTo("6.871948e+10"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x52000000)), Is.EqualTo("1.37439e+11"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x52800000)), Is.EqualTo("2.748779e+11"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x53000000)), Is.EqualTo("5.497558e+11"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x53800000)), Is.EqualTo("1.099512e+12"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x54000000)), Is.EqualTo("2.199023e+12"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x54800000)), Is.EqualTo("4.398047e+12"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x55000000)), Is.EqualTo("8.796093e+12"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x55800000)), Is.EqualTo("1.759219e+13"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x56000000)), Is.EqualTo("3.518437e+13"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x56800000)), Is.EqualTo("7.036874e+13"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x57000000)), Is.EqualTo("1.407375e+14"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x57800000)), Is.EqualTo("2.81475e+14"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x58000000)), Is.EqualTo("5.6295e+14"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x58800000)), Is.EqualTo("1.1259e+15"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x59000000)), Is.EqualTo("2.2518e+15"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x59800000)), Is.EqualTo("4.5036e+15"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x5a000000)), Is.EqualTo("9.007199e+15"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x5a800000)), Is.EqualTo("1.80144e+16"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x5b000000)), Is.EqualTo("3.60288e+16"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x5b800000)), Is.EqualTo("7.205759e+16"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x5c000000)), Is.EqualTo("1.441152e+17"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x5c800000)), Is.EqualTo("2.882304e+17"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x5d000000)), Is.EqualTo("5.764608e+17"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x5d800000)), Is.EqualTo("1.152922e+18"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x5e000000)), Is.EqualTo("2.305843e+18"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x5e800000)), Is.EqualTo("4.611686e+18"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x5f000000)), Is.EqualTo("9.223372e+18"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x5f800000)), Is.EqualTo("1.844674e+19"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x60000000)), Is.EqualTo("3.689349e+19"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x60800000)), Is.EqualTo("7.378698e+19"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x61000000)), Is.EqualTo("1.47574e+20"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x61800000)), Is.EqualTo("2.951479e+20"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x62000000)), Is.EqualTo("5.902958e+20"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x62800000)), Is.EqualTo("1.180592e+21"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x63000000)), Is.EqualTo("2.361183e+21"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x63800000)), Is.EqualTo("4.722366e+21"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x64000000)), Is.EqualTo("9.444733e+21"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x64800000)), Is.EqualTo("1.888947e+22"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x65000000)), Is.EqualTo("3.777893e+22"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x65800000)), Is.EqualTo("7.555786e+22"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x66000000)), Is.EqualTo("1.511157e+23"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x66800000)), Is.EqualTo("3.022315e+23"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x67000000)), Is.EqualTo("6.044629e+23"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x67800000)), Is.EqualTo("1.208926e+24"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x68000000)), Is.EqualTo("2.417852e+24"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x68800000)), Is.EqualTo("4.835703e+24"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x69000000)), Is.EqualTo("9.671407e+24"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x69800000)), Is.EqualTo("1.934281e+25"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x6a000000)), Is.EqualTo("3.868563e+25"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x6a800000)), Is.EqualTo("7.737125e+25"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x6b000000)), Is.EqualTo("1.547425e+26"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x6b800000)), Is.EqualTo("3.09485e+26"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x6c000000)), Is.EqualTo("6.1897e+26"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x6c800000)), Is.EqualTo("1.23794e+27"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x6d000000)), Is.EqualTo("2.47588e+27"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x6d800000)), Is.EqualTo("4.95176e+27"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x6e000000)), Is.EqualTo("9.90352e+27"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x6e800000)), Is.EqualTo("1.980704e+28"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x6f000000)), Is.EqualTo("3.961408e+28"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x6f800000)), Is.EqualTo("7.922816e+28"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x70000000)), Is.EqualTo("1.584563e+29"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x70800000)), Is.EqualTo("3.169127e+29"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x71000000)), Is.EqualTo("6.338253e+29"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x71800000)), Is.EqualTo("1.267651e+30"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x72000000)), Is.EqualTo("2.535301e+30"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x72800000)), Is.EqualTo("5.070602e+30"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x73000000)), Is.EqualTo("1.01412e+31"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x73800000)), Is.EqualTo("2.028241e+31"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x74000000)), Is.EqualTo("4.056482e+31"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x74800000)), Is.EqualTo("8.112964e+31"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x75000000)), Is.EqualTo("1.622593e+32"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x75800000)), Is.EqualTo("3.245186e+32"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x76000000)), Is.EqualTo("6.490371e+32"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x76800000)), Is.EqualTo("1.298074e+33"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x77000000)), Is.EqualTo("2.596148e+33"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x77800000)), Is.EqualTo("5.192297e+33"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x78000000)), Is.EqualTo("1.038459e+34"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x78800000)), Is.EqualTo("2.076919e+34"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x79000000)), Is.EqualTo("4.153837e+34"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x79800000)), Is.EqualTo("8.307675e+34"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x7a000000)), Is.EqualTo("1.661535e+35"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x7a800000)), Is.EqualTo("3.32307e+35"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x7b000000)), Is.EqualTo("6.64614e+35"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x7b800000)), Is.EqualTo("1.329228e+36"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x7c000000)), Is.EqualTo("2.658456e+36"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x7c800000)), Is.EqualTo("5.316912e+36"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x7d000000)), Is.EqualTo("1.063382e+37"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x7d800000)), Is.EqualTo("2.126765e+37"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x7e000000)), Is.EqualTo("4.25353e+37"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x7e800000)), Is.EqualTo("8.507059e+37"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x7f000000)), Is.EqualTo("1.701412e+38"));
             });
         }
 

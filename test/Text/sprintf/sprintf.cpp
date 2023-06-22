@@ -15,6 +15,7 @@ auto TestFixedDouble(TestCaseGen &gen) -> void;
 auto TestExponentDouble(TestCaseGen &gen) -> void;
 auto TestGeneralDouble(TestCaseGen &gen) -> void;
 auto TestDoubleBinary(TestCaseGen &gen) -> void;
+auto TestFloatBinary(TestCaseGen &gen) -> void;
 
 auto main(void) -> int
 {
@@ -47,6 +48,9 @@ auto main(void) -> int
     std::cout << std::endl;
 
     TestDoubleBinary(testGen);
+    std::cout << std::endl;
+
+    TestFloatBinary(testGen);
     std::cout << std::endl;
 }
 
@@ -645,5 +649,30 @@ auto TestDoubleBinary(TestCaseGen &gen) -> void
     gen.Comment("All possible exponents");
     for (uint64_t i = 1; i < 2047; i++) {
         gen.TestSPrintFDouble(i << 52);
+    }
+}
+
+auto TestFloatBinary(TestCaseGen &gen) -> void
+{
+    auto function_block = gen.Function("FloatBinary");
+    auto multi_block = gen.TestMultiple();
+    gen.Comment("Zero special case");
+    gen.TestSPrintFSingle(0x00000000);
+    gen.Comment("Subnormals have exponent with bias of zero");
+    gen.TestSPrintFSingle(0x00000001);
+    gen.TestSPrintFSingle(0x00000002);
+    gen.TestSPrintFSingle(0x00000004);
+    gen.TestSPrintFSingle(0x00000008);
+    gen.TestSPrintFSingle(0x00000010);
+    gen.TestSPrintFSingle(0x00000100);
+    gen.TestSPrintFSingle(0x00001000);
+    gen.TestSPrintFSingle(0x00010000);
+    gen.TestSPrintFSingle(0x00100000);
+    gen.TestSPrintFSingle(0x00200000);
+    gen.TestSPrintFSingle(0x00400000);
+    gen.TestSPrintFSingle(0x007FFFFF);
+    gen.Comment("All possible exponents");
+    for (uint64_t i = 1; i < 255; i++) {
+        gen.TestSPrintFSingle(i << 23);
     }
 }

@@ -14,6 +14,7 @@ public:
     auto TestMultiple() -> TestCaseBlock;
     auto TestSPrintF(const std::string params, const std::string format...) -> void;
     auto TestSPrintFDouble(uint64_t binaryDouble) -> void;
+    auto TestSPrintFSingle(uint32_t binaryFloat) -> void;
     auto Comment(const std::string comment) -> void;
 
 private:

@@ -57,6 +57,24 @@ auto TestCaseGen::TestSPrintFDouble(uint64_t binaryDouble) -> void
     std::cout.flags(f);
 }
 
+auto TestCaseGen::TestSPrintFSingle(uint32_t binaryFloat) -> void
+{
+    // User provided direct 32-bit binary form of their float, so they can test
+    // the IEEE754 bit fields directly.
+    float value = *reinterpret_cast<float *>(&binaryFloat);
+
+    char floatValue[64];
+    int result = snprintf(floatValue, 64, "%.7g", value);
+    floatValue[result] = 0;
+
+    std::ios_base::fmtflags f(std::cout.flags());
+    std::cout << std::string(offset_, ' ')
+        << "Assert.That(SPrintF(\"%.7g\", "
+        << "UInt32ToFloat(0x" << std::setfill('0') << std::setw(8) << std::hex << binaryFloat << ")), "
+        << "Is.EqualTo(\"" << floatValue << "\"));" << std::endl;
+    std::cout.flags(f);
+}
+
 auto TestCaseGen::Comment(const std::string comment) -> void
 {
     std::cout << std::string(offset_, ' ') << "// " << comment << std::endl;
