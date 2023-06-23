@@ -1,12 +1,12 @@
-﻿namespace IEEE754Limit
+﻿#define DYNAMIC_OVERFLOW
+
+namespace IEEE754Limit
 {
     using System;
     using System.Text;
 
     internal static class GenerateMbt
     {
-        //private const ulong MaxOverflow = 0xffffffff_000008cc;
-        private const ulong MaxOverflow = 0xFC000000_00000000;
         private static readonly ulong[] mbt = new ulong[2047];
         private static readonly int[] et = new int[2047];
 
@@ -26,6 +26,10 @@
 
             DumpTable(mbt, "Formatter_MantissaBitsTable", 3);
             DumpTable(et, "Formatter_TensExponentTable", 12);
+
+#if DYNAMIC_OVERFLOW
+            Console.WriteLine($"Max MBT value without Overflow: {max:x}");
+#endif
         }
 
         private static void CalculatePositiveExp(int e)
@@ -38,7 +42,7 @@
                     bool overflow = false;
                     try {
                         mbt[i] = mbt[i - 1] * 2;
-                        if (mbt[i] >= MaxOverflow) {
+                        if (CheckOverflow(mbt[i])) {
                             overflow = true;
                         } else {
                             rem *= 2;
@@ -75,7 +79,7 @@
                     rem = (rem + mbt[i + 1] % 2) / 2;
                     try {
                         ulong newMbt = mbt[i] * 10;
-                        if (newMbt < MaxOverflow) {
+                        if (!CheckOverflow(newMbt)) {
                             mbt[i] = newMbt;
                             rem *= 10;
                             if (rem >= 1) {
@@ -92,6 +96,27 @@
                 Console.Write($"E={i}; MBT[E]={mbt[i],20:D}; ET[E]={et[i]}; remainder={rem}     \r");
             }
             Console.WriteLine("");
+        }
+
+        private static ulong max = 0;
+
+        private static bool CheckOverflow(ulong mbt)
+        {
+#if !DYNAMIC_OVERFLOW
+            //const ulong MaxOverflow = 0xFF000000_00000000;
+            const ulong MaxOverflow = 0xFC000000_00000000;
+            return mbt >= MaxOverflow;
+#else
+            const ulong hi = 0x00000000_013fffff;  // Maximum mantissa value to try and get overflow
+            const ulong lo = 0x00000000_fffffff6;
+            ulong hi2 = mbt >> 32;
+            ulong lo2 = mbt & 0xFFFFFFFF;
+            bool v = MaxMbt.CheckOverflow(lo, hi, lo2, hi2, out _, out _);
+            if (!v) {
+                if (max < mbt) max = mbt;
+            }
+            return v;
+#endif
         }
 
         private const int CommentOffset = 90;

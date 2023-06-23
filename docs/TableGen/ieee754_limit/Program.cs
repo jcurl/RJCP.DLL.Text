@@ -1,4 +1,5 @@
-﻿namespace IEEE754Limit {
+﻿namespace IEEE754Limit
+{
     class Program
     {
         public static void Main()
