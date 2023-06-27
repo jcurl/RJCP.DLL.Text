@@ -969,6 +969,7 @@
             Assert.Multiple(() => {
                 // Zero special case
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000000000000)), Is.EqualTo("0"));
+                Assert.That(SPrintF("%.15g", UInt64ToDouble(0x8000000000000000)), Is.EqualTo("-0"));
                 // Subnormals have exponent with bias of zero
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000000000001)), Is.EqualTo("4.94065645841247e-324"));
                 Assert.That(SPrintF("%.15g", UInt64ToDouble(0x0000000000000002)), Is.EqualTo("9.88131291682493e-324"));
@@ -5091,6 +5092,7 @@
             Assert.Multiple(() => {
                 // Zero special case
                 Assert.That(SPrintF("%.7g", UInt32ToFloat(0x00000000)), Is.EqualTo("0"));
+                Assert.That(SPrintF("%.7g", UInt32ToFloat(0x80000000)), Is.EqualTo("-0"));
                 // Subnormals have exponent with bias of zero
                 Assert.That(SPrintF("%.7g", UInt32ToFloat(0x00000001)), Is.EqualTo("1.401298e-45"));
                 Assert.That(SPrintF("%.7g", UInt32ToFloat(0x00000002)), Is.EqualTo("2.802597e-45"));

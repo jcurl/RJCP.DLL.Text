@@ -16,6 +16,8 @@ auto TestExponentDouble(TestCaseGen &gen) -> void;
 auto TestGeneralDouble(TestCaseGen &gen) -> void;
 auto TestDoubleBinary(TestCaseGen &gen) -> void;
 auto TestFloatBinary(TestCaseGen &gen) -> void;
+auto TestDoubleBinaryA(TestCaseGen &gen) -> void;
+auto TestFloatBinaryA(TestCaseGen &gen) -> void;
 
 auto main(void) -> int
 {
@@ -51,6 +53,12 @@ auto main(void) -> int
     std::cout << std::endl;
 
     TestFloatBinary(testGen);
+    std::cout << std::endl;
+
+    TestDoubleBinaryA(testGen);
+    std::cout << std::endl;
+
+    TestFloatBinaryA(testGen);
     std::cout << std::endl;
 }
 
@@ -630,28 +638,66 @@ auto TestDoubleBinary(TestCaseGen &gen) -> void
     auto function_block = gen.Function("DoubleBinary");
     auto multi_block = gen.TestMultiple();
     gen.Comment("Zero special case");
-    gen.TestSPrintFDouble(0x0000000000000000);
+    gen.TestSPrintFDouble("%.15g", 0x0000000000000000);
+    gen.TestSPrintFDouble("%.15g", 0x8000000000000000);
     gen.Comment("Subnormals have exponent with bias of zero");
-    gen.TestSPrintFDouble(0x0000000000000001);
-    gen.TestSPrintFDouble(0x0000000000000002);
-    gen.TestSPrintFDouble(0x0000000000000004);
-    gen.TestSPrintFDouble(0x0000000000000008);
-    gen.TestSPrintFDouble(0x0000000000000010);
-    gen.TestSPrintFDouble(0x0000000000000100);
-    gen.TestSPrintFDouble(0x0000000000001000);
-    gen.TestSPrintFDouble(0x0000000000010000);
-    gen.TestSPrintFDouble(0x0000000000100000);
-    gen.TestSPrintFDouble(0x0000000001000000);
-    gen.TestSPrintFDouble(0x0000000010000000);
-    gen.TestSPrintFDouble(0x0000000100000000);
-    gen.TestSPrintFDouble(0x0001000000000000);
-    gen.TestSPrintFDouble(0x000FFFFFFFFFFFFF);
+    gen.TestSPrintFDouble("%.15g", 0x0000000000000001);
+    gen.TestSPrintFDouble("%.15g", 0x0000000000000002);
+    gen.TestSPrintFDouble("%.15g", 0x0000000000000004);
+    gen.TestSPrintFDouble("%.15g", 0x0000000000000008);
+    gen.TestSPrintFDouble("%.15g", 0x0000000000000010);
+    gen.TestSPrintFDouble("%.15g", 0x0000000000000100);
+    gen.TestSPrintFDouble("%.15g", 0x0000000000001000);
+    gen.TestSPrintFDouble("%.15g", 0x0000000000010000);
+    gen.TestSPrintFDouble("%.15g", 0x0000000000100000);
+    gen.TestSPrintFDouble("%.15g", 0x0000000001000000);
+    gen.TestSPrintFDouble("%.15g", 0x0000000010000000);
+    gen.TestSPrintFDouble("%.15g", 0x0000000100000000);
+    gen.TestSPrintFDouble("%.15g", 0x0001000000000000);
+    gen.TestSPrintFDouble("%.15g", 0x000FFFFFFFFFFFFF);
     gen.Comment("All possible exponents");
     for (uint64_t i = 1; i < 2047; i++) {
-        gen.TestSPrintFDouble(i << 52);
+        gen.TestSPrintFDouble("%.15g", i << 52);
     }
     for (uint64_t i = 1; i < 2047; i++) {
-        gen.TestSPrintFDouble(0x000FFFFFFFFFFFFF | (i << 52));
+        gen.TestSPrintFDouble("%.15g", 0x000FFFFFFFFFFFFF | (i << 52));
+    }
+}
+
+auto TestDoubleBinaryA(TestCaseGen &gen) -> void
+{
+    auto function_block = gen.Function("DoubleBinaryA");
+    auto multi_block = gen.TestMultiple();
+    gen.Comment("Zero special case");
+    gen.TestSPrintFDouble("%a", 0x0000000000000000);
+    gen.TestSPrintFDouble("%a", 0x8000000000000000);
+    gen.Comment("Subnormals have exponent with bias of zero");
+    gen.TestSPrintFDouble("%a", 0x0000000000000001);
+    gen.TestSPrintFDouble("%a", 0x0000000000000002);
+    gen.TestSPrintFDouble("%a", 0x0000000000000004);
+    gen.TestSPrintFDouble("%a", 0x0000000000000008);
+    gen.TestSPrintFDouble("%a", 0x0000000000000010);
+    gen.TestSPrintFDouble("%a", 0x0000000000000100);
+    gen.TestSPrintFDouble("%a", 0x0000000000001000);
+    gen.TestSPrintFDouble("%a", 0x0000000000010000);
+    gen.TestSPrintFDouble("%a", 0x0000000000100000);
+    gen.TestSPrintFDouble("%a", 0x0000000001000000);
+    gen.TestSPrintFDouble("%a", 0x0000000010000000);
+    gen.TestSPrintFDouble("%a", 0x0000000100000000);
+    gen.TestSPrintFDouble("%a", 0x0001000000000000);
+    gen.TestSPrintFDouble("%a", 0x000FFFFFFFFFFFFF);
+    gen.Comment("Infinity");
+    gen.TestSPrintFDouble("%a", 0x7FF0000000000000);
+    gen.TestSPrintFDouble("%a", 0xFFF0000000000000);
+    gen.Comment("NaN");
+    gen.TestSPrintFDouble("%a", 0x7FFFFFFFFFFFFFFF);
+    gen.TestSPrintFDouble("%a", 0xFFFFFFFFFFFFFFFF);
+    gen.Comment("All possible exponents");
+    for (uint64_t i = 1; i < 2047; i++) {
+        gen.TestSPrintFDouble("%a", i << 52);
+    }
+    for (uint64_t i = 1; i < 2047; i++) {
+        gen.TestSPrintFDouble("%a", 0x000FFFFFFFFFFFFF | (i << 52));
     }
 }
 
@@ -660,25 +706,61 @@ auto TestFloatBinary(TestCaseGen &gen) -> void
     auto function_block = gen.Function("FloatBinary");
     auto multi_block = gen.TestMultiple();
     gen.Comment("Zero special case");
-    gen.TestSPrintFSingle(0x00000000);
+    gen.TestSPrintFSingle("%.7g", 0x00000000);
+    gen.TestSPrintFSingle("%.7g", 0x80000000);
     gen.Comment("Subnormals have exponent with bias of zero");
-    gen.TestSPrintFSingle(0x00000001);
-    gen.TestSPrintFSingle(0x00000002);
-    gen.TestSPrintFSingle(0x00000004);
-    gen.TestSPrintFSingle(0x00000008);
-    gen.TestSPrintFSingle(0x00000010);
-    gen.TestSPrintFSingle(0x00000100);
-    gen.TestSPrintFSingle(0x00001000);
-    gen.TestSPrintFSingle(0x00010000);
-    gen.TestSPrintFSingle(0x00100000);
-    gen.TestSPrintFSingle(0x00200000);
-    gen.TestSPrintFSingle(0x00400000);
-    gen.TestSPrintFSingle(0x007FFFFF);
+    gen.TestSPrintFSingle("%.7g", 0x00000001);
+    gen.TestSPrintFSingle("%.7g", 0x00000002);
+    gen.TestSPrintFSingle("%.7g", 0x00000004);
+    gen.TestSPrintFSingle("%.7g", 0x00000008);
+    gen.TestSPrintFSingle("%.7g", 0x00000010);
+    gen.TestSPrintFSingle("%.7g", 0x00000100);
+    gen.TestSPrintFSingle("%.7g", 0x00001000);
+    gen.TestSPrintFSingle("%.7g", 0x00010000);
+    gen.TestSPrintFSingle("%.7g", 0x00100000);
+    gen.TestSPrintFSingle("%.7g", 0x00200000);
+    gen.TestSPrintFSingle("%.7g", 0x00400000);
+    gen.TestSPrintFSingle("%.7g", 0x007FFFFF);
     gen.Comment("All possible exponents");
     for (uint32_t i = 1; i < 255; i++) {
-        gen.TestSPrintFSingle(i << 23);
+        gen.TestSPrintFSingle("%.7g", i << 23);
     }
     for (uint32_t i = 1; i < 255; i++) {
-        gen.TestSPrintFSingle(0x007FFFFF | (i << 23));
+        gen.TestSPrintFSingle("%.7g", 0x007FFFFF | (i << 23));
+    }
+}
+
+auto TestFloatBinaryA(TestCaseGen &gen) -> void
+{
+    auto function_block = gen.Function("FloatBinaryA");
+    auto multi_block = gen.TestMultiple();
+    gen.Comment("Zero special case");
+    gen.TestSPrintFSingle("%a", 0x00000000);
+    gen.TestSPrintFSingle("%a", 0x80000000);
+    gen.Comment("Subnormals have exponent with bias of zero");
+    gen.TestSPrintFSingle("%a", 0x00000001);
+    gen.TestSPrintFSingle("%a", 0x00000002);
+    gen.TestSPrintFSingle("%a", 0x00000004);
+    gen.TestSPrintFSingle("%a", 0x00000008);
+    gen.TestSPrintFSingle("%a", 0x00000010);
+    gen.TestSPrintFSingle("%a", 0x00000100);
+    gen.TestSPrintFSingle("%a", 0x00001000);
+    gen.TestSPrintFSingle("%a", 0x00010000);
+    gen.TestSPrintFSingle("%a", 0x00100000);
+    gen.TestSPrintFSingle("%a", 0x00200000);
+    gen.TestSPrintFSingle("%a", 0x00400000);
+    gen.TestSPrintFSingle("%a", 0x007FFFFF);
+    gen.Comment("Infinity");
+    gen.TestSPrintFSingle("%a", 0x7F800000);
+    gen.TestSPrintFSingle("%a", 0xFF800000);
+    gen.Comment("NaN");
+    gen.TestSPrintFSingle("%a", 0x7FFFFFFF);
+    gen.TestSPrintFSingle("%a", 0xFFFFFFFF);
+    gen.Comment("All possible exponents");
+    for (uint32_t i = 1; i < 255; i++) {
+        gen.TestSPrintFSingle("%a", i << 23);
+    }
+    for (uint32_t i = 1; i < 255; i++) {
+        gen.TestSPrintFSingle("%a", 0x007FFFFF | (i << 23));
     }
 }

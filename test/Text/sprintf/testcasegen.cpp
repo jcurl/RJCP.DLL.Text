@@ -39,37 +39,37 @@ auto TestCaseGen::TestSPrintF(const std::string params, const std::string format
         << "Is.EqualTo(\"" << buffer << "\"));" << std::endl;
 }
 
-auto TestCaseGen::TestSPrintFDouble(uint64_t binaryDouble) -> void
+auto TestCaseGen::TestSPrintFDouble(const std::string format, uint64_t binaryDouble) -> void
 {
     // User provided direct 64-bit binary form of their double float, so they
     // can test the IEEE754 bit fields directly.
     double value = *reinterpret_cast<double *>(&binaryDouble);
 
     char doubleValue[64];
-    int result = snprintf(doubleValue, 64, "%.15g", value);
+    int result = snprintf(doubleValue, 64, format.c_str(), value);
     doubleValue[result] = 0;
 
     std::ios_base::fmtflags f(std::cout.flags());
     std::cout << std::string(offset_, ' ')
-        << "Assert.That(SPrintF(\"%.15g\", "
+        << "Assert.That(SPrintF(\"" << format << "\", "
         << "UInt64ToDouble(0x" << std::setfill('0') << std::setw(16) << std::hex << binaryDouble << ")), "
         << "Is.EqualTo(\"" << doubleValue << "\"));" << std::endl;
     std::cout.flags(f);
 }
 
-auto TestCaseGen::TestSPrintFSingle(uint32_t binaryFloat) -> void
+auto TestCaseGen::TestSPrintFSingle(const std::string format, uint32_t binaryFloat) -> void
 {
     // User provided direct 32-bit binary form of their float, so they can test
     // the IEEE754 bit fields directly.
     float value = *reinterpret_cast<float *>(&binaryFloat);
 
     char floatValue[64];
-    int result = snprintf(floatValue, 64, "%.7g", value);
+    int result = snprintf(floatValue, 64, format.c_str(), value);
     floatValue[result] = 0;
 
     std::ios_base::fmtflags f(std::cout.flags());
     std::cout << std::string(offset_, ' ')
-        << "Assert.That(SPrintF(\"%.7g\", "
+        << "Assert.That(SPrintF(\"" << format << "\", "
         << "UInt32ToFloat(0x" << std::setfill('0') << std::setw(8) << std::hex << binaryFloat << ")), "
         << "Is.EqualTo(\"" << floatValue << "\"));" << std::endl;
     std::cout.flags(f);
