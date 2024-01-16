@@ -19,7 +19,7 @@ Results = net48
 
 BenchmarkDotNet=v0.13.1 OS=Windows 10.0.19045
 Intel Core i7-6700T CPU 2.80GHz (Skylake), 1 CPU(s), 8 logical and 4 physical core(s)
-  [HOST] : .NET Framework 4.8 (4.8.9166.0), X64 RyuJIT
+  [HOST] : .NET Framework 4.8 (4.8.9181.0), X64 RyuJIT
 ```
 
 ```text
@@ -32,22 +32,22 @@ Intel Core i7-6700T CPU 2.80GHz (Skylake), 1 CPU(s), 8 logical and 4 physical co
 
 | Project 'text' Type | Method                  | mean (net48) | stderr | mean (netcore31) | stderr |
 |:--------------------|:------------------------|-------------:|-------:|-----------------:|-------:|
-| SPrintFBenchmark    | FormatE_Double          | 337.00       | 0.64   | 277.11           | 1.24   |
-| SPrintFBenchmark    | FormatE_Double_System   | 629.46       | 0.31   | 247.77           | 1.27   |
-| SPrintFBenchmark    | FormatE_Single          | 308.32       | 0.23   | 230.21           | 0.31   |
-| SPrintFBenchmark    | FormatE_Single_System   | 479.91       | 0.51   | 248.31           | 0.24   |
-| SPrintFBenchmark    | FormatF_Double          | 312.38       | 0.59   | 242.01           | 0.39   |
-| SPrintFBenchmark    | FormatF_Double_System   | 618.90       | 0.43   | 439.72           | 0.54   |
-| SPrintFBenchmark    | FormatF_Single          | 305.15       | 0.21   | 233.82           | 0.43   |
-| SPrintFBenchmark    | FormatF_Single_System   | 477.47       | 1.28   | 417.80           | 0.42   |
-| SPrintFBenchmark    | FormatG_Double          | 307.07       | 0.53   | 233.19           | 0.27   |
-| SPrintFBenchmark    | FormatG_Double_System   | 630.13       | 0.62   | 249.61           | 0.25   |
-| SPrintFBenchmark    | FormatG_Single          | 294.81       | 0.34   | 229.55           | 0.26   |
-| SPrintFBenchmark    | FormatG_Single_System   | 465.74       | 0.45   | 243.49           | 0.30   |
-| SPrintFBenchmark    | FormatD_Integer         | 208.51       | 0.24   | 132.49           | 0.12   |
-| SPrintFBenchmark    | FormatD_Integer_System  | 150.02       | 0.55   | 75.02            | 0.08   |
-| SPrintFBenchmark    | FormatU_Unsigned        | 265.86       | 0.48   | 197.71           | 0.26   |
-| SPrintFBenchmark    | FormatU_Unsigned_System | 160.38       | 0.88   | 73.03            | 0.07   |
+| SPrintFBenchmark    | FormatE_Double          | 336.52       | 0.24   | 253.90           | 0.26   |
+| SPrintFBenchmark    | FormatE_Double_System   | 616.86       | 0.23   | 239.66           | 0.17   |
+| SPrintFBenchmark    | FormatE_Single          | 313.83       | 1.43   | 224.60           | 0.16   |
+| SPrintFBenchmark    | FormatE_Single_System   | 479.75       | 0.36   | 243.90           | 0.15   |
+| SPrintFBenchmark    | FormatF_Double          | 308.18       | 0.18   | 235.35           | 0.21   |
+| SPrintFBenchmark    | FormatF_Double_System   | 612.67       | 0.33   | 433.16           | 0.17   |
+| SPrintFBenchmark    | FormatF_Single          | 302.09       | 0.15   | 229.16           | 0.14   |
+| SPrintFBenchmark    | FormatF_Single_System   | 460.95       | 0.23   | 409.83           | 0.19   |
+| SPrintFBenchmark    | FormatG_Double          | 295.71       | 0.14   | 226.19           | 0.13   |
+| SPrintFBenchmark    | FormatG_Double_System   | 611.74       | 0.23   | 243.76           | 0.12   |
+| SPrintFBenchmark    | FormatG_Single          | 292.51       | 0.41   | 220.09           | 0.12   |
+| SPrintFBenchmark    | FormatG_Single_System   | 459.73       | 0.16   | 245.17           | 0.08   |
+| SPrintFBenchmark    | FormatD_Integer         | 205.62       | 0.11   | 129.84           | 0.18   |
+| SPrintFBenchmark    | FormatD_Integer_System  | 143.10       | 0.07   | 72.11            | 0.05   |
+| SPrintFBenchmark    | FormatU_Unsigned        | 263.74       | 0.45   | 194.50           | 0.18   |
+| SPrintFBenchmark    | FormatU_Unsigned_System | 143.19       | 0.05   | 74.19            | 0.03   |
 
 ### Notes on the Results
 
