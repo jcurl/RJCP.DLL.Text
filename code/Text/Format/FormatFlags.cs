@@ -2,7 +2,7 @@
 {
     using System;
 
-#if NETSTANDARD2_1
+#if NET6_0_OR_GREATER
     using System.Runtime.CompilerServices;
 #endif
 
@@ -47,7 +47,7 @@
         /// <param name="value">The value that should be tested.</param>
         /// <param name="flag">The flag that should be tested for.</param>
         /// <returns>Is <see langword="true"/> if the flag is set, <see langword="false"/> otherwise.</returns>
-#if NETSTANDARD2_1
+#if NET6_0_OR_GREATER
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
         public static bool Flag(this FormatFlags value, FormatFlags flag)

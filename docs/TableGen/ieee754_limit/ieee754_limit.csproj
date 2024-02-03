@@ -1,44 +1,41 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
-	<OutputType>Exe</OutputType>
-	<IsPackable>false</IsPackable>
-	<Configurations>Debug;Release</Configurations>
-	<NeutralLanguage>en-US</NeutralLanguage>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <Configurations>Debug;Release</Configurations>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <RollForward>Major</RollForward>
 
-	<AssemblyName>IEEE754TableGen</AssemblyName>
-	<AssemblyTitle>IEEE754TableGen</AssemblyTitle>
-	<Product>RJCP.Core.Text</Product>
-	<RootNamespace>RJCP.Core.Text</RootNamespace>
+    <AssemblyName>IEEE754TableGen</AssemblyName>
+    <AssemblyTitle>IEEE754TableGen</AssemblyTitle>
+    <Product>RJCP.Core.Text</Product>
+    <RootNamespace>RJCP.Core.Text</RootNamespace>
 
-	<Authors>Jason Curl</Authors>
-	<Copyright>(C) 2023, Jason Curl</Copyright>
-	<Company></Company>
+    <Authors>Jason Curl</Authors>
+    <Copyright>(C) 2023-2024, Jason Curl</Copyright>
+    <Company></Company>
+    <Description>Tool to generate IEEE754 Tables used in RJCP.Core.Text.</Description>
+    <Version>1.0.0</Version>
 
-	<Description>Tool to generate IEEE754 Tables used in RJCP.Core.Text.</Description>
-	<Version>1.0.0</Version>
-
-	<AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-
-	<EnableNETAnalyzers>true</EnableNETAnalyzers>
-	<AnalysisMode>Default</AnalysisMode>
-	<AnalysisLevel>latest</AnalysisLevel>
-
-	<EnableDefaultItems>false</EnableDefaultItems>
-	<GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisMode>Default</AnalysisMode>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <RevisionControlStrict>true</RevisionControlStrict>
@@ -49,5 +46,4 @@
     <Compile Include="MaxMbt.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
-
 </Project>
