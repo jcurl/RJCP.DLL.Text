@@ -154,7 +154,7 @@
         /// </remarks>
         public static string SPrintF(string format, params object[] values)
         {
-            if (format == null) throw new ArgumentNullException(nameof(format));
+            ThrowHelper.ThrowIfNull(format);
 
             StringBuilder sb = new StringBuilder();
 
