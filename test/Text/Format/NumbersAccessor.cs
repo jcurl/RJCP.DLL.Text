@@ -6,7 +6,7 @@
     {
         private const string AssemblyName = "RJCP.Core.Text";
         private const string TypeName = "RJCP.Core.Text.Format.Numbers";
-        private static readonly PrivateType AccType = new PrivateType(AssemblyName, TypeName);
+        private static readonly PrivateType AccType = new(AssemblyName, TypeName);
 
         public static int CountDigits(long value)
         {

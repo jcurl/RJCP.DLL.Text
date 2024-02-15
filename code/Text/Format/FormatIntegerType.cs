@@ -10,7 +10,7 @@
         {
             try {
                 long value = 0;
-                if (formatSpecifier.Length == null || formatSpecifier.Length.Equals("l")) {
+                if (formatSpecifier.Length is null || formatSpecifier.Length.Equals("l")) {
                     value = GetLongInt(values[currentArg]);
                 } else if (formatSpecifier.Length.Equals("hh")) {
                     value = GetLongSByte(values[currentArg]);

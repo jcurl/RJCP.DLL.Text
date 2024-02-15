@@ -44,13 +44,13 @@
 
         public static void FloatToString(StringBuilder str, FormatSpecifier format, float value)
         {
-            DoubleFormatter inst = new DoubleFormatter(str, format);
+            DoubleFormatter inst = new(str, format);
             inst.ToString(value, DoubleFormatter.SingleDefPrecision);
         }
 
         public static void DoubleToString(StringBuilder str, FormatSpecifier format, double value)
         {
-            DoubleFormatter inst = new DoubleFormatter(str, format);
+            DoubleFormatter inst = new(str, format);
             inst.ToString(value, DoubleFormatter.DoubleDefPrecision);
         }
     }

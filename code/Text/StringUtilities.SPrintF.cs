@@ -9,7 +9,7 @@
     /// </summary>
     public static partial class StringUtilities
     {
-        private static readonly FormatType FormatTypes = new FormatType();
+        private static readonly FormatType FormatTypes = new();
 
         /// <summary>
         /// Format a string based on the C-Standard.
@@ -156,7 +156,7 @@
         {
             ThrowHelper.ThrowIfNull(format);
 
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
 
             int charPos = 0;
             int nextCharPos = 0;
@@ -183,7 +183,7 @@
                 }
 
                 FormatSpecifier formatSpecifier = FormatSpecifier.Parse(format, ref nextCharPos);
-                if (formatSpecifier == null) {
+                if (formatSpecifier is null) {
                     // The format specifier is invalid, so copy it verbatim.
 #if NETFRAMEWORK
                     sb.Append(format.Substring(charPos, nextCharPos - charPos));

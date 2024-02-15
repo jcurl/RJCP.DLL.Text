@@ -15,7 +15,7 @@
         {
             if (formatSpecifier.WidthAsArg) {
                 if (currentArg >= values.Length) throw new FormatException("Insufficient number of arguments in list");
-                if (!(values[currentArg] is int)) {
+                if (values[currentArg] is not int) {
                     string message = string.Format("Argument {0} must be an integer type when specifying the width", currentArg);
                     throw new FormatException(message);
                 }
@@ -28,7 +28,7 @@
             }
             if (formatSpecifier.PrecisionAsArg) {
                 if (currentArg >= values.Length) throw new FormatException("Insufficient number of arguments in list");
-                if (!(values[currentArg] is int)) {
+                if (values[currentArg] is not int) {
                     string message = string.Format("Argument {0} must be an integer type when specifying the precision", currentArg);
                     throw new FormatException(message);
                 }
@@ -50,7 +50,7 @@
             }
 
             // Handle all specifiers that need an argument.
-            if (values == null || currentArg >= values.Length) throw new FormatException("Insufficient number of arguments in list");
+            if (values is null || currentArg >= values.Length) throw new FormatException("Insufficient number of arguments in list");
             switch (formatSpecifier.Specifier) {
             case 'd':
             case 'i':

@@ -13,7 +13,7 @@ namespace RJCP.Core.Text.Format
         {
             try {
                 ulong value = 0;
-                if (formatSpecifier.Length == null || formatSpecifier.Length.Equals("l")) {
+                if (formatSpecifier.Length is null || formatSpecifier.Length.Equals("l")) {
                     value = GetULongUInt(values[currentArg]);
                 } else if (formatSpecifier.Length.Equals("hh")) {
                     value = GetULongByte(values[currentArg]);

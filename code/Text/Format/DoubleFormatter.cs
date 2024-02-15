@@ -60,7 +60,7 @@
             _sbuf = sb;
             _precision = format.Precision;
 
-            if (format.Specifier >= 'A' && format.Specifier <= 'Z') {
+            if (format.Specifier is >= 'A' and <= 'Z') {
                 _specifierIsUpper = true;
                 _specifier = format.Specifier;
             } else {

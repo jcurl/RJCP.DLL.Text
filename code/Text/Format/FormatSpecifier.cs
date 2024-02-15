@@ -34,7 +34,7 @@
         {
             if (format[position] != '%') return null;
 
-            FormatSpecifier formatSpecifier = new FormatSpecifier();
+            FormatSpecifier formatSpecifier = new();
             int newPosition = position + 1;
 
             try {
@@ -110,7 +110,7 @@
             int startPosition = position;
             while (position < format.Length) {
                 char c = format[position];
-                if (c == 'l' || c == 'h' || c == 'j' || c == 'z' || c == 't' || c == 'L') {
+                if (c is 'l' or 'h' or 'j' or 'z' or 't' or 'L') {
                     position++;
                 } else {
                     if (startPosition == position) return;
@@ -141,7 +141,7 @@
             bool parsing = true;
             while (parsing && endPosition < format.Length) {
                 char c = format[endPosition];
-                if (c < '0' || c > '9') {
+                if (c is < '0' or > '9') {
                     parsing = false;
                 } else {
                     endPosition++;
