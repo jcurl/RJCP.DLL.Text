@@ -17,37 +17,37 @@ hosting this repository as a submodule.
 ```text
 Results = net48
 
-BenchmarkDotNet=v0.13.12 OS=Windows 10 (10.0.19045.3803/22H2/2022Update)
+BenchmarkDotNet=v0.13.12 OS=Windows 10 (10.0.19045.3930/22H2/2022Update)
 Intel Core i7-6700T CPU 2.80GHz (Skylake), 1 CPU(s), 8 logical and 4 physical core(s)
   [HOST] : .NET Framework 4.8.1 (4.8.9181.0), X64 RyuJIT
 ```
 
 ```text
-Results = netcore31
+Results = netcore
 
-BenchmarkDotNet=v0.13.12 OS=Windows 10 (10.0.19045.3803/22H2/2022Update)
+BenchmarkDotNet=v0.13.12 OS=Windows 10 (10.0.19045.3930/22H2/2022Update)
 Intel Core i7-6700T CPU 2.80GHz (Skylake), 1 CPU(s), 8 logical and 4 physical core(s)
-  [HOST] : .NET Core 3.1.32 (CoreCLR 4.700.22.55902, CoreFX 4.700.22.56512), X64 RyuJIT
+  [HOST] : .NET 6.0.26 (6.0.2623.60508), X64 RyuJIT
 ```
 
-| Project 'text' Type | Method                  | mean (net48) | stderr | mean (netcore31) | stderr |
-|:--------------------|:------------------------|-------------:|-------:|-----------------:|-------:|
-| SPrintFBenchmark    | FormatE_Double          | 334.85       | 0.13   | 257.61           | 0.28   |
-| SPrintFBenchmark    | FormatE_Double_System   | 623.76       | 0.24   | 240.28           | 0.15   |
-| SPrintFBenchmark    | FormatE_Single          | 304.34       | 0.16   | 224.53           | 0.12   |
-| SPrintFBenchmark    | FormatE_Single_System   | 477.94       | 0.20   | 236.93           | 0.22   |
-| SPrintFBenchmark    | FormatF_Double          | 310.79       | 0.20   | 238.32           | 0.53   |
-| SPrintFBenchmark    | FormatF_Double_System   | 607.92       | 0.24   | 438.27           | 0.60   |
-| SPrintFBenchmark    | FormatF_Single          | 304.98       | 0.17   | 226.50           | 0.16   |
-| SPrintFBenchmark    | FormatF_Single_System   | 461.76       | 0.13   | 411.82           | 0.19   |
-| SPrintFBenchmark    | FormatG_Double          | 294.82       | 0.18   | 226.70           | 0.12   |
-| SPrintFBenchmark    | FormatG_Double_System   | 613.63       | 0.38   | 242.61           | 0.12   |
-| SPrintFBenchmark    | FormatG_Single          | 288.07       | 0.11   | 219.70           | 0.13   |
-| SPrintFBenchmark    | FormatG_Single_System   | 458.83       | 0.12   | 242.17           | 0.08   |
-| SPrintFBenchmark    | FormatD_Integer         | 203.96       | 0.12   | 137.69           | 0.14   |
-| SPrintFBenchmark    | FormatD_Integer_System  | 142.90       | 0.09   | 70.43            | 0.03   |
-| SPrintFBenchmark    | FormatU_Unsigned        | 262.51       | 0.11   | 195.11           | 0.17   |
-| SPrintFBenchmark    | FormatU_Unsigned_System | 143.25       | 0.06   | 70.92            | 0.04   |
+| Project 'text' Type | Method                  | mean (net48) | stderr | mean (netcore) | stderr |
+|:--------------------|:------------------------|-------------:|-------:|---------------:|-------:|
+| SPrintFBenchmark    | FormatE_Double          | 341.78       | 0.21   | 248.91         | 0.27   |
+| SPrintFBenchmark    | FormatE_Double_System   | 626.36       | 0.38   | 181.30         | 0.20   |
+| SPrintFBenchmark    | FormatE_Single          | 308.26       | 0.23   | 211.85         | 0.17   |
+| SPrintFBenchmark    | FormatE_Single_System   | 480.35       | 0.22   | 190.91         | 0.22   |
+| SPrintFBenchmark    | FormatF_Double          | 311.99       | 0.29   | 216.58         | 0.16   |
+| SPrintFBenchmark    | FormatF_Double_System   | 615.94       | 0.43   | 276.05         | 0.12   |
+| SPrintFBenchmark    | FormatF_Single          | 306.04       | 0.15   | 213.94         | 0.20   |
+| SPrintFBenchmark    | FormatF_Single_System   | 468.43       | 0.37   | 238.83         | 0.29   |
+| SPrintFBenchmark    | FormatG_Double          | 299.59       | 0.38   | 214.84         | 0.14   |
+| SPrintFBenchmark    | FormatG_Double_System   | 620.46       | 0.31   | 180.26         | 0.11   |
+| SPrintFBenchmark    | FormatG_Single          | 292.07       | 0.31   | 208.62         | 0.16   |
+| SPrintFBenchmark    | FormatG_Single_System   | 464.68       | 0.28   | 178.21         | 0.13   |
+| SPrintFBenchmark    | FormatD_Integer         | 207.03       | 0.13   | 123.85         | 0.16   |
+| SPrintFBenchmark    | FormatD_Integer_System  | 144.25       | 0.13   | 42.73          | 0.06   |
+| SPrintFBenchmark    | FormatU_Unsigned        | 268.83       | 0.16   | 188.44         | 0.05   |
+| SPrintFBenchmark    | FormatU_Unsigned_System | 144.41       | 0.09   | 42.89          | 0.10   |
 
 ### Notes on the Results
 
