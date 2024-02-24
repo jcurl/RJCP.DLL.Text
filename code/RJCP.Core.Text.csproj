@@ -72,6 +72,6 @@
     <Compile Include="Text\Format\Numbers.cs" />
     <Compile Include="Text\StringUtilities.SPrintF.cs" />
     <None Include="..\LICENSE.md" Pack="true" PackagePath="\" />
-    <None Include="..\docs\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>
