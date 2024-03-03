@@ -17,37 +17,45 @@ hosting this repository as a submodule.
 ```text
 Results = net48
 
-BenchmarkDotNet=v0.13.12 OS=Windows 10 (10.0.19045.3930/22H2/2022Update)
+BenchmarkDotNet=v0.13.12 OS=Windows 10 (10.0.19045.4046/22H2/2022Update)
 Intel Core i7-6700T CPU 2.80GHz (Skylake), 1 CPU(s), 8 logical and 4 physical core(s)
   [HOST] : .NET Framework 4.8.1 (4.8.9181.0), X64 RyuJIT
 ```
 
 ```text
-Results = netcore
+Results = net6
 
-BenchmarkDotNet=v0.13.12 OS=Windows 10 (10.0.19045.3930/22H2/2022Update)
+BenchmarkDotNet=v0.13.12 OS=Windows 10 (10.0.19045.4046/22H2/2022Update)
 Intel Core i7-6700T CPU 2.80GHz (Skylake), 1 CPU(s), 8 logical and 4 physical core(s)
-  [HOST] : .NET 6.0.26 (6.0.2623.60508), X64 RyuJIT
+  [HOST] : .NET 6.0.27 (6.0.2724.6912), X64 RyuJIT
 ```
 
-| Project 'text' Type | Method                  | mean (net48) | stderr | mean (netcore) | stderr |
-|:--------------------|:------------------------|-------------:|-------:|---------------:|-------:|
-| SPrintFBenchmark    | FormatE_Double          | 341.78       | 0.21   | 248.91         | 0.27   |
-| SPrintFBenchmark    | FormatE_Double_System   | 626.36       | 0.38   | 181.30         | 0.20   |
-| SPrintFBenchmark    | FormatE_Single          | 308.26       | 0.23   | 211.85         | 0.17   |
-| SPrintFBenchmark    | FormatE_Single_System   | 480.35       | 0.22   | 190.91         | 0.22   |
-| SPrintFBenchmark    | FormatF_Double          | 311.99       | 0.29   | 216.58         | 0.16   |
-| SPrintFBenchmark    | FormatF_Double_System   | 615.94       | 0.43   | 276.05         | 0.12   |
-| SPrintFBenchmark    | FormatF_Single          | 306.04       | 0.15   | 213.94         | 0.20   |
-| SPrintFBenchmark    | FormatF_Single_System   | 468.43       | 0.37   | 238.83         | 0.29   |
-| SPrintFBenchmark    | FormatG_Double          | 299.59       | 0.38   | 214.84         | 0.14   |
-| SPrintFBenchmark    | FormatG_Double_System   | 620.46       | 0.31   | 180.26         | 0.11   |
-| SPrintFBenchmark    | FormatG_Single          | 292.07       | 0.31   | 208.62         | 0.16   |
-| SPrintFBenchmark    | FormatG_Single_System   | 464.68       | 0.28   | 178.21         | 0.13   |
-| SPrintFBenchmark    | FormatD_Integer         | 207.03       | 0.13   | 123.85         | 0.16   |
-| SPrintFBenchmark    | FormatD_Integer_System  | 144.25       | 0.13   | 42.73          | 0.06   |
-| SPrintFBenchmark    | FormatU_Unsigned        | 268.83       | 0.16   | 188.44         | 0.05   |
-| SPrintFBenchmark    | FormatU_Unsigned_System | 144.41       | 0.09   | 42.89          | 0.10   |
+```text
+Results = net8
+
+BenchmarkDotNet=v0.13.12 OS=Windows 10 (10.0.19045.4046/22H2/2022Update)
+Intel Core i7-6700T CPU 2.80GHz (Skylake), 1 CPU(s), 8 logical and 4 physical core(s)
+  [HOST] : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT
+```
+
+| Project 'text' Type | Method                  | mean (net48) | stderr | mean (net6) | stderr | mean (net8) | stderr |
+|:--------------------|:------------------------|-------------:|-------:|------------:|-------:|------------:|-------:|
+| SPrintFBenchmark    | FormatD_Integer         | 240.51       | 0.44   | 153.34      | 0.21   | 122.67      | 0.09   |
+| SPrintFBenchmark    | FormatD_Integer_System  | 156.33       | 0.33   | 48.34       | 0.12   | 44.82       | 0.05   |
+| SPrintFBenchmark    | FormatE_Double          | 390.61       | 0.46   | 286.61      | 0.30   | 204.41      | 0.30   |
+| SPrintFBenchmark    | FormatE_Double_System   | 665.28       | 1.24   | 190.03      | 0.26   | 167.05      | 0.06   |
+| SPrintFBenchmark    | FormatE_Single          | 349.85       | 0.18   | 247.65      | 0.48   | 185.77      | 0.27   |
+| SPrintFBenchmark    | FormatE_Single_System   | 514.50       | 0.91   | 202.14      | 0.45   | 167.12      | 0.32   |
+| SPrintFBenchmark    | FormatF_Double          | 357.82       | 0.35   | 265.42      | 0.48   | 196.34      | 0.38   |
+| SPrintFBenchmark    | FormatF_Double_System   | 654.26       | 1.20   | 284.57      | 0.60   | 241.73      | 0.42   |
+| SPrintFBenchmark    | FormatF_Single          | 349.83       | 0.46   | 259.23      | 0.54   | 195.18      | 0.30   |
+| SPrintFBenchmark    | FormatF_Single_System   | 502.40       | 0.81   | 248.72      | 0.50   | 221.28      | 0.23   |
+| SPrintFBenchmark    | FormatG_Double          | 337.17       | 0.76   | 259.11      | 0.39   | 183.02      | 0.21   |
+| SPrintFBenchmark    | FormatG_Double_System   | 655.69       | 1.36   | 195.56      | 0.36   | 171.63      | 0.29   |
+| SPrintFBenchmark    | FormatG_Single          | 331.04       | 0.47   | 250.79      | 0.61   | 181.52      | 0.21   |
+| SPrintFBenchmark    | FormatG_Single_System   | 497.12       | 0.85   | 189.67      | 0.29   | 168.66      | 0.24   |
+| SPrintFBenchmark    | FormatU_Unsigned        | 302.22       | 0.50   | 216.85      | 0.38   | 185.51      | 0.27   |
+| SPrintFBenchmark    | FormatU_Unsigned_System | 158.54       | 0.06   | 48.32       | 0.14   | 45.31       | 0.06   |
 
 ### Notes on the Results
 
