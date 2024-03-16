@@ -41,13 +41,13 @@
             ulong value = 1;
             int digits = 1;
             while (digits < 16) {
-                Assert.That(NumbersAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
+                Assert.That(NumbersAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), $"Value 0x{value:X16}");
                 value <<= 1;
-                Assert.That(NumbersAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
+                Assert.That(NumbersAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), $"Value 0x{value:X16}");
                 value <<= 1;
-                Assert.That(NumbersAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
+                Assert.That(NumbersAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), $"Value 0x{value:X16}");
                 value <<= 1;
-                Assert.That(NumbersAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), "Value 0x{0:X16}", value);
+                Assert.That(NumbersAccessor.CountBitDigits(value, 4), Is.EqualTo(digits), $"Value 0x{value:X16}");
                 value <<= 1;
                 digits++;
             }
@@ -61,11 +61,11 @@
             ulong value = 1;
             int digits = 1;
             while (digits < 22) {
-                Assert.That(NumbersAccessor.CountBitDigits(value, 3), Is.EqualTo(digits), "Value 0x{0:X16}", value);
+                Assert.That(NumbersAccessor.CountBitDigits(value, 3), Is.EqualTo(digits), $"Value 0x{value:X16}");
                 value <<= 1;
-                Assert.That(NumbersAccessor.CountBitDigits(value, 3), Is.EqualTo(digits), "Value 0x{0:X16}", value);
+                Assert.That(NumbersAccessor.CountBitDigits(value, 3), Is.EqualTo(digits), $"Value 0x{value:X16}");
                 value <<= 1;
-                Assert.That(NumbersAccessor.CountBitDigits(value, 3), Is.EqualTo(digits), "Value 0x{0:X16}", value);
+                Assert.That(NumbersAccessor.CountBitDigits(value, 3), Is.EqualTo(digits), $"Value 0x{value:X16}");
                 value <<= 1;
                 digits++;
             }
